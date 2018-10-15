@@ -138,7 +138,6 @@ rm -r debug
 #rm Makefile*
 #rm .qmake.stash
 #rm ui_*
-rm release/*.exe
 tput sgr0
 
 ###############################################
