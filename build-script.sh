@@ -109,10 +109,17 @@ tput setaf 3; echo "Новая версия: $version_new"; tput sgr0
 ####################################################
 # Собрать из них версию продукта
 ####################################################
+echo
+echo "---------------------"
+echo
+echo "Очистка"
+tput setaf 7
+rm release/*.exe
+tput sgr0
 
 echo
 echo "Выполняются этапы сборки проекта"
-echo "---------------------"
+echo
 echo $qmake_prog ":RUN" 
 tput setaf 7
 $qmake_prog $path_pro_file -spec win32-g++ "VER=$version_new_num"
