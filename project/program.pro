@@ -1,6 +1,6 @@
 QT       += core gui widgets
 
-TARGET = nutritionist-helper-test
+TARGET = nutritionist-helper
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
