@@ -27,7 +27,9 @@ ui_*.h
 *.qmlc
 *.jsc
 Makefile*
-#*build-*  #if uncomment delete -> build-script.sh
+release
+install
+
 
 # Qt unit tests
 target_wrapper.*
