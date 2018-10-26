@@ -186,7 +186,8 @@ run_publicate(){
 
     echo "git commit :RUN"
     tput setaf 7
-    git commit -m $version_new
+    #git commit -m $version_new
+    git commit
     print_err "git commit"
 
     echo "git push :RUN"
