@@ -130,7 +130,15 @@ run_build(){
 
 run_publicate(){
     #TODO: GET REMOUTE LAST TAG
+    echo "Получение последнего тега"
+    tput setaf 7
+    curl -s "https://api.github.com/repos/$repo_owner/$repo_name/tags" \
+                | grep -Po '"name": "\K.*?(?=")' -m1 | grep -o [0-9.] | tr -d '\n' \
+                > .version 
+    print_err "curl"
+
     fill_current_version
+
 
     ####################################################
     # Зафиксировать в хранилище версию исходных текстов

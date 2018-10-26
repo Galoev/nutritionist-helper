@@ -8,6 +8,7 @@ path_qt_tools="$(config_get path_qt_tools)";
 make_prog="$(config_get make_prog)";
 
 git_origin_path="https://github.com/Ilkin-Galoev/nutritionist-helper.git"
+repo_owner="Ilkin-Galoev"
 repo_name="nutritionist-helper"
 path_pro_file="project/program.pro"
 qmake_prog="qmake.exe"
