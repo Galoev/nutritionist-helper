@@ -1,30 +1,35 @@
-#!/bin/bash
+config_read_file() {
+    (grep -E "^${2}=" -m 1 "${1}" 2>/dev/null || echo "VAR=__UNDEFINED__") | head -n 1 | cut -d '=' -f 2-;
+}
 
-#---------------------------------------------------------------------------------
-git_origin_path="https://github.com/Ilkin-Galoev/nutritionist-helper.git"
-repo_name="nutritionist-helper"
-path_pro_file="project/program.pro"
+config_get() {
+    val="$(config_read_file config.cfg "${1}")";
+    if [ "${val}" = "__UNDEFINED__" ]; then
+      os=${OSTYPE//[0-9.-]*/}
+      case "$os" in
+        darwin)
+          val="$(config_read_file config-defaults-darwin.cfg "${1}")";
+          ;;
+        msys)
+          val="$(config_read_file config-defaults-win.cfg "${1}")";
+          ;;
+        linux)
+          echo "Значения по умолчанию для OS Linux не определены"
+          ;;
+        *)
+        echo "Unknown Operating system $OSTYPE"
+        exit 1
+      esac
+      printf -- "%s" "${val}";
+    fi
+}
 
-path_qt="/c/Qt/5.11.2/mingw53_32/bin/"
-path_qt_tools="/c/Qt/Tools/mingw530_32/bin/"
-qmake_prog="qmake.exe"
-make_prog="mingw32-make.exe"
-binarycreator_prog="/c/Qt/Tools/QtInstallerFramework/3.0/bin/binarycreator.exe"
-windeployqt_prog="windeployqt.exe"
-
-executable_name="nutritionist-helper"
-#---------------------------------------------------------------------------------
-
-
-PATH=$path_qt:$PATH
-PATH=$path_qt_tools:$PATH
-
-version_idx1=0
-version_idx2=0
-version_idx3=0
-version_previous_num=""
-version_previous=""
-
+print_hint(){
+    echo "--download"
+    echo "--build"
+    echo "--install"
+    echo "--publicate"
+}
 
 print_err () {  # $1 - 
     if [ $? -eq 0 ]; then
@@ -39,11 +44,13 @@ print_err () {  # $1 -
         exit 2
     fi
 }
+
 cmd_out () {  # $1 - command
     tput setaf 7
     cat $1
     tput setaf 8
 }
+
 fill_current_version(){
     ####################################################
     # Считываем версию из файла
@@ -91,7 +98,7 @@ run_build(){
     echo
     echo "Очистка"
     tput setaf 7
-    rm release/*.exe
+    #rm release/*.exe
     tput sgr0
 
     echo
@@ -116,86 +123,9 @@ run_build(){
     #rm .qmake.stash
     #rm ui_*
     tput sgr0
-}
 
-run_install(){
-    fill_current_version
-
-    ###############################################
-    # Создание инсталяции и копирование доп даннных
-    ###############################################
-    
-echo
-echo "Создание инсталяции и копирование доп даннных"
-tput setaf 7
-rm -r install
-mkdir install
-cd install
-mkdir config
-mkdir packages
-cd config
-
-cat > config.xml <<EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<Installer>
-    <Name>Помошник диетолога</Name>
-    <Version>$version_previous_num</Version>
-    <Title>Установщик Промошник диетолога</Title>
-    <Publisher>Bogdan Arzhevitin, Galoev Ilkin</Publisher>
-    <StartMenuDir>Помошник диетолога</StartMenuDir>
-    <TargetDir>@HomeDir@/InstallationDirectory</TargetDir>
-</Installer>
-EOF
-
-cd ../packages
-mkdir com.vendor.product
-cd com.vendor.product
-mkdir data
-mkdir meta
-cd meta
-
-cat > package.xml <<EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<Package>
-    <DisplayName>Помошник диетолога</DisplayName>
-    <Description>Основной компонент</Description>
-    <Version>$version_previous_num</Version>
-    <ReleaseDate>$(date +'%Y-%m-%d')</ReleaseDate>
-</Package>
-EOF
-
-tput setaf 1
-cd ../data
-cp ../../../../release/$executable_name.exe ../data
-tput sgr0
-
-echo
-echo "Получение зависимостей"
-tput setaf 7
-$windeployqt_prog $executable_name.exe
-tput sgr0
-print_err $windeployqt_prog
-echo "Зависимости импортированы"
-
-tput setaf 1
-cd ../../../
-tput sgr0
-echo
-echo "Создание инсталятора"
-tput setaf 7
-$binarycreator_prog -c config/config.xml -p packages $executable_name-$version_previous.exe
-tput sgr0
-print_err $binarycreator_prog
-echo "Инсталятор создан"
-
-echo
-echo "Очистка зависимостей"
-tput setaf 7
-rm -r config
-rm -r packages
-tput setaf 1
-cd ..
-tput sgr0
+    printf "\nЗапуск\n\n"
+    release/$executable_name
 }
 
 run_publicate(){
@@ -277,39 +207,82 @@ run_publicate(){
 }
 
 
-print_hint(){
-    echo "--download"
-    echo "--build"
-    echo "--install"
-    echo "--publicate"
-}
+run_install(){
+    fill_current_version
 
-
-#-------------------------------------------------------
-
-if [ $# -eq 1 ]; then
-    case $1 in 
-    "--download")
-        run_download
-    ;;
-    "--build")
-        run_build
-    ;;
-    "--install")
-        run_build
-        run_install
-    ;;
-    "--publicate")
-        run_publicate
-    ;;
-    *)
-    print_hint
-    ;;
-    esac
+    ###############################################
+    # Создание инсталяции и копирование доп даннных
+    ###############################################
     
-    tput setaf 2; echo "DONE ALL!"
-    exit 0
-else 
-    echo "Укажите один аргумент"
-    print_hint
-fi
+echo
+echo "Создание инсталяции и копирование доп даннных"
+tput setaf 7
+#rm -r install
+mkdir install
+cd install
+mkdir config
+mkdir packages
+cd config
+
+cat > config.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Помошник диетолога</Name>
+    <Version>$version_previous_num</Version>
+    <Title>Установщик Промошник диетолога</Title>
+    <Publisher>Bogdan Arzhevitin, Galoev Ilkin</Publisher>
+    <StartMenuDir>Помошник диетолога</StartMenuDir>
+    <TargetDir>@HomeDir@/InstallationDirectory</TargetDir>
+</Installer>
+EOF
+
+cd ../packages
+mkdir com.vendor.product
+cd com.vendor.product
+mkdir data
+mkdir meta
+cd meta
+
+cat > package.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Помошник диетолога</DisplayName>
+    <Description>Основной компонент</Description>
+    <Version>$version_previous_num</Version>
+    <ReleaseDate>$(date +'%Y-%m-%d')</ReleaseDate>
+</Package>
+EOF
+
+tput setaf 1
+cd ../data
+cp ../../../../release/$executable_name.exe ../data
+tput sgr0
+
+echo
+echo "Получение зависимостей"
+tput setaf 7
+$windeployqt_prog $executable_name.exe
+tput sgr0
+print_err $windeployqt_prog
+echo "Зависимости импортированы"
+
+tput setaf 1
+cd ../../../
+tput sgr0
+echo
+echo "Создание инсталятора"
+tput setaf 7
+$binarycreator_prog -c config/config.xml -p packages $executable_name-$version_previous.exe
+tput sgr0
+print_err $binarycreator_prog
+echo "Инсталятор создан"
+
+echo
+echo "Очистка зависимостей"
+tput setaf 7
+rm -r config
+rm -r packages
+tput setaf 1
+cd ..
+tput sgr0
+}
