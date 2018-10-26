@@ -186,8 +186,7 @@ run_publicate(){
 
     echo "git commit :RUN"
     tput setaf 7
-    #git commit -m $version_new
-    git commit
+    git commit -m $version_new
     print_err "git commit"
 
     echo "git push :RUN"
@@ -197,7 +196,8 @@ run_publicate(){
 
     echo "git tag :RUN"
     tput setaf 7
-    git tag -a $version_new -m $version_new
+    #git tag -a $version_new -m $version_new
+    git tag -a $version_new
     print_err "git tag"
 
     echo "git push origin  $version_new :RUN"
