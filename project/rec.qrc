@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/deelete_icon.png</file>
+        <file>resources/settings_icon.png</file>
+        <file>resources/user_img.png</file>
+        <file>resources/icon.ico</file>
+    </qresource>
+</RCC>

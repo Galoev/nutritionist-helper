@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>899</width>
+    <height>723</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Помощник Диетолога</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../rec.qrc">
+    <normaloff>:/resources/icon.ico</normaloff>:/resources/icon.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QMdiArea" name="mdiArea"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>899</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <widget class="QMenu" name="menu_6">
+     <property name="title">
+      <string>База данных</string>
+     </property>
+     <addaction name="action_import"/>
+     <addaction name="action_export"/>
+    </widget>
+    <addaction name="menu_6"/>
+    <addaction name="separator"/>
+    <addaction name="action_exit"/>
+   </widget>
+   <widget class="QMenu" name="menu_7">
+    <property name="title">
+     <string>Справка</string>
+    </property>
+    <addaction name="action_issueReport"/>
+    <addaction name="action_aboutProgram"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Вид</string>
+    </property>
+    <addaction name="action_windowsSort"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>Редактирование</string>
+    </property>
+    <widget class="QMenu" name="menu_5">
+     <property name="title">
+      <string>Клиенты</string>
+     </property>
+     <addaction name="action_clientAdd"/>
+     <addaction name="action_clientSeach"/>
+    </widget>
+    <addaction name="menu_5"/>
+    <addaction name="action_examinationSeach"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_7"/>
+  </widget>
+  <action name="action_issueReport">
+   <property name="text">
+    <string>Отчет об ошибке...</string>
+   </property>
+  </action>
+  <action name="action_aboutProgram">
+   <property name="text">
+    <string>О программе...</string>
+   </property>
+  </action>
+  <action name="action_windowsSort">
+   <property name="text">
+    <string>Упорядочить окна</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_examinationSeach">
+   <property name="text">
+    <string>Поиск по исследованиям</string>
+   </property>
+  </action>
+  <action name="action_clientAdd">
+   <property name="text">
+    <string>Добавить...</string>
+   </property>
+  </action>
+  <action name="action_clientSeach">
+   <property name="text">
+    <string>Поиск...</string>
+   </property>
+  </action>
+  <action name="action_exit">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="action_export">
+   <property name="text">
+    <string>Экспорт...</string>
+   </property>
+  </action>
+  <action name="action_import">
+   <property name="text">
+    <string>Импорт...</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../rec.qrc"/>
+ </resources>
+ <connections/>
+</ui>
