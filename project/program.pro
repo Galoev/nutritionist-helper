@@ -19,6 +19,15 @@ SOURCES += main.cpp \
     windows/ExaminationEdit.cpp \
     windows/ExaminationInfo.cpp \
     windows/ExaminationSearch.cpp \
+    windows/ActivitySeach.cpp \
+    windows/ActivityEdit.cpp \
+    windows/ActivityInfo.cpp \
+    windows/RecipeInfo.cpp \
+    windows/RecipeEdit.cpp \
+    windows/RecipeSeach.cpp \
+    windows/ProductSeach.cpp \
+    windows/ProductInfo.cpp \
+    windows/ProductEdit.cpp \
     client.cpp \
     examination.cpp \
     databasemodule.cpp \
@@ -37,7 +46,16 @@ HEADERS += \
     databasemodule.h \
     MDIProgram.h \
     windows.h \
-    printer.h
+    printer.h \
+    windows/ActivitySeach.h \
+    windows/ActivityEdit.h \
+    windows/ActivityInfo.h \
+    windows/RecipeInfo.h \
+    windows/RecipeEdit.h \
+    windows/RecipeSeach.h \
+    windows/ProductSeach.h \
+    windows/ProductInfo.h \
+    windows/ProductEdit.h \
 
 FORMS += \
     forms/Client_edit.ui \
@@ -46,7 +64,16 @@ FORMS += \
     forms/Examination_edit.ui \
     forms/Examination_info.ui \
     forms/Examination_search.ui \
-    forms/MDI_program.ui
+    forms/MDI_program.ui \
+    forms/Activity_seach.ui \
+    forms/Activity_edit.ui \
+    forms/Activity_info.ui \
+    forms/Recipe_info.ui \
+    forms/Recipe_edit.ui \
+    forms/Recipe_seach.ui \
+    forms/Product_seach.ui \
+    forms/Product_info.ui \
+    forms/Product_edit.ui
 
 RESOURCES += \
     rec.qrc
