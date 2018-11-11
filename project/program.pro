@@ -28,11 +28,14 @@ SOURCES += main.cpp \
     windows/ProductSeach.cpp \
     windows/ProductInfo.cpp \
     windows/ProductEdit.cpp \
-    client.cpp \
-    examination.cpp \
+    entities/client.cpp \
+    entities/examination.cpp \
     databasemodule.cpp \
     MDIProgram.cpp \
-    printer.cpp
+    printer.cpp \
+    entities/activity.cpp \
+    entities/recipe.cpp \
+    entities/product.cpp
 
 HEADERS += \
     windows/ClientEdit.h \
@@ -41,12 +44,6 @@ HEADERS += \
     windows/ExaminationEdit.h \
     windows/ExaminationInfo.h \
     windows/ExaminationSearch.h \
-    client.h \
-    examination.h \
-    databasemodule.h \
-    MDIProgram.h \
-    windows.h \
-    printer.h \
     windows/ActivitySeach.h \
     windows/ActivityEdit.h \
     windows/ActivityInfo.h \
@@ -56,6 +53,15 @@ HEADERS += \
     windows/ProductSeach.h \
     windows/ProductInfo.h \
     windows/ProductEdit.h \
+    entities/client.h \
+    entities/examination.h \
+    databasemodule.h \
+    MDIProgram.h \
+    windows.h \
+    printer.h \
+    entities/activity.h \
+    entities/recipe.h \
+    entities/product.h
 
 FORMS += \
     forms/Client_edit.ui \
