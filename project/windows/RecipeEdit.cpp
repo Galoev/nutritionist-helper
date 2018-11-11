@@ -1,5 +1,5 @@
 #include "recipeedit.h"
-#include "ui_recipeedit.h"
+#include "ui_Recipe_edit.h"
 
 RecipeEdit::RecipeEdit(QWidget *parent) :
     QWidget(parent),

@@ -1,5 +1,5 @@
 #include "activityedit.h"
-#include "ui_activityedit.h"
+#include "ui_Activity_edit.h"
 
 ActivityEdit::ActivityEdit(QWidget *parent) :
     QWidget(parent),

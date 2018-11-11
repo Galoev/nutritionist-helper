@@ -1,5 +1,5 @@
 #include "activityinfo.h"
-#include "ui_activityinfo.h"
+#include "ui_Activity_info.h"
 
 ActivityInfo::ActivityInfo(QWidget *parent) :
     QWidget(parent),

@@ -1,5 +1,5 @@
 #include "productinfo.h"
-#include "ui_productinfo.h"
+#include "ui_Product_info.h"
 
 ProductInfo::ProductInfo(QWidget *parent) :
     QWidget(parent),

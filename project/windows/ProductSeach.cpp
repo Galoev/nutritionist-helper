@@ -1,5 +1,5 @@
 #include "productseach.h"
-#include "ui_productseach.h"
+#include "ui_Product_seach.h"
 
 ProductSeach::ProductSeach(QWidget *parent) :
     QWidget(parent),

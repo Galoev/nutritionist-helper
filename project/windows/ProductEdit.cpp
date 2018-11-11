@@ -1,5 +1,5 @@
 #include "productedit.h"
-#include "ui_productedit.h"
+#include "ui_Product_edit.h"
 
 ProductEdit::ProductEdit(QWidget *parent) :
     QWidget(parent),
