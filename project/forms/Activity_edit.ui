@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>279</width>
-    <height>329</height>
+    <width>310</width>
+    <height>130</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>261</width>
+     <width>291</width>
      <height>30</height>
     </rect>
    </property>
@@ -43,7 +43,7 @@
     <rect>
      <x>10</x>
      <y>50</y>
-     <width>261</width>
+     <width>291</width>
      <height>30</height>
     </rect>
    </property>
@@ -60,25 +60,15 @@
     </font>
    </property>
    <property name="placeholderText">
-    <string>Колличество расходуемых калорий</string>
-   </property>
-  </widget>
-  <widget class="QTextEdit" name="textEdit_activityDescription">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>90</y>
-     <width>261</width>
-     <height>191</height>
-    </rect>
+    <string>Колличество расходуемых Ккал/кг/мин</string>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>290</y>
-     <width>261</width>
+     <y>90</y>
+     <width>291</width>
      <height>32</height>
     </rect>
    </property>
@@ -99,13 +89,6 @@
     </item>
    </layout>
   </widget>
-  <zorder>lineEdit_activityName</zorder>
-  <zorder>lineEdit_calories</zorder>
-  <zorder>textEdit_activityDescription</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>pushButton_save</zorder>
-  <zorder>pushButton_save</zorder>
-  <zorder>pushButton_cancel</zorder>
  </widget>
  <resources/>
  <connections/>
