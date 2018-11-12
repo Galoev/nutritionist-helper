@@ -1,7 +1,5 @@
-#ifndef ACTIVITYEDIT_H
-#define ACTIVITYEDIT_H
-
 #include <QWidget>
+#include "entities/activity.h"
 
 namespace Ui {
 class ActivityEdit;
@@ -15,8 +13,21 @@ public:
     explicit ActivityEdit(QWidget *parent = nullptr);
     ~ActivityEdit();
 
+    void setInformation(const ActivityEntity& );
+    ActivityEntity activity() const;
+
+signals:
+    void formNewActivityReady();
+    void formEditedActivityReady();
+
+private slots:
+    void onPushButtonSave();
+    void onPushButtonCancel();
+
 private:
     Ui::ActivityEdit *ui;
+    ActivityEntity _activity;
+    bool _isEditingMod = false;
 };
 
 #endif // ACTIVITYEDIT_H

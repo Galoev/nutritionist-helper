@@ -6,6 +6,7 @@ ActivityInfo::ActivityInfo(QWidget *parent) :
     ui(new Ui::ActivityInfo)
 {
     ui->setupUi(this);
+    connect(ui->pushButton_activityEdit, SIGNAL(pressed()), SIGNAL(editActivityButtonPressed()));
 }
 
 ActivityInfo::~ActivityInfo()

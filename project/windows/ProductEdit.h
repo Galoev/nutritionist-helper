@@ -1,7 +1,5 @@
-#ifndef PRODUCTEDIT_H
-#define PRODUCTEDIT_H
-
 #include <QWidget>
+#include "entities/product.h"
 
 namespace Ui {
 class ProductEdit;
@@ -15,8 +13,21 @@ public:
     explicit ProductEdit(QWidget *parent = nullptr);
     ~ProductEdit();
 
+    void setInformation(const ProductEntity& );
+    ProductEntity product() const;
+
+signals:
+    void formNewProductReady();
+    void formEditedProductReady();
+
+private slots:
+    void onPushButtonSave();
+    void onPushButtonCancel();
+
 private:
     Ui::ProductEdit *ui;
+    ProductEntity _product;
+    bool _isEditingMod = false;
 };
 
 #endif // PRODUCTEDIT_H

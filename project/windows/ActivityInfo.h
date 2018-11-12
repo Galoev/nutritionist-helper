@@ -15,6 +15,9 @@ public:
     explicit ActivityInfo(QWidget *parent = nullptr);
     ~ActivityInfo();
 
+signals:
+    void editActivityButtonPressed();
+
 private:
     Ui::ActivityInfo *ui;
 };

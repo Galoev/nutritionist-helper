@@ -6,6 +6,8 @@ ProductInfo::ProductInfo(QWidget *parent) :
     ui(new Ui::ProductInfo)
 {
     ui->setupUi(this);
+
+    connect(ui->pushButton_productEdit, SIGNAL(pressed()), SIGNAL(editProductButtonPressed()));
 }
 
 ProductInfo::~ProductInfo()

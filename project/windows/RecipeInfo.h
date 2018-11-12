@@ -15,6 +15,9 @@ public:
     explicit RecipeInfo(QWidget *parent = nullptr);
     ~RecipeInfo();
 
+signals:
+    void editRecipeButtonPressed();
+
 private:
     Ui::RecipeInfo *ui;
 };

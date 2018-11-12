@@ -1,5 +1,5 @@
 #include "ui_Client_edit.h"
-#include "client.h"
+#include "entities/client.h"
 
 class ClientEdit : public QWidget {
     Q_OBJECT
