@@ -13,17 +13,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,1,1,1,1,1,10,1">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0">
    <item>
-    <widget class="QLabel" name="label_clientPatronymic">
-     <property name="font">
-      <font>
-       <family>Calibri Light</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>&lt;Название рецепта&gt;</string>
+    <widget class="QLineEdit" name="lineEdi_recipeName">
+     <property name="placeholderText">
+      <string>Название рецепта</string>
      </property>
     </widget>
    </item>
@@ -33,6 +27,9 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget_product_search" native="true"/>
    </item>
    <item>
     <widget class="QTableWidget" name="tableWidget_ingredientList">
@@ -74,6 +71,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_deleteIngredient">
+       <property name="text">
+        <string>Удалить</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_addIngredient">
@@ -123,6 +127,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_deleteDescription">
+       <property name="text">
+        <string>Удалить</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_addDescription">
