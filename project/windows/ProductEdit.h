@@ -15,6 +15,14 @@ public:
     explicit ProductEdit(QWidget *parent = nullptr);
     ~ProductEdit();
 
+signals:
+    void formNewProductReady();
+    void formEditedProductReady();
+
+private slots:
+    void onPushButtonSave();
+    void onPushButtonCancel();
+
 private:
     Ui::ProductEdit *ui;
 };

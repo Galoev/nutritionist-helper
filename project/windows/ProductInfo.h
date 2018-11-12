@@ -15,6 +15,9 @@ public:
     explicit ProductInfo(QWidget *parent = nullptr);
     ~ProductInfo();
 
+signals:
+    void editProductButtonPressed();
+
 private:
     Ui::ProductInfo *ui;
 };

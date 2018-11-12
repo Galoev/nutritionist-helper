@@ -15,6 +15,14 @@ public:
     explicit RecipeEdit(QWidget *parent = nullptr);
     ~RecipeEdit();
 
+signals:
+    void formNewRecipeReady();
+    void formEditedRecipeReady();
+
+private slots:
+    void onPushButtonSave();
+    void onPushButtonCancel();
+
 private:
     Ui::RecipeEdit *ui;
 };
