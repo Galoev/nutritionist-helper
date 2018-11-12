@@ -4,7 +4,6 @@
 #include <QFile>
 #include <QDebug>
 
-
 DatabaseModule::DatabaseModule()
 {
     if (!QSqlDatabase::drivers().contains("QSQLITE")){
@@ -26,6 +25,298 @@ DatabaseModule::DatabaseModule()
         QFile::remove(_DB_NAME);
         initEmptyDB();
     }
+}
+
+unsigned DatabaseModule::addProduct(const ProductEntity &pe)
+{
+    QSqlQuery q;
+    q.prepare("INSERT INTO Product (name, proteins, fats, carbohydrates, kkal)"
+              "VALUES( ?, ?, ?, ?, ?);");
+    q.addBindValue(pe.name());
+    q.addBindValue(pe.proteins());
+    q.addBindValue(pe.fats());
+    q.addBindValue(pe.carbohydrates());
+    q.addBindValue(pe.kilocalories());
+    if(!q.exec()) {
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+        return 0;
+    }
+    ///
+    return q.lastInsertId().toUInt();
+}
+
+ProductEntity DatabaseModule::product(unsigned id)
+{
+    QSqlQuery q;
+    q.prepare("SELECT * FROM Products WHERE id=?");
+    q.addBindValue(id);
+    if(!q.exec()){
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+        ProductEntity();
+    }
+    ///
+    q.next();
+    ///
+    if(!q.isValid()){
+        qDebug() << "Error:" << Q_FUNC_INFO
+                 << "In DB has no Product with id:" + QString::number(id);
+    }
+    ///
+    QString name =        q.value("name").toString();
+    QString description = q.value("description").toString();
+    float proteints =     q.value("proteins").toFloat();
+    float fats =          q.value("fats").toFloat();
+    float carbohydrates = q.value("carbohydrates").toFloat();
+    float kkal =          q.value("kkal").toFloat();
+    return ProductEntity(id, name, description, proteints, fats, carbohydrates, kkal);
+}
+
+QVector<ProductEntity> DatabaseModule::products()
+{
+    QVector<ProductEntity> products;
+    ///
+    QSqlQuery q("SELECT id FROM Products");
+    if(!q.exec()) {
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+        return products;
+    }
+    while(q.next()) {
+        auto prevErrorSize =  m_errorList.size();
+        ProductEntity c = this->product(q.value("id").toInt());
+        auto avterErrorSize = m_errorList.size();
+        if(prevErrorSize == avterErrorSize) {
+            products.push_back(c);
+        }
+    }
+    return products;
+}
+
+QVector<ProductEntity> DatabaseModule::products(const QString &seachLine)
+{
+    QVector<ProductEntity> products;
+    foreach (QString snp, seachLine) {
+        QSqlQuery q(QString(" SELECT id FROM Products     "
+                            " WHERE name LIKE '%1%'       "
+                            "    OR description LIKE '%2%'"
+                            ).arg(snp).arg(snp));
+        if(!q.exec()){
+            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+            return products;
+        }
+
+        while(q.next()) {
+            auto prevErrorSize =  m_errorList.size();
+            ProductEntity c = this->product(q.value("id").toInt());
+            auto avterErrorSize = m_errorList.size();
+            if(prevErrorSize == avterErrorSize) {
+                products.push_back(c);
+            }
+        }
+    }
+    return products;
+}
+
+unsigned DatabaseModule::addRecipe(const RecipeEntity &re)
+{
+    ///
+    QSqlQuery q;
+    q.prepare("INSERT INTO Recipes (name)"
+              "VALUES( ? );");
+    q.addBindValue(re.name());
+    if(!q.exec()) {
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+        return 0;
+    }
+    ///
+    auto resipeID = q.lastInsertId().toUInt();
+    ///
+    const auto& cookingP = re.cookingPoints();
+    for (auto i = 0; i < cookingP.size(); ++i) {
+        auto pointDescription = cookingP.at(i);
+        QSqlQuery q2;
+        q.prepare("INSERT INTO CookingPoints (recipe_id, point_id, description)"
+                  "VALUES( ? );");
+        q2.addBindValue(resipeID);
+        q2.addBindValue(i);
+        q2.addBindValue(pointDescription);
+        if(!q2.exec()) {
+            m_errorList << "Error: in " << Q_FUNC_INFO << q2.lastError().text();
+            return 0;
+        }
+    }
+    ///
+    for(const auto& product : re.products()){
+        QSqlQuery q3;
+        q3.prepare("INSERT INTO ProductsInRecipes (recipe_id, product_id)"
+                   "VALUES( ?, ? );");
+        q3.addBindValue(resipeID);
+        q3.addBindValue(product.product().id());
+        if(!q3.exec()) {
+            m_errorList << "Error: in " << Q_FUNC_INFO << q3.lastError().text();
+            return 0;
+        }
+    }
+    ///
+    return resipeID;
+}
+
+RecipeEntity DatabaseModule::recipe(unsigned id)
+{
+    QSqlQuery q;
+    q.prepare("SELECT * FROM Recipes WHERE id=?");
+    q.addBindValue(id);
+    if(!q.exec()){
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+        ProductEntity();
+    }
+    q.next();
+    if(!q.isValid()){
+        qDebug() << "Error:" << Q_FUNC_INFO
+                 << "In DB has no Recipe with id:" + QString::number(id);
+    }
+    QString name = q.value("name").toString();
+    ///
+    QSqlQuery q2;
+    q2.prepare("SELECT * FROM Recipes WHERE id=?");
+    q2.addBindValue(id);
+    if(!q2.exec()){
+        m_errorList << "Error: in " << Q_FUNC_INFO << q2.lastError().text();
+        ProductEntity();
+    }
+    QVector<WeightedProduct> weightedProducts;
+    while(q2.next()){
+
+    }
+
+    QStringList coockingPoints;
+
+    return RecipeEntity(id, name, weightedProducts, coockingPoints);
+}
+
+QVector<RecipeEntity> DatabaseModule::recipes()
+{
+    QVector<RecipeEntity> recipe;
+    ///
+    QSqlQuery q("SELECT id FROM Recipe");
+    if(!q.exec()) {
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+        return recipe;
+    }
+    while(q.next()) {
+        auto prevErrorSize =  m_errorList.size();
+        RecipeEntity c = this->recipe(q.value("id").toInt());
+        auto avterErrorSize = m_errorList.size();
+        if(prevErrorSize == avterErrorSize) {
+            recipe.push_back(c);
+        }
+    }
+    return recipe;
+}
+
+QVector<RecipeEntity> DatabaseModule::recipes(const QString &seachLine)
+{
+    QVector<ProductEntity> products;
+    foreach (QString snp, seachLine) {
+        QSqlQuery q(QString(" SELECT id FROM Products     "
+                            " WHERE name LIKE '%1%'       "
+                            "    OR description LIKE '%2%'"
+                            ).arg(snp).arg(snp));
+        if(!q.exec()){
+            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+            return products;
+        }
+
+        while(q.next()) {
+            auto prevErrorSize =  m_errorList.size();
+            ProductEntity c = this->product(q.value("id").toInt());
+            auto avterErrorSize = m_errorList.size();
+            if(prevErrorSize == avterErrorSize) {
+                products.push_back(c);
+            }
+        }
+    }
+    return products;
+}
+
+unsigned DatabaseModule::addActivity(const ActivityEntity &ae)
+{
+    QSqlQuery q;
+    q.prepare("INSERT INTO Activity (type, kkal-m-km)"
+              "VALUES( ?, ? );");
+    q.addBindValue(ae.type());
+    q.addBindValue(ae.kkm());
+    if(!q.exec()){
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+        return 0;
+    }
+    ///
+    return q.lastInsertId().toUInt();
+}
+
+ActivityEntity DatabaseModule::activity(unsigned id)
+{
+    QSqlQuery q;
+    q.prepare("SELECT * FROM Activity WHERE id=?");
+    q.addBindValue(id);
+    if(!q.exec()){
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+        ActivityEntity();
+    }
+    ///
+    q.next();
+    ///
+    if(!q.isValid()){
+        qDebug() << "Error:" << Q_FUNC_INFO
+                 << "In DB has no Activity with id:" + QString::number(id);
+    }
+    ///
+    QString type = q.value("type").toString();
+    float kkm =  q.value("kkal-m-km").toFloat();
+
+    return ActivityEntity(id, type, kkm);
+}
+
+QVector<ActivityEntity> DatabaseModule::activities()
+{
+    QVector<ActivityEntity> activities;
+    ///
+    QSqlQuery q("SELECT id FROM Activities");
+    if(!q.exec()) {
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+        return activities;
+    }
+    while(q.next()) {
+        auto prevErrorSize =  m_errorList.size();
+        ActivityEntity c = this->activity(q.value("id").toInt());
+        auto avterErrorSize = m_errorList.size();
+        if(prevErrorSize == avterErrorSize) {
+            activities.push_back(c);
+        }
+    }
+    return activities;
+}
+
+QVector<ActivityEntity> DatabaseModule::activities(const QString &seachLine)
+{
+    QVector<ActivityEntity> activities;
+    foreach (QString snp, seachLine) {
+        QSqlQuery q(QString(" SELECT id FROM Activities     "
+                            " WHERE type LIKE '%1%'       "
+                            ).arg(snp));
+        if(!q.exec()){
+            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+            return activities;
+        }
+        while(q.next()) {
+            auto prevErrorSize =  m_errorList.size();
+            ActivityEntity c = this->activity(q.value("id").toInt());
+            auto avterErrorSize = m_errorList.size();
+            if(prevErrorSize == avterErrorSize) {
+                activities.push_back(c);
+            }
+        }
+    }
+    return activities;
 }
 
 bool DatabaseModule::addExaminationAndSetID(Examination &examination)
