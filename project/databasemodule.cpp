@@ -116,6 +116,38 @@ QVector<ProductEntity> DatabaseModule::products(const QString &seachLine)
     return products;
 }
 
+QVector<ProductEntity> DatabaseModule::products(QPair<int, int> interval, const char type)
+{
+    QVector<ProductEntity> products;
+    ///
+    QString stype, prefix = "WHERE %1 > %2 AND %1 < %3";
+    switch (type) {
+    case 'c': { stype = "carbohydrates"; } break;
+    case 'f': { stype = "fats"; } break;
+    case 'p': { stype = "proteins"; } break;
+    case 'k': { stype = "kkal"; } break;
+    default: {
+        stype = "";
+        prefix = "";
+    }
+    }
+    QSqlQuery q("SELECT id FROM Products"
+                    "" + prefix.arg(stype, interval.first, interval.second));
+    if(!q.exec()){
+        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+        return products;
+    }
+    while(q.next()) {
+        auto prevErrorSize =  m_errorList.size();
+        ProductEntity c = this->product(q.value("id").toInt());
+        auto avterErrorSize = m_errorList.size();
+        if(prevErrorSize == avterErrorSize) {
+            products.push_back(c);
+        }
+    }
+    return products;
+}
+
 unsigned DatabaseModule::addRecipe(const RecipeEntity &re)
 {
     ///
@@ -238,6 +270,43 @@ QVector<RecipeEntity> DatabaseModule::recipes(const QString &seachLine)
     return products;
 }
 
+QVector<RecipeEntity> DatabaseModule::recipes(QPair<int, int> interval, const char type)
+{
+    QVector<RecipeEntity> recipes;
+    ///
+    QString stype, prefix = "WHERE %1 > %2 AND %1 < %3";
+    switch (type) {
+    case 'c': { stype = "Products.carbohydrates"; } break;
+    case 'f': { stype = "Products.fats"; } break;
+    case 'p': { stype = "Products.proteins"; } break;
+    case 'k': { stype = "Products.kkal"; } break;
+    default: {
+        stype = "";
+        prefix = "";
+    }
+    }
+    ///
+    QSqlQuery q("SELECT * FROM Recipes"
+                    "INNER JOIN ProductsInRecipes ON Recipes.id = ProductsInRecipes.recipe_id"
+                    "INNER JOIN Products ON Products.id = ProductsInRecipes.product_id"
+                    "" + prefix.arg(stype, interval.first, interval.second));
+    ///
+    if(!q.exec()) {
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+        return recipes;
+    }
+    while(q.next()){
+        auto id = q.value("id").toInt();
+        auto prevErrorSize =  m_errorList.size();
+        RecipeEntity c = this->recipe(id);
+        auto avterErrorSize = m_errorList.size();
+        if(prevErrorSize == avterErrorSize) {
+            recipes.push_back(c);
+        }
+    }
+    return recipes;
+}
+
 unsigned DatabaseModule::addActivity(const ActivityEntity &ae)
 {
     QSqlQuery q;
@@ -316,6 +385,29 @@ QVector<ActivityEntity> DatabaseModule::activities(const QString &seachLine)
             }
         }
     }
+    return activities;
+}
+
+QVector<ActivityEntity> DatabaseModule::activities(float kkm)
+{
+    QVector<ActivityEntity> activities;
+
+    QSqlQuery q(QString(" SELECT id FROM Activities "
+                        " WHERE kkal-m-km LIKE '%1%'"
+                        ).arg(kkm));
+    if(!q.exec()){
+        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+        return activities;
+    }
+    while(q.next()) {
+        auto prevErrorSize =  m_errorList.size();
+        ActivityEntity c = this->activity(q.value("id").toInt());
+        auto avterErrorSize = m_errorList.size();
+        if(prevErrorSize == avterErrorSize) {
+            activities.push_back(c);
+        }
+    }
+
     return activities;
 }
 
