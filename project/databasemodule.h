@@ -59,8 +59,8 @@ public:
 private:
     QSqlDatabase    _db;
     const QString   _DB_TYPE = "QSQLITE";
-    //const QString   _DB_NAME = "../program/database/db.sqlite";  //INFO : For DEBUG
-    const QString   _DB_NAME = "./database/db.sqlite";
+    const QString   _DB_NAME = "../project/database/db.sqlite";  //INFO : For DEBUG
+    //const QString   _DB_NAME = "./database/db.sqlite";
     QStringList     m_errorList;
 
     void initEmptyDB();
