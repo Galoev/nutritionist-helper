@@ -1,4 +1,4 @@
-#include "productinfo.h"
+#include "ProductInfo.h"
 #include "ui_Product_info.h"
 
 ProductInfo::ProductInfo(QWidget *parent) :

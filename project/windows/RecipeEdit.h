@@ -1,3 +1,4 @@
+#pragma once
 #include <QWidget>
 #include "entities/recipe.h"
 
@@ -29,5 +30,3 @@ private:
     RecipeEntity _recipe;
     bool _isEditingMod = false;
 };
-
-#endif // RECIPEEDIT_H

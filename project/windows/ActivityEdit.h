@@ -1,3 +1,4 @@
+#pragma once
 #include <QWidget>
 #include "entities/activity.h"
 
@@ -29,5 +30,3 @@ private:
     ActivityEntity _activity;
     bool _isEditingMod = false;
 };
-
-#endif // ACTIVITYEDIT_H

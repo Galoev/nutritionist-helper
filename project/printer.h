@@ -1,6 +1,6 @@
 #ifndef PRINTMODULE_H
 #define PRINTMODULE_H
-#include "examination.h"
+#include "entities/examination.h"
 #include <QWidget>
 #include <QPrinter>
 #include <QPaintDevice>

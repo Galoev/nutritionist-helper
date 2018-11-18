@@ -247,7 +247,7 @@ QVector<RecipeEntity> DatabaseModule::recipes()
 
 QVector<RecipeEntity> DatabaseModule::recipes(const QString &seachLine)
 {
-    QVector<ProductEntity> products;
+    QVector<RecipeEntity> recipes;
     foreach (QString snp, seachLine) {
         QSqlQuery q(QString(" SELECT id FROM Products     "
                             " WHERE name LIKE '%1%'       "
@@ -255,19 +255,19 @@ QVector<RecipeEntity> DatabaseModule::recipes(const QString &seachLine)
                             ).arg(snp).arg(snp));
         if(!q.exec()){
             m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
-            return products;
+            return recipes;
         }
 
         while(q.next()) {
             auto prevErrorSize =  m_errorList.size();
-            ProductEntity c = this->product(q.value("id").toInt());
+            RecipeEntity c = this->recipe(q.value("id").toInt());
             auto avterErrorSize = m_errorList.size();
             if(prevErrorSize == avterErrorSize) {
-                products.push_back(c);
+                recipes.push_back(c);
             }
         }
     }
-    return products;
+    return recipes;
 }
 
 QVector<RecipeEntity> DatabaseModule::recipes(QPair<int, int> interval, const char type)

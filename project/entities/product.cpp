@@ -33,19 +33,9 @@ QString ProductEntity::name() const
     return m_name;
 }
 
-void ProductEntity::setName(const QString &name)
-{
-    m_name = name;
-}
-
 QString ProductEntity::description() const
 {
     return m_description;
-}
-
-void ProductEntity::setDescription(const QString &description)
-{
-    m_description = description;
 }
 
 unsigned ProductEntity::proteins() const
@@ -53,19 +43,9 @@ unsigned ProductEntity::proteins() const
     return m_proteins;
 }
 
-void ProductEntity::setProteins(const unsigned &proteins)
-{
-    m_proteins = proteins;
-}
-
 unsigned ProductEntity::fats() const
 {
     return m_fats;
-}
-
-void ProductEntity::setFats(const unsigned &fats)
-{
-    m_fats = fats;
 }
 
 unsigned ProductEntity::carbohydrates() const
@@ -73,19 +53,10 @@ unsigned ProductEntity::carbohydrates() const
     return m_carbohydrates;
 }
 
-void ProductEntity::setCarbohydrates(const unsigned &carbohydrates)
-{
-    m_carbohydrates = carbohydrates;
-}
 
 unsigned ProductEntity::kilocalories() const
 {
     return m_kilocalories;
-}
-
-void ProductEntity::setKilocalories(const unsigned &kilocalories)
-{
-    m_kilocalories = kilocalories;
 }
 
 int ProductEntity::id() const
@@ -108,7 +79,7 @@ int WeightedProduct::amound() const
     return m_amound;
 }
 
-UnitsType WeightedProduct::units() const
+WeightedProduct::UnitsType WeightedProduct::units() const
 {
     return m_units;
 }

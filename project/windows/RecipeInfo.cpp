@@ -1,4 +1,4 @@
-#include "recipeinfo.h"
+#include "RecipeInfo.h"
 #include "ui_Recipe_info.h"
 
 RecipeInfo::RecipeInfo(QWidget *parent) :

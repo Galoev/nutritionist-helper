@@ -1,6 +1,6 @@
 #include "ui_Client_info.h"
-#include "examination.h"
-#include "client.h"
+#include "entities/examination.h"
+#include "entities/client.h"
 
 class ClientInfo : public QWidget {
     Q_OBJECT
