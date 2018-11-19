@@ -1,9 +1,8 @@
-#include "recipeedit.h"
+#include "RecipeEdit.h"
 #include "ui_Recipe_edit.h"
 #include <QVBoxLayout>
 #include <QRegExpValidator>
 #include <QDebug>
-
 
 RecipeEdit::RecipeEdit(QWidget *parent) :
     QWidget(parent),
@@ -167,6 +166,11 @@ void RecipeEdit::onPushButtonCancel()
 RecipeEntity RecipeEdit::recipe() const
 {
     return _recipe;
+}
+
+void RecipeEdit::onPushButtonCancel()
+{
+    qDebug() << QT_MESSAGELOG_FUNC << "NOTE: NOT IMPLEMENTED";
 }
 
 RecipeEdit::~RecipeEdit()

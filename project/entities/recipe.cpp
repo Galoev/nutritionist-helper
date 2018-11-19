@@ -1,4 +1,9 @@
 #include "recipe.h"
+RecipeEntity::RecipeEntity()
+    :m_id(-1)
+    ,m_name("Unknown")
+{
+}
 
 RecipeEntity::RecipeEntity(int id, QString name, QVector<WeightedProduct> products, QStringList cookingPoints)
     :m_id(id)
@@ -56,4 +61,7 @@ QVector<WeightedProduct> RecipeEntity::getPoducts()
 QStringList RecipeEntity::getCookingPoints()
 {
     return m_cookingPoints;
+void RecipeEntity::setId(int id)
+{
+    m_id = id;
 }

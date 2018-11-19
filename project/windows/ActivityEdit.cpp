@@ -1,6 +1,7 @@
-#include "activityedit.h"
+#include "ActivityEdit.h"
 #include "ui_Activity_edit.h"
 #include <QMessageBox>
+#include <QString>
 #include <QRegExpValidator>
 
 ActivityEdit::ActivityEdit(QWidget *parent) :

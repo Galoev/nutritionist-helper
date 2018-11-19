@@ -1,7 +1,8 @@
-#include "productedit.h"
+#include "ProductEdit.h"
 #include "ui_Product_edit.h"
 #include <QMessageBox>
 #include <QRegExpValidator>
+#include <QMessageBox>
 
 ProductEdit::ProductEdit(QWidget *parent) :
     QWidget(parent),

@@ -1,3 +1,4 @@
+#pragma once
 #include <QWidget>
 #include "entities/recipe.h"
 #include "windows/ProductSeach.h"

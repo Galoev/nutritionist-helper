@@ -28,11 +28,11 @@ SOURCES += main.cpp \
     windows/ProductSeach.cpp \
     windows/ProductInfo.cpp \
     windows/ProductEdit.cpp \
-    entities/client.cpp \
-    entities/examination.cpp \
     databasemodule.cpp \
     MDIProgram.cpp \
     printer.cpp \
+    entities/client.cpp \
+    entities/examination.cpp \
     entities/activity.cpp \
     entities/recipe.cpp \
     entities/product.cpp
@@ -53,12 +53,12 @@ HEADERS += \
     windows/ProductSeach.h \
     windows/ProductInfo.h \
     windows/ProductEdit.h \
-    entities/client.h \
-    entities/examination.h \
     databasemodule.h \
     MDIProgram.h \
     windows.h \
     printer.h \
+    entities/client.h \
+    entities/examination.h \
     entities/activity.h \
     entities/recipe.h \
     entities/product.h
