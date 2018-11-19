@@ -8,13 +8,15 @@
 class RecipeEntity
 {
 public:
-    RecipeEntity() = delete;
+    RecipeEntity();
     RecipeEntity(int id, QString name, QVector<WeightedProduct> products, QStringList cookingPoints);
 
     int id() const;
     QString name() const;
     QVector<WeightedProduct> products() const;
     QStringList cookingPoints() const;
+
+    void setId(int id);
 
 private:
     int                       m_id;
