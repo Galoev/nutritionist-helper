@@ -1,4 +1,4 @@
-#include "recipeseach.h"
+#include "RecipeSeach.h"
 #include "ui_Recipe_seach.h"
 
 RecipeSeach::RecipeSeach(QWidget *parent) :

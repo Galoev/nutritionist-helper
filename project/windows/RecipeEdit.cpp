@@ -1,7 +1,8 @@
-#include "recipeedit.h"
+#include "RecipeEdit.h"
 #include "ui_Recipe_edit.h"
 
 #include <QRegExpValidator>
+#include <QDebug>
 
 RecipeEdit::RecipeEdit(QWidget *parent) :
     QWidget(parent),
@@ -64,6 +65,11 @@ void RecipeEdit::onPushButtonSave()
         item = *ui->tableWidget_ingredientList->takeItem(i, 0);
         produsctsList.push_back(WeightedProduct());
     }
+}
+
+void RecipeEdit::onPushButtonCancel()
+{
+    qDebug() << QT_MESSAGELOG_FUNC << "NOTE: NOT IMPLEMENTED";
 }
 
 RecipeEdit::~RecipeEdit()

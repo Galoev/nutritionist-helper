@@ -5,6 +5,12 @@ RecipeEntity::RecipeEntity()
 {
 }
 
+RecipeEntity::RecipeEntity()
+    :m_id(-1)
+    ,m_name("Unknown")
+{
+}
+
 RecipeEntity::RecipeEntity(int id, QString name, QVector<WeightedProduct> products, QStringList cookingPoints)
     :m_id(id)
     ,m_name(name)

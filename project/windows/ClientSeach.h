@@ -1,5 +1,5 @@
 #include "ui_Client_search.h"
-#include "client.h"
+#include "entities/client.h"
 
 class ClientSearch : public QWidget {
     Q_OBJECT

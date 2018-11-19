@@ -1,4 +1,4 @@
-#include "activityseach.h"
+#include "ActivitySeach.h"
 #include "ui_Activity_seach.h"
 
 ActivitySeach::ActivitySeach(QWidget *parent) :

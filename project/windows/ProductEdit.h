@@ -1,3 +1,4 @@
+#pragma once
 #include <QWidget>
 #include "entities/product.h"
 
@@ -29,5 +30,3 @@ private:
     ProductEntity _product;
     bool _isEditingMod = false;
 };
-
-#endif // PRODUCTEDIT_H
