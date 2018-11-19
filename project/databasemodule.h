@@ -19,22 +19,22 @@ public:
     unsigned                addProduct(const ProductEntity&);
     ProductEntity           product(unsigned id);
     QVector<ProductEntity>  products();
-    QVector<ProductEntity>  products(const QString& seachLine);
-    QVector<ProductEntity>  products(QPair<int,int> interval, const char type); // type: {c, f, p, k}
+    QVector<ProductEntity>  products(const QStringList &seachLine);
+    QVector<ProductEntity>  products(QPair<int,int> interval, const char type); /// type: {c, f, p, k}
 
     /* functions to work with Recipe entities */
     unsigned                addRecipe(const RecipeEntity&);
     RecipeEntity            recipe(unsigned id);
     QVector<RecipeEntity>   recipes();
-    QVector<RecipeEntity>   recipes(const QString& seachLine);
-    QVector<RecipeEntity>   recipes(QPair<int,int> interval, const char type); // type: {c, f, p, k}
+    QVector<RecipeEntity>   recipes(const QStringList &seachLine);
+    QVector<RecipeEntity>   recipes(QPair<int,int> interval, const char type); /*<- NOT IMPLEMENTED*/  /// type: {c, f, p, k}
 
     /* functions to work with Activity entities */
     unsigned                addActivity(const ActivityEntity&);
     ActivityEntity          activity(unsigned id);
     QVector<ActivityEntity> activities();
     QVector<ActivityEntity> activities(const QString& seachLine);
-    QVector<ActivityEntity> activities(float kkm);                              // kkm - kkal/kg/min
+    QVector<ActivityEntity> activities(QPair<float,float> kkmInterval);                              // kkm - kkal/kg/min
 
     /* functions to work with Client entities */
     bool                    addClientAndSetID(Client & );                       //TODO: Need to be change as in the previous style
