@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>376</width>
-    <height>589</height>
+    <width>481</width>
+    <height>713</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLineEdit" name="lineEdi_recipeName">
      <property name="placeholderText">
@@ -29,7 +29,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget_product_search" native="true"/>
+    <widget class="QWidget" name="widget_product_search" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>457</width>
+       <height>200</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QTableWidget" name="tableWidget_ingredientList">
@@ -37,6 +44,9 @@
       <bool>true</bool>
      </property>
      <attribute name="horizontalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>false</bool>
      </attribute>
      <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
@@ -98,7 +108,7 @@
    <item>
     <widget class="QTableWidget" name="tableWidget_recipeDescription">
      <attribute name="horizontalHeaderVisible">
-      <bool>false</bool>
+      <bool>true</bool>
      </attribute>
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>false</bool>

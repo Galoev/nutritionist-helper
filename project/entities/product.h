@@ -13,26 +13,26 @@ public:
                  , unsigned carbohydrates
                  , unsigned kilocalories);
 
-    inline int id() const;
-    inline void setId(const int &id);
+    int id() const;
+    void setId(const int &id);
 
-    inline QString name() const;
-    inline void setName(const QString &name);
+    QString name() const;
+    void setName(const QString &name);
 
-    inline QString description() const;
-    inline void setDescription(const QString &description);
+    QString description() const;
+    void setDescription(const QString &description);
 
-    inline unsigned proteins() const;
-    inline void setProteins(const unsigned &proteins);
+    unsigned proteins() const;
+    void setProteins(const unsigned &proteins);
 
-    inline unsigned fats() const;
-    inline void setFats(const unsigned &fats);
+    unsigned fats() const;
+    void setFats(const unsigned &fats);
 
-    inline unsigned carbohydrates() const;
-    inline void setCarbohydrates(const unsigned &carbohydrates);
+    unsigned carbohydrates() const;
+    void setCarbohydrates(const unsigned &carbohydrates);
 
-    inline unsigned kilocalories() const;
-    inline void setKilocalories(const unsigned &kilocalories);
+    unsigned kilocalories() const;
+    void setKilocalories(const unsigned &kilocalories);
 
 private:
     int m_id;
@@ -46,7 +46,8 @@ private:
 
 class WeightedProduct{
 public:
-    enum UnitsType { GRAMM,  MILLILITER };
+    enum UnitsType { GRAMM,  MILLILITER, NONE };
+    WeightedProduct() = default;
     WeightedProduct(const ProductEntity& product, int amound, UnitsType units);
 
 public:

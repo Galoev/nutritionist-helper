@@ -19,7 +19,7 @@
      <item>
       <widget class="QStackedWidget" name="stackedWidget">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="page">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -43,7 +43,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox_calorieTo"/>
+          <widget class="QSpinBox" name="spinBox_calorieFrom"/>
          </item>
          <item>
           <widget class="QLabel" name="label_from">
@@ -53,7 +53,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox_calorieFrom"/>
+          <widget class="QSpinBox" name="spinBox_calorieTo"/>
          </item>
          <item>
           <spacer name="horizontalSpacer_2">

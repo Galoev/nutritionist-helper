@@ -101,7 +101,7 @@ void MainWindow::setClientEditConnect(ClientEdit *ce)
 {
     ce->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(ce, ClientEdit::formNewClientReady, [this, ce](){
+    connect(ce, &ClientEdit::formNewClientReady, [this, ce](){
         Client client = ce->client();
         if(_database.addClientAndSetID(client)){
             if ( QMessageBox::question(this, tr("Добавление клиента")
@@ -118,7 +118,7 @@ void MainWindow::setClientEditConnect(ClientEdit *ce)
         }
     });
 
-    connect(ce, ClientEdit::formEditedClientReady, [this, ce](){
+    connect(ce, &ClientEdit::formEditedClientReady, [this, ce](){
         Client client = ce->client();
         qDebug() << "ok";
         if(_database.changeClientInformation(client)){
@@ -141,7 +141,7 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
 {
     ci->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(ci, ClientInfo::newExaminationHalfButtonPressed, [this, ci](){
+    connect(ci, &ClientInfo::newExaminationHalfButtonPressed, [this, ci](){
         _formExaminationEdit = new ExaminationEdit;             //NOTE: Сan we use the local version?
         _formExaminationEdit->setInformation(ci->client(), false);
         setExaminationEditConnect(_formExaminationEdit);
@@ -149,7 +149,7 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
         _formExaminationEdit->show();
     });
 
-    connect(ci, ClientInfo::newExaminationFullButtonPressed, [this, ci](){
+    connect(ci, &ClientInfo::newExaminationFullButtonPressed, [this, ci](){
         _formExaminationEdit = new ExaminationEdit;             //NOTE: Сan we use the local version?
         _formExaminationEdit->setInformation(ci->client(), true);
         setExaminationEditConnect(_formExaminationEdit);
@@ -157,7 +157,7 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
         _formExaminationEdit->show();
     });
 
-    connect(ci, ClientInfo::examinationSelectedForShow, [this, ci](){
+    connect(ci, &ClientInfo::examinationSelectedForShow, [this, ci](){
         _formExaminationInfo = new ExaminationInfo;             //NOTE: Сan we use the local version?
         _formExaminationInfo->setInformation(ci->selectedExamination());
         setExaminationInfoConnect(_formExaminationInfo);
@@ -165,7 +165,7 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
         _formExaminationInfo->show();
     });
 
-    connect(ci, ClientInfo::editClientButtonPressed, [this, ci](){
+    connect(ci, &ClientInfo::editClientButtonPressed, [this, ci](){
         _formClientEdit = new ClientEdit;                       //NOTE: Сan we use the local version?
         _formClientEdit->setInformation(ci->client());
         setClientEditConnect(_formClientEdit);
@@ -178,7 +178,7 @@ void MainWindow::setClientSearchConnect(ClientSearch *cs)
 {
     cs->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(cs, ClientSearch::seachLineReady, [this, cs](const QString& sl){
+    connect(cs, &ClientSearch::seachLineReady, [this, cs](const QString& sl){
         QVector<Client> clients = _database.clients(sl);
         if(clients.isEmpty()) {
             QMessageBox::information(this, tr("Поиск клиентов"), tr("Информация не найдена"));
@@ -186,7 +186,7 @@ void MainWindow::setClientSearchConnect(ClientSearch *cs)
         cs->setInformation(clients);
     });
 
-    connect(cs, ClientSearch::selectedForShow, [this, cs](){
+    connect(cs, &ClientSearch::selectedForShow, [this, cs](){
         QVector<Examination> examinations = _database.examinations(cs->selectedClient());
         _formClientInfo = new ClientInfo;                                //NOTE: Сan we use the local version?
         _formClientInfo->setInformation(cs->selectedClient(), examinations);
@@ -200,7 +200,7 @@ void MainWindow::setExaminationEditConnect(ExaminationEdit *ee)
 {
     ee->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(ee, ExaminationEdit::formReady, [this, ee](){
+    connect(ee, &ExaminationEdit::formReady, [this, ee](){
         Examination examination = ee->examination();
         _ui.mdiArea->removeSubWindow(ee);
         if(_database.addExaminationAndSetID(examination)){
@@ -223,12 +223,12 @@ void MainWindow::setExaminationInfoConnect(ExaminationInfo *ei)
 {
     ei->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(ei, ExaminationInfo::deleteExamination, [this, ei](){
+    connect(ei, &ExaminationInfo::deleteExamination, [this, ei](){
         QMessageBox::information(this, "No content", "Delete examination"); //TODO: Need to add functionality!
         ei->examination();
     });
 
-    connect(ei, ExaminationInfo::printExamination, [this, ei](bool ifFull){    
+    connect(ei, &ExaminationInfo::printExamination, [this, ei](bool ifFull){
         Printer* printer = new Printer(this);
         printer->previewExamination(ei->examination(), ifFull);
     });
@@ -238,7 +238,7 @@ void MainWindow::setExaminationSearchConnect(ExaminationSearch *es)
 {
     es->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(es, ExaminationSearch::seachLineDateReady, [this, es](const QDate& from, const QDate& to){
+    connect(es, &ExaminationSearch::seachLineDateReady, [this, es](const QDate& from, const QDate& to){
         QVector<Examination> examinations = _database.examinations(from, to);
         if(examinations.isEmpty()) {
             QMessageBox::information(this, tr("Поиск исследований"), tr("Информация не найдена"));
@@ -246,7 +246,7 @@ void MainWindow::setExaminationSearchConnect(ExaminationSearch *es)
         es->setInformation(examinations);
     });
 
-    connect(es, ExaminationSearch::seachLineClientReady, [this, es](const QString& str){       
+    connect(es, &ExaminationSearch::seachLineClientReady, [this, es](const QString& str){
         QVector<Examination> examinations;
         foreach (Client client, _database.clients(str)) {
             examinations.append(_database.examinations(client));
@@ -257,7 +257,7 @@ void MainWindow::setExaminationSearchConnect(ExaminationSearch *es)
         es->setInformation(examinations);        
     });
 
-    connect(es, ExaminationSearch::selectedForShow, [this, es](){
+    connect(es, &ExaminationSearch::selectedForShow, [this, es](){
         _formExaminationInfo = new ExaminationInfo;                 //NOTE: Сan we use the local version?
         _formExaminationInfo->setInformation(es->selectedExamination());
         setExaminationInfoConnect(_formExaminationInfo);

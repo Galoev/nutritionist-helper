@@ -1,5 +1,5 @@
 #include "ui_Examination_edit.h"
-#include "examination.h"
+#include "entities/examination.h"
 
 class ExaminationEdit : public QWidget {
     Q_OBJECT

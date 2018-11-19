@@ -1,5 +1,4 @@
-
-#include "Examination.h"
+#include "entities/examination.h"
 #include <QDebug>
 
 Client Examination::client() const

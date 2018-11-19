@@ -2,6 +2,8 @@
 #define RECIPEINFO_H
 
 #include <QWidget>
+#include "entities/recipe.h"
+#include "entities/product.h"
 
 namespace Ui {
 class RecipeInfo;
@@ -15,11 +17,15 @@ public:
     explicit RecipeInfo(QWidget *parent = nullptr);
     ~RecipeInfo();
 
+    void setInformation(const RecipeEntity& );
+    RecipeEntity recipe() const;
+
 signals:
     void editRecipeButtonPressed();
 
 private:
     Ui::RecipeInfo *ui;
+    RecipeEntity _recipe;
 };
 
 #endif // RECIPEINFO_H

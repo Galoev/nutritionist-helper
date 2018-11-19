@@ -1,4 +1,4 @@
-#include "Client.h"
+#include "entities/client.h"
 
 Client::Client(int id, QString name, QString surname, QString patronymic,
                QDate birthDate, QChar gender, short age, QString telNumber)

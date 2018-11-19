@@ -1,6 +1,6 @@
 #include "productedit.h"
 #include "ui_Product_edit.h"
-
+#include <QMessageBox>
 #include <QRegExpValidator>
 
 ProductEdit::ProductEdit(QWidget *parent) :
@@ -26,10 +26,10 @@ void ProductEdit::setInformation(const ProductEntity &p)
     _product.setId(p.id());
 
     ui->lineEdit_productName->setText(p.name());
-    ui->lineEdit_numProtein->setText(p.proteins());
-    ui->lineEdit_numFats->setText(p.fats());
-    ui->lineEdit_numCarbohydrates->setText(p.carbohydrates());
-    ui->lineEdit_numKcal->setText(p.kilocalories());
+    ui->lineEdit_numProtein->setText(QString::number(p.proteins()));
+    ui->lineEdit_numFats->setText(QString::number(p.fats()));
+    ui->lineEdit_numCarbohydrates->setText(QString::number(p.carbohydrates()));
+    ui->lineEdit_numKcal->setText(QString::number(p.kilocalories()));
     ui->textEdit_description->setText(p.description());
 
     this->repaint();
@@ -40,23 +40,23 @@ void ProductEdit::onPushButtonSave()
     QString errorLog;
 
     if (!ui->lineEdit_productName->hasAcceptableInput()){
-        errorLog += "Неправильный формат названия";
+        errorLog += "Неправильный формат названия\n";
     }
     if (!ui->lineEdit_numProtein->hasAcceptableInput()){
-        errorLog += "Неправильный формат белков";
+        errorLog += "Неправильный формат белков\n";
     }
     if (!ui->lineEdit_numFats->hasAcceptableInput()){
-        errorLog += "Неправильный формат жиров";
+        errorLog += "Неправильный формат жиров\n";
     }
     if (!ui->lineEdit_numCarbohydrates->hasAcceptableInput()){
-        errorLog += "Неправильный формат углеводов";
+        errorLog += "Неправильный формат углеводов\n";
     }
     if (!ui->lineEdit_numKcal->hasAcceptableInput()){
-        errorLog += "Неправильный формат Ккал";
+        errorLog += "Неправильный формат Ккал\n";
     }
 
     if (!errorLog.isEmpty()){
-        QMessageBox::critical(this, "Ошибка заполнения", errorLog);
+        QMessageBox::critical(this, "Ошибка заполнения\n", errorLog);
         return;
     }
 
@@ -70,9 +70,9 @@ void ProductEdit::onPushButtonSave()
     _product = ProductEntity(_product.id(), productName, description, (unsigned int)protein, (unsigned int)fats, (unsigned int)carbohydrates, (unsigned int)kcal);
 
     if (_isEditingMod) {
-        emit formEditedClientReady();
+        emit formEditedProductReady();
     } else {
-        emit formNewClientReady();
+        emit formNewProductReady();
     }
 
     this->close();

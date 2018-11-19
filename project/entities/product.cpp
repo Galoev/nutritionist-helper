@@ -1,4 +1,4 @@
-#include "product.h"
+#include "entities/product.h"
 
 ProductEntity::ProductEntity()
     :m_id(-1)
@@ -98,6 +98,13 @@ void ProductEntity::setId(const int &id)
     m_id = id;
 }
 
+WeightedProduct::WeightedProduct(const ProductEntity &product, int amound, UnitsType units)
+    : m_product(product)
+    , m_amound(amound)
+    , m_units(units)
+{
+}
+
 ProductEntity WeightedProduct::product() const
 {
     return m_product;
@@ -108,7 +115,7 @@ int WeightedProduct::amound() const
     return m_amound;
 }
 
-UnitsType WeightedProduct::units() const
+WeightedProduct::UnitsType WeightedProduct::units() const
 {
     return m_units;
 }

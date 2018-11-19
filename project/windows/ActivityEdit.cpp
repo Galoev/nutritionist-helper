@@ -1,6 +1,6 @@
 #include "activityedit.h"
 #include "ui_Activity_edit.h"
-
+#include <QMessageBox>
 #include <QRegExpValidator>
 
 ActivityEdit::ActivityEdit(QWidget *parent) :
@@ -23,7 +23,7 @@ void ActivityEdit::setInformation(const ActivityEntity &a)
     _activity.setId(a.id());
 
     ui->lineEdit_activityName->setText(a.type());
-    ui->lineEdit_calories->setText(a.kkm());
+    ui->lineEdit_calories->setText(QString::number(a.kkm()));
 
     this->repaint();
 }

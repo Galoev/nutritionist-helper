@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>457</width>
+    <width>487</width>
     <height>337</height>
    </rect>
   </property>
@@ -17,7 +17,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
-      <widget class="QStackedWidget" name="stackedWidget_2">
+      <widget class="QStackedWidget" name="stackedWidget">
        <property name="currentIndex">
         <number>1</number>
        </property>
@@ -36,24 +36,24 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QLabel" name="label_to">
+          <widget class="QLabel" name="label_from">
            <property name="text">
             <string>От</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox_calorieTo_2"/>
+          <widget class="QSpinBox" name="spinBox_From"/>
          </item>
          <item>
-          <widget class="QLabel" name="label_from">
+          <widget class="QLabel" name="label_to">
            <property name="text">
             <string>До</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox_calorieFrom_2"/>
+          <widget class="QSpinBox" name="spinBox_To"/>
          </item>
          <item>
           <spacer name="horizontalSpacer_3">
@@ -82,7 +82,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QLineEdit" name="lineEdit_productName_2">
+          <widget class="QLineEdit" name="lineEdit_productName">
            <property name="text">
             <string/>
            </property>

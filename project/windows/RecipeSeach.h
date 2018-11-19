@@ -2,6 +2,7 @@
 #define RECIPESEACH_H
 
 #include <QWidget>
+#include "entities/recipe.h"
 
 namespace Ui {
 class RecipeSeach;
@@ -15,8 +16,27 @@ public:
     explicit RecipeSeach(QWidget *parent = nullptr);
     ~RecipeSeach();
 
+    void setInformation(const QVector<RecipeEntity>&);
+    RecipeEntity selectedRecipe() const;
+
+signals:
+    void seachLineRecipeReady(const QString& );
+    void seachLineProteinReady(const int from, const int to);
+    void seachLineFatsReady(const int from, const int to);
+    void seachLineCarbohydratesReady(const int from, const int to);
+    void selectedForShow();
+
+private slots:
+    void onPushButtonSeach();
+    void onRecipeNameSeachType();
+    void onPFCSeachType();
+    void onSelectRecipe(const QModelIndex& );
+
 private:
     Ui::RecipeSeach *ui;
+    QVector<RecipeEntity> _recipes;
+    RecipeEntity _selectedRecipe;
+
 };
 
 #endif // RECIPESEACH_H

@@ -60,7 +60,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="tableWidget_ingredientList_2">
+    <widget class="QTableWidget" name="tableWidget_ingredientList">
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
@@ -245,7 +245,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="tableWidget_recipeDescription_2">
+    <widget class="QTableWidget" name="tableWidget_recipeDescription">
      <attribute name="horizontalHeaderVisible">
       <bool>false</bool>
      </attribute>

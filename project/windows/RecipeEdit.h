@@ -1,5 +1,6 @@
 #include <QWidget>
 #include "entities/recipe.h"
+#include "windows/ProductSeach.h"
 
 namespace Ui {
 class RecipeEdit;
@@ -23,11 +24,15 @@ signals:
 private slots:
     void onPushButtonSave();
     void onPushButtonCancel();
+    void onPushButtonAddIngredient();
+    void onPushButtoDeleteIngredient();
+    void onPushButtonAddDescription();
+    void onPushButtonDeleteDescription();
 
 private:
     Ui::RecipeEdit *ui;
     RecipeEntity _recipe;
     bool _isEditingMod = false;
-};
 
-#endif // RECIPEEDIT_H
+    ProductSeach* _productSeach;
+};

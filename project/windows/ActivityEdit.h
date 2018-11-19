@@ -30,4 +30,3 @@ private:
     bool _isEditingMod = false;
 };
 
-#endif // ACTIVITYEDIT_H

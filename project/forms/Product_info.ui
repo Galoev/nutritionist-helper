@@ -212,14 +212,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTextEdit" name="textEdit_description">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-     <property name="placeholderText">
-      <string>Описание особенностей продукта ...</string>
-     </property>
-    </widget>
+    <widget class="QTextBrowser" name="textBrowser_description"/>
    </item>
   </layout>
  </widget>

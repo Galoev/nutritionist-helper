@@ -30,4 +30,3 @@ private:
     bool _isEditingMod = false;
 };
 
-#endif // PRODUCTEDIT_H

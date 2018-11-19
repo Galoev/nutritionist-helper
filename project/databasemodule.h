@@ -4,8 +4,8 @@
 #include <QDate>
 #include <QtSql/QSqlDatabase>
 
-#include "client.h"
-#include "examination.h"
+#include "entities/client.h"
+#include "entities/examination.h"
 
 class DatabaseModule
 {
