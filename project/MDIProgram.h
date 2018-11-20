@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ui_MDI_program.h"
 #include "windows.h"
 #include "databasemodule.h"
@@ -7,7 +7,7 @@
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    MainWindow(QMainWindow* wgt = 0);
+    MainWindow(QMainWindow* wgt = nullptr);
 
 private slots:
     void slotImport();
@@ -15,6 +15,12 @@ private slots:
     void slotClientAdd();
     void slotClientSeach();
     void slotExaminationSeach();
+    void slotProductAdd();
+    void slotProductSearch();
+    void slotActivityAdd();
+    void slotActivitySearch();
+    void slotRecipeAdd();
+    void slotRecipeSearch();
     void slotWindowsSort();
     void slotIssueReport();
     void slotAboutProgram();
@@ -26,15 +32,36 @@ private:
     void setExaminationEditConnect(ExaminationEdit* );
     void setExaminationInfoConnect(ExaminationInfo* );
     void setExaminationSearchConnect(ExaminationSearch* );
+    void setProductEditConnect(ProductEdit* );
+    void setProductInfoConnect(ProductInfo* );
+    void setProductSeachConnect(ProductSeach* );
+    void setActivityEditConnect(ActivityEdit* );
+    void setActivityInfoConnect(ActivityInfo* );
+    void setActivitySeachConnect(ActivitySeach* );
+    void setRecipeEditConnect(RecipeEdit* );
+    void setRecipeInfoConnect(RecipeInfo* );
+    void setRecipeSeachConnect(RecipeSeach* );
+
+    void addSubWindowAndShow(QWidget *widget );
 
     Ui::mainWindow _ui;
 
-    ClientEdit*         _formClientEdit;
-    ClientInfo*         _formClientInfo;
-    ClientSearch*       _formClientSeach;
-    ExaminationEdit*    _formExaminationEdit;
-    ExaminationInfo*    _formExaminationInfo;
-    ExaminationSearch*  _formExaminationSearch;
+    //TODO:, имеет ли смысл хранить эти указатели?
+    ClientEdit*         m_formClientEdit;
+    ClientInfo*         m_formClientInfo;
+    ClientSearch*       m_formClientSeach;
+    ExaminationEdit*    m_formExaminationEdit;
+    ExaminationInfo*    m_formExaminationInfo;
+    ExaminationSearch*  m_formExaminationSearch;
+    ProductEdit*        m_formProductEdit;
+    ProductInfo*        m_formProductInfo;
+    ProductSeach*       m_formProductSearch;
+    ActivityEdit*       m_formActivityEdit;
+    ActivityInfo*       m_formActivityInfo;
+    ActivitySeach*      m_formActivitySeach;
+    RecipeEdit*         m_formRecipeEdit;
+    RecipeInfo*         m_formRecipeInfo;
+    RecipeSeach*        m_formRecipeSeach;
 
     DatabaseModule _database;
 };
