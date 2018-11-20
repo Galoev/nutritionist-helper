@@ -68,7 +68,14 @@ void ProductEdit::onPushButtonSave()
     float kcal = ui->lineEdit_numKcal->text().toFloat();
     QString description = ui->textEdit_description->toPlainText();
 
-    _product = ProductEntity(_product.id(), productName, description, (unsigned int)protein, (unsigned int)fats, (unsigned int)carbohydrates, (unsigned int)kcal);
+    _product = ProductEntity(_product.id()
+                             , productName
+                             , description
+                             , protein
+                             , fats
+                             , carbohydrates
+                             , kcal
+                             , ProductEntity::UNDEF); //WARNIND: TODO:
 
     if (_isEditingMod) {
         emit formEditedProductReady();

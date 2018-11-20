@@ -42,10 +42,10 @@ void RecipeEdit::setInformation(const RecipeEntity &r)
         item.setText(produsctsList.at(i).product().name());
         ui->tableWidget_ingredientList->setItem(i,0, &item);
         QString units = "";
-        if (produsctsList.at(i).units() == WeightedProduct::GRAMM)
+        if (produsctsList.at(i).product().units() == ProductEntity::GRAMM)
         {
             units = "гр";
-        } else if (produsctsList.at(i).units() == WeightedProduct::MILLILITER)
+        } else if (produsctsList.at(i).product().units() == ProductEntity::MILLILITER)
         {
             units = "мл";
         } else
@@ -111,7 +111,7 @@ void RecipeEdit::onPushButtonAddIngredient()
         ui->tableWidget_ingredientList->insertRow(productRow);
         ui->tableWidget_ingredientList->setItem(productRow, 0, new QTableWidgetItem(product.name()));
         ui->tableWidget_ingredientList->setItem(productRow, 1, new QTableWidgetItem("0"));
-        _recipe.addProduct(WeightedProduct(product, -1, WeightedProduct::NONE), productRow);
+        _recipe.addProduct(WeightedProduct(product, -1), productRow);
 
     } else {
         qDebug()<<"Error: RecipeEdit::onPushButtonAddIngredient()"
@@ -166,11 +166,6 @@ void RecipeEdit::onPushButtonCancel()
 RecipeEntity RecipeEdit::recipe() const
 {
     return _recipe;
-}
-
-void RecipeEdit::onPushButtonCancel()
-{
-    qDebug() << QT_MESSAGELOG_FUNC << "NOTE: NOT IMPLEMENTED";
 }
 
 RecipeEdit::~RecipeEdit()

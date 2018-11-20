@@ -24,6 +24,11 @@ void ProductInfo::setInformation(const ProductEntity &p)
     this->repaint();
 }
 
+ProductEntity ProductInfo::product() const
+{
+    return _product;
+}
+
 ProductInfo::~ProductInfo()
 {
     delete ui;

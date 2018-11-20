@@ -47,6 +47,11 @@ void RecipeInfo::setInformation(const RecipeEntity &r)
     this->repaint();
 }
 
+RecipeEntity RecipeInfo::recipe() const
+{
+    return _recipe;
+}
+
 RecipeInfo::~RecipeInfo()
 {
     delete ui;

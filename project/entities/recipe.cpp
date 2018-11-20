@@ -61,6 +61,8 @@ QVector<WeightedProduct> RecipeEntity::getPoducts()
 QStringList RecipeEntity::getCookingPoints()
 {
     return m_cookingPoints;
+}
+
 void RecipeEntity::setId(int id)
 {
     m_id = id;
