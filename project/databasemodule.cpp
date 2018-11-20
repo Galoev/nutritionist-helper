@@ -154,6 +154,11 @@ QVector<ProductEntity> DatabaseModule::products(QPair<int, int> interval, const 
     return products;
 }
 
+void DatabaseModule::changeProductInformation(const ProductEntity &)
+{
+
+}
+
 unsigned DatabaseModule::addRecipe(const RecipeEntity &re)
 {
     ///
@@ -308,6 +313,11 @@ QVector<RecipeEntity> DatabaseModule::recipes(QPair<int, int> interval, const ch
     return QVector<RecipeEntity>();
 }
 
+void DatabaseModule::changeRecipeInformation(const RecipeEntity &)
+{
+
+}
+
 unsigned DatabaseModule::addActivity(const ActivityEntity &ae)
 {
     QSqlQuery q;
@@ -366,7 +376,7 @@ QVector<ActivityEntity> DatabaseModule::activities()
     return activities;
 }
 
-QVector<ActivityEntity> DatabaseModule::activities(const QString &seachLine)
+QVector<ActivityEntity> DatabaseModule::activities(const QStringList &seachLine)
 {
     QVector<ActivityEntity> activities;
     foreach (QString snp, seachLine) {
@@ -411,6 +421,11 @@ QVector<ActivityEntity> DatabaseModule::activities(QPair<float, float> kkmInterv
     }
 
     return activities;
+}
+
+void DatabaseModule::changeActivityInformation(const ActivityEntity &)
+{
+
 }
 
 bool DatabaseModule::addExaminationAndSetID(Examination &examination)
