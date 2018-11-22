@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>285</width>
-    <height>84</height>
+    <height>99</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Информация о активности</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

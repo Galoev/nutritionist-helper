@@ -24,6 +24,7 @@ private slots:
     void slotWindowsSort();
     void slotIssueReport();
     void slotAboutProgram();
+    void closeProductEdit();
 
 private:
     void setClientEditConnect(ClientEdit* );

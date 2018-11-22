@@ -9,7 +9,6 @@ MainWindow::MainWindow(QMainWindow* wgt)
     :QMainWindow(wgt)
 {
     _ui.setupUi(this);
-
     connect(_ui.action_import,              SIGNAL(triggered()), SLOT(slotImport()));
     connect(_ui.action_export,              SIGNAL(triggered()), SLOT(slotExport()));
     connect(_ui.action_examinationSeach,    SIGNAL(triggered()), SLOT(slotExaminationSeach()));
@@ -25,6 +24,17 @@ MainWindow::MainWindow(QMainWindow* wgt)
     connect(_ui.action_issueReport,         SIGNAL(triggered()), SLOT(slotIssueReport()));
     connect(_ui.action_aboutProgram,        SIGNAL(triggered()), SLOT(slotAboutProgram()));
     connect(_ui.action_exit,                SIGNAL(triggered()), SLOT(close()));
+
+}
+
+void MainWindow::closeProductEdit()
+{
+    qDebug()<<"Clode ProductEdit";
+    //m_formProductEdit->close();
+    //_ui.mdiArea->removeSubWindow(m_formProductEdit);
+    _ui.mdiArea->closeActiveSubWindow();
+    //qDebug()<<"Delete ProductEdit";
+    //delete m_formProductEdit;
 }
 
 void MainWindow::slotImport()
@@ -89,6 +99,7 @@ void MainWindow::slotProductAdd()
     m_formProductEdit = new ProductEdit;
     setProductEditConnect(m_formProductEdit);
     addSubWindowAndShow(m_formProductEdit);
+    connect(m_formProductEdit, SIGNAL(closeWindow()), SLOT(closeProductEdit()));
 }
 
 void MainWindow::slotProductSearch()

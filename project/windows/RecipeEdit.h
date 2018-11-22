@@ -21,6 +21,10 @@ public:
 signals:
     void formNewRecipeReady();
     void formEditedRecipeReady();
+    void seachLineProductReady(const QString& );
+    void seachLineProteinReady(const int from, const int to);
+    void seachLineFatsReady(const int from, const int to);
+    void seachLineCarbohydratesReady(const int from, const int to);
 
 private slots:
     void onPushButtonSave();

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Поиск рецептов</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1">
    <item>
@@ -136,7 +136,7 @@
      <item>
       <widget class="QRadioButton" name="radioButton_carbohydratesSearch">
        <property name="text">
-        <string>По углеродам</string>
+        <string>По углеводам</string>
        </property>
       </widget>
      </item>

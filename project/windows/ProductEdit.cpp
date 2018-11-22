@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QRegExpValidator>
 #include <QMessageBox>
+#include <QDebug>
 
 ProductEdit::ProductEdit(QWidget *parent) :
     QWidget(parent),
@@ -10,7 +11,7 @@ ProductEdit::ProductEdit(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->lineEdit_productName->setValidator(new QRegExpValidator(QRegExp("[\\w]")));
+    //ui->lineEdit_productName->setValidator(new QRegExpValidator(QRegExp("[\\w]")));
     ui->lineEdit_numProtein->setValidator(new QDoubleValidator(0.0, 1000.0, 2));
     ui->lineEdit_numFats->setValidator(new QDoubleValidator(0.0, 1000.0, 2));
     ui->lineEdit_numCarbohydrates->setValidator(new QDoubleValidator(0.0, 1000.0, 2));
@@ -88,7 +89,10 @@ void ProductEdit::onPushButtonSave()
 
 void ProductEdit::onPushButtonCancel()
 {
+    qDebug()<<"Clode ProductEdit class";
+    emit closeWindow();
     this->close();
+    delete this;
 }
 
 ProductEntity ProductEdit::product() const

@@ -10,7 +10,7 @@ ActivityEdit::ActivityEdit(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->lineEdit_activityName->setValidator(new QRegExpValidator(QRegExp("[\\w]")));
+    //ui->lineEdit_activityName->setValidator(new QRegExpValidator(QRegExp("[\\w]")));
     ui->lineEdit_calories->setValidator(new QDoubleValidator(0.0, 100000.0, 2));
 
     connect(ui->pushButton_save, SIGNAL(pressed()), SLOT(onPushButtonSave()));

@@ -11,7 +11,7 @@ RecipeEdit::RecipeEdit(QWidget *parent) :
     ui->setupUi(this);
     _productSeach = new ProductSeach(ui->widget_product_search);
     _productSeach->resize(457,200);
-    ui->lineEdi_recipeName->setValidator(new QRegExpValidator(QRegExp("[\\w]")));
+    //ui->lineEdi_recipeName->setValidator(new QRegExpValidator(QRegExp("[\\w]")));
 
 
     connect(ui->pushButton_save, SIGNAL(pressed()), SLOT(onPushButtonSave()));
@@ -20,6 +20,10 @@ RecipeEdit::RecipeEdit(QWidget *parent) :
     connect(ui->pushButton_deleteIngredient, SIGNAL(pressed()), SLOT(onPushButtoDeleteIngredient()));
     connect(ui->pushButton_addDescription, SIGNAL(pressed()), SLOT(onPushButtonAddDescription()));
     connect(ui->pushButton_deleteDescription, SIGNAL(pressed()), SLOT(onPushButtonDeleteDescription()));
+    connect(_productSeach, SIGNAL(seachLineProductReady(QString)), SIGNAL(seachLineProductReady(QString)));
+    connect(_productSeach, SIGNAL(seachLineProteinReady(int,int)), SIGNAL(seachLineProteinReady(int,int)));
+    connect(_productSeach, SIGNAL(seachLineFatsReady(int,int)), SIGNAL(seachLineFatsReady(int,int)));
+    connect(_productSeach, SIGNAL(seachLineCarbohydratesReady(int,int)), SIGNAL(seachLineCarbohydratesReady(int,int)));
  }
 
 
@@ -31,7 +35,7 @@ void RecipeEdit::setInformation(const RecipeEntity &r)
 {
     _isEditingMod = true;
 
-    //_recipe.setId(r.id());
+    _recipe.setId(r.id());
 
     ui->lineEdi_recipeName->setText(r.name());
     QVector<WeightedProduct> produsctsList = r.products();
