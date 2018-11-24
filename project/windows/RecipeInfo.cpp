@@ -6,6 +6,10 @@ RecipeInfo::RecipeInfo(QWidget *parent) :
     ui(new Ui::RecipeInfo)
 {
     ui->setupUi(this);
+    ui->tableWidget_ingredientList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget_ingredientList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_recipeDescription->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget_recipeDescription->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     connect(ui->pushButton_recipeEdit, SIGNAL(pressed()), SIGNAL(editRecipeButtonPressed()));
 }
@@ -25,7 +29,7 @@ void RecipeInfo::setInformation(const RecipeEntity &r)
     for (int iRow = 0; iRow < products.size(); ++iRow)
     {
         ui->tableWidget_ingredientList->setItem(iRow, 0, new QTableWidgetItem(products.at(iRow).product().name()));
-        ui->tableWidget_ingredientList->setItem(iRow, 1, new QTableWidgetItem(products.at(iRow).amound()));
+        ui->tableWidget_ingredientList->setItem(iRow, 1, new QTableWidgetItem(QString::number(products.at(iRow).amound())));
         sumProtein += products.at(iRow).product().proteins();
         sumFats += products.at(iRow).product().fats();
         sumCarbohydrates += products.at(iRow).product().carbohydrates();
@@ -38,6 +42,7 @@ void RecipeInfo::setInformation(const RecipeEntity &r)
     ui->label_numKcal->setText(QString::number(sumKcal));
 
     QStringList cookingPoints = _recipe.getCookingPoints();
+    ui->tableWidget_recipeDescription->setRowCount(cookingPoints.size());
 
     for (int iRow = 0; iRow < cookingPoints.size(); ++iRow)
     {
