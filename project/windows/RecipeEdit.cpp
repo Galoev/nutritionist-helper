@@ -12,7 +12,7 @@ RecipeEdit::RecipeEdit(QWidget *parent) :
     _productSeach = new ProductSeach(ui->widget_product_search);
     _productSeach->resize(457,200);
     //ui->lineEdi_recipeName->setValidator(new QRegExpValidator(QRegExp("[\\w]")));
-
+    ui->tableWidget_ingredientList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     connect(ui->pushButton_save, SIGNAL(pressed()), SLOT(onPushButtonSave()));
     connect(ui->pushButton_cancel, SIGNAL(pressed()), SLOT(onPushButtonCancel()));
