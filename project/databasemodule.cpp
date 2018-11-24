@@ -106,7 +106,7 @@ QVector<ProductEntity> DatabaseModule::products(const QStringList &seachLine)
                             "    OR description LIKE '%%2%'"
                             ).arg(snp).arg(snp));
         if(!q.exec()){
-            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
             return products;
         }
 
@@ -140,7 +140,7 @@ QVector<ProductEntity> DatabaseModule::products(QPair<int, int> interval, const 
     QSqlQuery q("SELECT id FROM Products"
                     "" + prefix.arg(stype).arg(interval.first).arg(interval.second));
     if(!q.exec()){
-        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
         return products;
     }
     while(q.next()) {
@@ -154,9 +154,35 @@ QVector<ProductEntity> DatabaseModule::products(QPair<int, int> interval, const 
     return products;
 }
 
-void DatabaseModule::changeProductInformation(const ProductEntity &)
+void DatabaseModule::changePriductInformation(const ProductEntity &newProduct)
 {
+    //call this for testing to exists product
+    auto prevErrorSize =  m_errorList.size();
+    product(newProduct.id());
+    auto avterErrorSize = m_errorList.size();
+    if(prevErrorSize != avterErrorSize) {
+        m_errorList << "Error:" << Q_FUNC_INFO << " Error with searching product for update";
+        return;
+    }
 
+    QSqlQuery q;
+    q.prepare("UPDATE Products "
+              "SET name = ?, description = ?, proteins = ?, fats = ?, carbohydrates = ?, kkal = ?, units = ?"
+              "WHERE id = ?"
+              );
+    q.addBindValue(newProduct.name());
+    q.addBindValue(newProduct.description());
+    q.addBindValue(newProduct.proteins());
+    q.addBindValue(newProduct.fats());
+    q.addBindValue(newProduct.carbohydrates());
+    q.addBindValue(newProduct.kilocalories());
+    q.addBindValue(newProduct.units());
+    q.addBindValue(newProduct.id());
+
+    if(!q.exec()) {
+        m_errorList << "Error:" << Q_FUNC_INFO <<  q.lastError();
+        return;
+    }
 }
 
 unsigned DatabaseModule::addRecipe(const RecipeEntity &re)
@@ -288,7 +314,7 @@ QVector<RecipeEntity> DatabaseModule::recipes(const QStringList &seachLine)
                             " WHERE name LIKE '%%1%'       "
                             ).arg(snp));
         if(!q.exec()){
-            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
             return recipes;
         }
 
@@ -384,7 +410,7 @@ QVector<ActivityEntity> DatabaseModule::activities(const QStringList &seachLine)
                             " WHERE type LIKE '%1%'       "
                             ).arg(snp));
         if(!q.exec()){
-            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
             return activities;
         }
         while(q.next()) {
@@ -408,7 +434,7 @@ QVector<ActivityEntity> DatabaseModule::activities(QPair<float, float> kkmInterv
                 .arg(kkmInterval.first)
                 .arg(kkmInterval.second));
     if(!q.exec()){
-        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
         return activities;
     }
     while(q.next()) {
@@ -423,9 +449,30 @@ QVector<ActivityEntity> DatabaseModule::activities(QPair<float, float> kkmInterv
     return activities;
 }
 
-void DatabaseModule::changeActivityInformation(const ActivityEntity &)
+void DatabaseModule::chengeActivityInformation(const ActivityEntity &newActivity)
 {
+    //call this for testing to exists product
+    auto prevErrorSize =  m_errorList.size();
+    product(newActivity.id());
+    auto avterErrorSize = m_errorList.size();
+    if(prevErrorSize != avterErrorSize) {
+        m_errorList << "Error:" << Q_FUNC_INFO << " Error with searching activity for update";
+        return;
+    }
 
+    QSqlQuery q;
+    q.prepare("UPDATE Activities "
+              "SET type = ?, kkal_m_km = ?"
+              "WHERE id = ?"
+              );
+    q.addBindValue(newActivity.type());
+    q.addBindValue(newActivity.kkm());
+    q.addBindValue(newActivity.id());
+
+    if(!q.exec()) {
+        m_errorList << "Error:" << Q_FUNC_INFO << q.lastError().text();
+        return;
+    }
 }
 
 bool DatabaseModule::addExaminationAndSetID(Examination &examination)
@@ -562,7 +609,7 @@ QVector<Client> DatabaseModule::clients(const QString& snp) const
         if(!q.exec()){
             qDebug() << "Error:" << Q_FUNC_INFO
                      << "Wrong condition";
-            qDebug() << q.lastQuery();
+            qDebug() << q.lastError().text();
             return clients;
         }
 

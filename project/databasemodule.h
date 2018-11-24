@@ -21,7 +21,7 @@ public:
     QVector<ProductEntity>  products();
     QVector<ProductEntity>  products(const QStringList &seachLine);
     QVector<ProductEntity>  products(QPair<int,int> interval, const char type); /// type: {c, f, p, k}
-    void                    changeProductInformation(const ProductEntity& ); //TODO:
+    void                    changePriductInformation(const ProductEntity& );
 
     /* functions to work with Recipe entities */
     unsigned                addRecipe(const RecipeEntity&);
@@ -37,7 +37,7 @@ public:
     QVector<ActivityEntity> activities();
     QVector<ActivityEntity> activities(const QStringList &seachLine);
     QVector<ActivityEntity> activities(QPair<float,float> kkmInterval);                              // kkm - kkal/kg/min
-    void                    changeActivityInformation(const ActivityEntity& ); //TODO:
+    void                    chengeActivityInformation(const ActivityEntity& );
 
     /* functions to work with Client entities */
     bool                    addClientAndSetID(Client & );                       //TODO: Need to be change as in the previous style
