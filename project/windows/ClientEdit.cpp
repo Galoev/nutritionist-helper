@@ -85,7 +85,7 @@ void ClientEdit::onPushButtonSave()
 
 void ClientEdit::onPushButtonCancel()
 {
-    this->close();
+    this->parent()->deleteLater();
 }
 
 Client ClientEdit::client() const

@@ -164,7 +164,7 @@ void RecipeEdit::onPushButtonDeleteDescription()
 
 void RecipeEdit::onPushButtonCancel()
 {
-    this->close();
+    this->parent()->deleteLater();
 }
 
 RecipeEntity RecipeEdit::recipe() const

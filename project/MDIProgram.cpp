@@ -27,16 +27,6 @@ MainWindow::MainWindow(QMainWindow* wgt)
 
 }
 
-void MainWindow::closeProductEdit()
-{
-    qDebug()<<"Clode ProductEdit";
-    //m_formProductEdit->close();
-    //_ui.mdiArea->removeSubWindow(m_formProductEdit);
-    _ui.mdiArea->closeActiveSubWindow();
-    //qDebug()<<"Delete ProductEdit";
-    //delete m_formProductEdit;
-}
-
 void MainWindow::slotImport()
 {
     static QString title = tr("Импорт базы данных");
@@ -99,7 +89,6 @@ void MainWindow::slotProductAdd()
     m_formProductEdit = new ProductEdit;
     setProductEditConnect(m_formProductEdit);
     addSubWindowAndShow(m_formProductEdit);
-    connect(m_formProductEdit, SIGNAL(closeWindow()), SLOT(closeProductEdit()));
 }
 
 void MainWindow::slotProductSearch()

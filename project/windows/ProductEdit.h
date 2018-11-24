@@ -20,7 +20,6 @@ public:
 signals:
     void formNewProductReady();
     void formEditedProductReady();
-    void closeWindow();
 
 private slots:
     void onPushButtonSave();

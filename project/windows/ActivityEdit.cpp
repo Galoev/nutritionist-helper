@@ -60,7 +60,7 @@ void ActivityEdit::onPushButtonSave()
 
 void ActivityEdit::onPushButtonCancel()
 {
-    this->close();
+    this->parent()->deleteLater();
 }
 
 ActivityEntity ActivityEdit::activity() const

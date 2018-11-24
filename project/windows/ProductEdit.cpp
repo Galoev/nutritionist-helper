@@ -89,10 +89,7 @@ void ProductEdit::onPushButtonSave()
 
 void ProductEdit::onPushButtonCancel()
 {
-    qDebug()<<"Clode ProductEdit class";
-    emit closeWindow();
-    this->close();
-    delete this;
+    this->parent()->deleteLater();
 }
 
 ProductEntity ProductEdit::product() const
