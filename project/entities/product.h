@@ -31,10 +31,10 @@ private:
     int m_id;
     QString m_name;
     QString m_description;
-    unsigned m_proteins;
-    unsigned m_fats;
-    unsigned m_carbohydrates;
-    unsigned m_kilocalories;
+    float m_proteins;
+    float m_fats;
+    float m_carbohydrates;
+    float m_kilocalories;
     UnitsType m_units;
 };
 

@@ -11,7 +11,7 @@ ProductEdit::ProductEdit(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //ui->lineEdit_productName->setValidator(new QRegExpValidator(QRegExp("[\\w]")));
+    ui->lineEdit_productName->setValidator(new QRegExpValidator(QRegExp("[A-Z/a-z/а-я/A-Я]{1,}\[A-Z/a-z/а-я/A-Я\\s]{1,}")));
     ui->lineEdit_numProtein->setValidator(new QDoubleValidator(0.0, 1000.0, 2));
     ui->lineEdit_numFats->setValidator(new QDoubleValidator(0.0, 1000.0, 2));
     ui->lineEdit_numCarbohydrates->setValidator(new QDoubleValidator(0.0, 1000.0, 2));
@@ -63,10 +63,10 @@ void ProductEdit::onPushButtonSave()
     }
 
     QString productName = ui->lineEdit_productName->text();
-    float protein = ui->lineEdit_numProtein->text().toFloat();
-    float fats = ui->lineEdit_numFats->text().toFloat();
-    float carbohydrates = ui->lineEdit_numCarbohydrates->text().toFloat();
-    float kcal = ui->lineEdit_numKcal->text().toFloat();
+    float protein = QLocale::system().toDouble(ui->lineEdit_numProtein->text());
+    float fats = QLocale::system().toDouble(ui->lineEdit_numFats->text());
+    float carbohydrates = QLocale::system().toDouble(ui->lineEdit_numCarbohydrates->text());
+    float kcal = QLocale::system().toDouble(ui->lineEdit_numKcal->text());
     QString description = ui->textEdit_description->toPlainText();
 
     _product = ProductEntity(_product.id()

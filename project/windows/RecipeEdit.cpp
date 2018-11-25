@@ -3,6 +3,7 @@
 #include <QVBoxLayout>
 #include <QRegExpValidator>
 #include <QDebug>
+#include <QMessageBox>
 
 RecipeEdit::RecipeEdit(QWidget *parent) :
     QWidget(parent),
@@ -11,7 +12,7 @@ RecipeEdit::RecipeEdit(QWidget *parent) :
     ui->setupUi(this);
     _productSeach = new ProductSeach(ui->widget_product_search);
     _productSeach->resize(457,200);
-    //ui->lineEdi_recipeName->setValidator(new QRegExpValidator(QRegExp("[\\w]")));
+    ui->lineEdi_recipeName->setValidator(new QRegExpValidator(QRegExp("[A-Z/a-z/а-я/A-Я]{1,}\[A-Z/a-z/а-я/A-Я\\s]{1,}")));
     ui->tableWidget_ingredientList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     connect(ui->pushButton_save, SIGNAL(pressed()), SLOT(onPushButtonSave()));
@@ -74,6 +75,23 @@ void RecipeEdit::setInformation(const RecipeEntity &r)
 
 void RecipeEdit::onPushButtonSave()
 {
+    QString errorLog;
+
+    if (!ui->lineEdi_recipeName->hasAcceptableInput()) {
+        errorLog += tr("Неправильное имя рецепта\n");
+    }
+    if (ui->tableWidget_ingredientList->rowCount() == 0) {
+        errorLog += tr("Нет продуктов\n");
+    }
+    if (ui->tableWidget_recipeDescription->rowCount() == 0) {
+        errorLog += tr("Описание рецепта пустое\n");
+    }
+
+    if (!errorLog.isEmpty()){
+        QMessageBox::critical(this, "Ошибка заполнения", errorLog);
+        return;
+    }
+
     QString recipeName = ui->lineEdi_recipeName->text();
     QVector<WeightedProduct> produsctsList;
     QStringList cookingPoints;
