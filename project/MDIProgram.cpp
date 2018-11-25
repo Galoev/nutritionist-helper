@@ -138,8 +138,11 @@ void MainWindow::slotIssueReport()
 
 void MainWindow::slotAboutProgram()
 {
-    QMessageBox::about(this, tr("О программе"), tr("Программа ""Помощник Диетолога"""
-                                                   "\nРазработчик: Аржевитин Б.К."));
+    QString msgText = "Программа: \"Помощник Диетолога\""
+                      "\nРазработчики: Аржевитин Б.К., Галоев И.Б."
+                      "\nВерсия: " + QString(APP_VERSION);
+    ///
+    QMessageBox::about(this, "О программе", msgText);
 }
 
 void MainWindow::setClientEditConnect(ClientEdit *ce)
@@ -299,7 +302,7 @@ void MainWindow::setExaminationSearchConnect(ExaminationSearch *es)
         if(examinations.isEmpty()) {
             QMessageBox::information(this, tr("Поиск исследований"), tr("Информация не найдена"));
         }
-        es->setInformation(examinations);        
+        es->setInformation(examinations);
     });
 
     connect(es, &ExaminationSearch::selectedForShow, [this, es](){

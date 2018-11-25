@@ -154,7 +154,7 @@ QVector<ProductEntity> DatabaseModule::products(QPair<int, int> interval, const 
     return products;
 }
 
-void DatabaseModule::changePriductInformation(const ProductEntity &newProduct)
+void DatabaseModule::changeProductInformation(const ProductEntity &newProduct)
 {
     //call this for testing to exists product
     auto prevErrorSize =  m_errorList.size();
@@ -459,11 +459,11 @@ QVector<ActivityEntity> DatabaseModule::activities(QPair<float, float> kkmInterv
     return activities;
 }
 
-void DatabaseModule::chengeActivityInformation(const ActivityEntity &newActivity)
+void DatabaseModule::changeActivityInformation(const ActivityEntity &newActivity)
 {
     //call this for testing to exists product
     auto prevErrorSize =  m_errorList.size();
-    product(newActivity.id());
+    activity(newActivity.id());
     auto avterErrorSize = m_errorList.size();
     if(prevErrorSize != avterErrorSize) {
         m_errorList << "Error:" << Q_FUNC_INFO << " Error with searching activity for update";
@@ -475,6 +475,7 @@ void DatabaseModule::chengeActivityInformation(const ActivityEntity &newActivity
               "SET type = ?, kkal_m_km = ? "
               "WHERE id = ?"
               );
+    qDebug() << newActivity.type() << newActivity.kkm() << newActivity.id();
     q.addBindValue(newActivity.type());
     q.addBindValue(newActivity.kkm());
     q.addBindValue(newActivity.id());

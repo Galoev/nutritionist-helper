@@ -289,8 +289,8 @@ echo "Инсталятор создан"
 echo
 echo "Очистка зависимостей"
 tput setaf 7
-rm -r config
-rm -r packages
+#rm -r config
+#rm -r packages
 tput setaf 1
 cd ..
 tput sgr0
