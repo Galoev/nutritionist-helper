@@ -138,8 +138,11 @@ void MainWindow::slotIssueReport()
 
 void MainWindow::slotAboutProgram()
 {
-    QMessageBox::about(this, tr("О программе"), tr("Программа ""Помощник Диетолога"""
-                                                   "\nРазработчик: Аржевитин Б.К."));
+    QString msgText = "Программа: \"Помощник Диетолога\""
+                      "\nРазработчики: Аржевитин Б.К., Галоев И.Б."
+                      "\nВерсия: " + QString(APP_VERSION);
+    ///
+    QMessageBox::about(this, "О программе", msgText);
 }
 
 void MainWindow::setClientEditConnect(ClientEdit *ce)

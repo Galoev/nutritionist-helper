@@ -21,7 +21,7 @@ public:
     QVector<ProductEntity>  products();
     QVector<ProductEntity>  products(const QStringList &seachLine);
     QVector<ProductEntity>  products(QPair<int,int> interval, const char type); /// type: {c, f, p, k}
-    void                    changeProductInformation(const ProductEntity& ); //TODO:
+    void                    changeProductInformation(const ProductEntity& );
 
     /* functions to work with Recipe entities */
     unsigned                addRecipe(const RecipeEntity&);
@@ -29,7 +29,7 @@ public:
     QVector<RecipeEntity>   recipes();
     QVector<RecipeEntity>   recipes(const QStringList &seachLine);
     QVector<RecipeEntity>   recipes(QPair<int,int> interval, const char type); /*<- NOT IMPLEMENTED*/  /// type: {c, f, p, k}
-    void                    changeRecipeInformation(const RecipeEntity& ); //TODO:
+    void                    changeRecipeInformation(const RecipeEntity& );
 
     /* functions to work with Activity entities */
     unsigned                addActivity(const ActivityEntity&);
@@ -37,7 +37,7 @@ public:
     QVector<ActivityEntity> activities();
     QVector<ActivityEntity> activities(const QStringList &seachLine);
     QVector<ActivityEntity> activities(QPair<float,float> kkmInterval);                              // kkm - kkal/kg/min
-    void                    changeActivityInformation(const ActivityEntity& ); //TODO:
+    void                    changeActivityInformation(const ActivityEntity& );
 
     /* functions to work with Client entities */
     bool                    addClientAndSetID(Client & );                       //TODO: Need to be change as in the previous style
@@ -68,4 +68,6 @@ private:
     QStringList     m_errorList;
 
     void initEmptyDB();
+    bool insertIntoCookingPoints(unsigned recipeId, const QStringList& );
+    bool insertIntoProductsInRecipes(unsigned recipeId, const QVector<WeightedProduct>& );
 };
