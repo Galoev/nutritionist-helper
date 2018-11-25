@@ -3,7 +3,7 @@
 #include <QtSql/QSqlError>
 #include <QFile>
 #include <QDebug>
-
+#include <QDir>
 
 DatabaseModule::DatabaseModule()
 {
@@ -16,9 +16,9 @@ DatabaseModule::DatabaseModule()
 
     if (!QFile::exists(_DB_NAME)){
         initEmptyDB();
+    } else{
+        _db.setDatabaseName(_DB_NAME);
     }
-
-    _db.setDatabaseName(_DB_NAME);
 
     if (!_db.open()) {
         qDebug() << "Error: " << Q_FUNC_INFO
@@ -805,48 +805,119 @@ QStringList DatabaseModule::unwatchedWorkError()
 
 void DatabaseModule::initEmptyDB()
 {
+    QFile file(_DB_NAME);
+    QDir dir;
+    dir.mkdir("./database/");
+    file.open(QIODevice::ReadWrite);
+    file.close();
+
+
+    QSqlQuery queryCreate("CREATE DATABASE");
+    queryCreate.exec();
     _db.setDatabaseName(_DB_NAME);
-    QSqlQuery query;
+
 
     if (!_db.open()) {
         qDebug() << "Error: " << Q_FUNC_INFO
                  << _db.lastError().text();
+        return;
     }
+    QStringList querys;
 
-    QString q1("CREATE TABLE `Clients` ("
-               "`id`           INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
-               "`surname`      TEXT NOT NULL,"
-               "`name`         TEXT NOT NULL,"
-               "`patronymic`	TEXT NOT NULL,"
-               "`birth_date`	TEXT NOT NULL,"
-               "`gender`       TEXT NOT NULL,"
-               "`age`          INTEGER NOT NULL,"
-               "`tel_number`	TEXT NOT NULL"
-               ");"
-               );
-    if(!query.exec(q1)){
-        qDebug() << "Error:" << Q_FUNC_INFO
-                 << "DB was not init new empty table";
-    }
-
+    /*
+     * Clients table
+    */
+    querys << QString("CREATE TABLE `Clients` ("
+                      "`id`           INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
+                      "`surname`      TEXT NOT NULL,"
+                      "`name`         TEXT NOT NULL,"
+                      "`patronymic`	TEXT NOT NULL,"
+                      "`birth_date`	TEXT NOT NULL,"
+                      "`gender`       TEXT NOT NULL,"
+                      "`age`          INTEGER NOT NULL,"
+                      "`tel_number`	TEXT NOT NULL"
+                      ");"
+                      );
+    /*
+     * Examination table
+    */
     QString formfieldNames;
     Examination exm;
     foreach (FormField field, exm.fields()) {
         formfieldNames += QString(" `%1` TEXT, ").arg(field.name());
     }
+    querys << QString("CREATE TABLE `Examinations` ("
+                      "`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
+                      "`client_id`	INTEGER NOT NULL,"
+                      "`is_full_examination`	INTEGER NOT NULL,"
+                      "`date`	TEXT NOT NULL,"
+                      + formfieldNames +
+                      "FOREIGN KEY(`client_id`) REFERENCES `Clients`(`id`) ON DELETE CASCADE ON UPDATE CASCADE"
+                      ");"
+                      );
+    /*
+     * Activities table
+    */
+    querys << QString("CREATE TABLE `Activities` ("
+                      "`id`        INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,"
+                      "`type`      TEXT NOT NULL UNIQUE,"
+                      "`kkal_m_km`	REAL NOT NULL"
+                      ");"
+                      );
+    /*
+     * CookingPoints table
+    */
+    querys << QString("CREATE TABLE `CookingPoints` ("
+                      "`recipe_id`     INTEGER NOT NULL,"
+                      "`point_num`     INTEGER NOT NULL,"
+                      "`description`	TEXT NOT NULL,"
+                      "    FOREIGN KEY(`recipe_id`) REFERENCES `Recipes`(`id`) ON DELETE CASCADE ON UPDATE CASCADE"
+                      ");"
+                      );
+    /*
+     * Products table
+    */
+    querys << QString("CREATE TABLE `Products` ("
+                      "`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,"
+                      "`name`	TEXT NOT NULL UNIQUE,"
+                      "`proteins`	REAL NOT NULL,"
+                      "`fats`	REAL NOT NULL,"
+                      "`carbohydrates`	REAL NOT NULL,"
+                      "`kkal`	REAL NOT NULL,"
+                      "`description`	TEXT NOT NULL,"
+                      "`units`	INTEGER NOT NULL"
+                      ");"
+                      );
+    /*
+     * ProductsInRecipes table
+    */
+    querys << QString("CREATE TABLE `ProductsInRecipes` ("
+                      "`recipe_id`	INTEGER NOT NULL,"
+                      "`product_id`	INTEGER NOT NULL,"
+                      "`amound`	REAL NOT NULL,"
+                      "FOREIGN KEY(`product_id`) REFERENCES `Products`(`id`) ON UPDATE CASCADE,"
+                      "FOREIGN KEY(`recipe_id`) REFERENCES `Recipes`(`id`) ON DELETE CASCADE ON UPDATE CASCADE"
+                      ");"
+                      );
+    /*
+     * Recipes table
+    */
+    querys << QString("CREATE TABLE `Recipes` ("
+                      "`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,"
+                      "`name`	TEXT NOT NULL"
+                      ");"
+                      );
 
-    QString q2("CREATE TABLE `Examinations` ("
-               "`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
-               "`client_id`	INTEGER NOT NULL,"
-               "`is_full_examination`	INTEGER NOT NULL,"
-               "`date`	TEXT NOT NULL,"
-               + formfieldNames +
-               "FOREIGN KEY(`client_id`) REFERENCES `Clients`(`id`) ON DELETE CASCADE ON UPDATE CASCADE"
-               ");"
-               );
-    if(!query.exec(q2)){
-        qDebug() << "Error:" << Q_FUNC_INFO
-                 << "DB was not init new empty table";
+    QSqlQuery query;
+    for (auto q : querys){
+        if(!query.exec(q)){
+            qDebug() << "Error:" << Q_FUNC_INFO
+                     << "DB was not init new empty table. ";
+            qDebug() << "QUERY: --------";
+            qDebug() << q;
+            qDebug() << "---------------";
+            return;
+        }
     }
 }
 
