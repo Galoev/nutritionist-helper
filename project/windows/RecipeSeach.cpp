@@ -1,6 +1,8 @@
 #include "RecipeSeach.h"
 #include "ui_Recipe_seach.h"
 #include <QDebug>
+#include <QVector>
+#include <QString>
 
 RecipeSeach::RecipeSeach(QWidget *parent) :
     QWidget(parent),
@@ -22,15 +24,19 @@ void RecipeSeach::setInformation(const QVector<RecipeEntity> &recipes)
 
     ui->tableWidget_recipe->setRowCount(_recipes.size());
 
-    for (int iRow = 0; iRow < _recipes.size(); ++iRow)
-    {
-        ui->tableWidget_recipe->setItem(iRow, 0, new QTableWidgetItem(_recipes[iRow].name()));
-        ui->tableWidget_recipe->setItem(iRow, 1, new QTableWidgetItem("-1"));
-        ui->tableWidget_recipe->setItem(iRow, 2, new QTableWidgetItem("-1"));
-        ui->tableWidget_recipe->setItem(iRow, 3, new QTableWidgetItem("-1"));
-        ui->tableWidget_recipe->setItem(iRow, 4, new QTableWidgetItem("-1"));
+    for (int iRow = 0; iRow < _recipes.size(); ++iRow) {
+        QVector<QString> itemValues = {
+            _recipes[iRow].name(),
+            QString::number(_recipes[iRow].proteins()),
+            QString::number(_recipes[iRow].fats()),
+            QString::number(_recipes[iRow].carbohydrates()),
+            QString::number(_recipes[iRow].kkal())
+        };
+        for(int i = 0; i < itemValues.size(); ++i){
+            QTableWidgetItem* item = new QTableWidgetItem(itemValues[i]);
+            ui->tableWidget_recipe->setItem(iRow, i, item);
+        }
     }
-
     this->repaint();
 }
 
@@ -48,7 +54,7 @@ void RecipeSeach::onPushButtonSeach()
         if (!seach.isEmpty()) {
             emit seachLineRecipeReady(seach);
         }
-    }else if (ui->radioButton_proteinSearch->isChecked()) {
+    } else if (ui->radioButton_proteinSearch->isChecked()) {
         from = ui->spinBox_From->value();
         to = ui->spinBox_To->value();
         emit seachLineProteinReady(from, to);

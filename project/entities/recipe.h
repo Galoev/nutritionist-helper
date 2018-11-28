@@ -15,15 +15,26 @@ public:
     QString name() const;
     QVector<WeightedProduct> products() const;
     QStringList cookingPoints() const;
-    void addProduct(WeightedProduct product, unsigned int index);
-    void deleteProduct(unsigned int index);
-    void addDescription(QString description, unsigned int index);
-    void deleteDescription(unsigned int index);
+    float proteins() const;
+    float fats() const;
+    float carbohydrates() const;
+    float kkal() const;
     QVector<WeightedProduct> getPoducts();
     QStringList getCookingPoints();
     QVector<int> getSumPFCK();
 
     void setId(int id);
+    void setProducts(const QVector<WeightedProduct>& );
+
+    void addProduct(WeightedProduct product, unsigned int index);
+    void addDescription(QString description, unsigned int index);
+
+    void deleteProduct(unsigned int index);
+    void deleteDescription(unsigned int index);
+
+
+
+
 
 private:
     int                       m_id;

@@ -21,16 +21,13 @@ RecipeEdit::RecipeEdit(QWidget *parent) :
     connect(ui->pushButton_deleteIngredient, SIGNAL(pressed()), SLOT(onPushButtoDeleteIngredient()));
     connect(ui->pushButton_addDescription, SIGNAL(pressed()), SLOT(onPushButtonAddDescription()));
     connect(ui->pushButton_deleteDescription, SIGNAL(pressed()), SLOT(onPushButtonDeleteDescription()));
-    connect(_productSeach, SIGNAL(seachLineProductReady(QString)), SIGNAL(seachLineProductReady(QString)));
-    connect(_productSeach, SIGNAL(seachLineProteinReady(int,int)), SIGNAL(seachLineProteinReady(int,int)));
-    connect(_productSeach, SIGNAL(seachLineFatsReady(int,int)), SIGNAL(seachLineFatsReady(int,int)));
-    connect(_productSeach, SIGNAL(seachLineCarbohydratesReady(int,int)), SIGNAL(seachLineCarbohydratesReady(int,int)));
+
+    connect(_productSeach, SIGNAL(seachLineProductReady(QString)),          SIGNAL(productSearchLineReady(QString)));
+    connect(_productSeach, SIGNAL(seachLineProteinReady(int,int)),          SIGNAL(productSearchProteinReady(int,int)));
+    connect(_productSeach, SIGNAL(seachLineFatsReady(int,int)),             SIGNAL(productSearchFatsReady(int,int)));
+    connect(_productSeach, SIGNAL(seachLineCarbohydratesReady(int,int)),    SIGNAL(productSearchCarbohydratesReady(int,int)));
+    connect(_productSeach, SIGNAL(selectedForShow()),                       SIGNAL(productSelectedForShow()));
  }
-
-
-
-
-
 
 void RecipeEdit::setInformation(const RecipeEntity &r)
 {
@@ -47,14 +44,11 @@ void RecipeEdit::setInformation(const RecipeEntity &r)
         item.setText(produsctsList.at(i).product().name());
         ui->tableWidget_ingredientList->setItem(i,0, &item);
         QString units = "";
-        if (produsctsList.at(i).product().units() == ProductEntity::GRAMM)
-        {
+        if (produsctsList.at(i).product().units() == ProductEntity::GRAMM)  {
             units = "гр";
-        } else if (produsctsList.at(i).product().units() == ProductEntity::MILLILITER)
-        {
+        } else if (produsctsList.at(i).product().units() == ProductEntity::MILLILITER) {
             units = "мл";
-        } else
-        {
+        } else {
             units = "NONE";
         }
         item.setText(QString::number(produsctsList.at(i).amound())+" "+units);

@@ -33,6 +33,42 @@ QStringList RecipeEntity::cookingPoints() const
     return m_cookingPoints;
 }
 
+float RecipeEntity::proteins()const
+{
+    float proteins(0.f);
+    for (const auto& wp : m_products){
+        proteins += wp.product().proteins() * wp.amound() * 0.01;
+    }
+    return proteins;
+}
+
+float RecipeEntity::fats()const
+{
+    float fats(0.f);
+    for (const auto& wp : m_products){
+        fats += wp.product().fats() * wp.amound() * 0.01;
+    }
+    return fats;
+}
+
+float RecipeEntity::carbohydrates()const
+{
+    float carbohydrates(0.f);
+    for (const auto& wp : m_products){
+        carbohydrates += wp.product().carbohydrates() * wp.amound() * 0.01;
+    }
+    return carbohydrates;
+}
+
+float RecipeEntity::kkal()const
+{
+    float kkal(0.f);
+    for (const auto& wp : m_products){
+        kkal += wp.product().kilocalories() * wp.amound() * 0.01;
+    }
+    return kkal;
+}
+
 void RecipeEntity::addProduct(WeightedProduct product, unsigned int index)
 {
     m_products.insert(index, product);
@@ -79,4 +115,9 @@ QVector<int> RecipeEntity::getSumPFCK()
         sumPFCK[3] += m_products[i].product().kilocalories();
     }
     return sumPFCK;
+}
+   
+void RecipeEntity::setProducts(const QVector<WeightedProduct> &p)
+{
+    m_products = p;
 }
