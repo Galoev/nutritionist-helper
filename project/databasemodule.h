@@ -20,7 +20,7 @@ public:
     ProductEntity           product(unsigned id);
     QVector<ProductEntity>  products();
     QVector<ProductEntity>  products(const QStringList &seachLine);
-    QVector<ProductEntity>  products(QPair<int,int> interval, const char type); /// type: {c, f, p, k}
+    QVector<ProductEntity>  products(QPair<float,float> interval, const char type); /// type: {c, f, p, k}
     void                    changeProductInformation(const ProductEntity& );
 
     /* functions to work with Recipe entities */
@@ -28,7 +28,7 @@ public:
     RecipeEntity            recipe(unsigned id);
     QVector<RecipeEntity>   recipes();
     QVector<RecipeEntity>   recipes(const QStringList &seachLine);
-    QVector<RecipeEntity>   recipes(QPair<int,int> interval, const char type); /*<- NOT IMPLEMENTED*/  /// type: {c, f, p, k}
+    QVector<RecipeEntity>   recipes(QPair<float,float> interval, const char type); /*<- NOT IMPLEMENTED*/  /// type: {c, f, p, k}
     void                    changeRecipeInformation(const RecipeEntity& );
 
     /* functions to work with Activity entities */

@@ -122,7 +122,7 @@ QVector<ProductEntity> DatabaseModule::products(const QStringList &seachLine)
     return products;
 }
 
-QVector<ProductEntity> DatabaseModule::products(QPair<int, int> interval, const char type)
+QVector<ProductEntity> DatabaseModule::products(QPair<float, float> interval, const char type)
 {
     QVector<ProductEntity> products;
     ///
@@ -189,9 +189,13 @@ unsigned DatabaseModule::addRecipe(const RecipeEntity &re)
 {
     ///
     QSqlQuery q;
-    q.prepare("INSERT INTO Recipes (name)"
-              "VALUES( ? );");
+    q.prepare("INSERT INTO Recipes (name, proteins, fats, carbohydrates, kkal )"
+              "VALUES( ?, ?, ?, ? );");
     q.addBindValue(re.name());
+    q.addBindValue(re.proteins());
+    q.addBindValue(re.fats());
+    q.addBindValue(re.carbohydrates());
+    q.addBindValue(re.kkal());
     if(!q.exec()) {
         qDebug() <<
         m_errorList << "Error: in " << Q_FUNC_INFO << "!q!" << q.lastError().text();
@@ -303,13 +307,40 @@ QVector<RecipeEntity> DatabaseModule::recipes(const QStringList &seachLine)
     return recipes;
 }
 
-QVector<RecipeEntity> DatabaseModule::recipes(QPair<int, int> interval, const char type)
+QVector<RecipeEntity> DatabaseModule::recipes(QPair<float, float> interval, const char type)
 {
-    QString str = "ERROR: FUNCTION [" + QString(Q_FUNC_INFO) + "] IS NOT IMPLEMENTED"
-                  "\n >>> empty QVector<RecipeEntity> returned";
-    qDebug() << str;
-    m_errorList << str;
-    return QVector<RecipeEntity>();
+    QVector<RecipeEntity> recipes;
+    ///
+    QString stype, prefix = " WHERE %1 BETWEEN %2 AND %3";
+    switch (type) {
+    case 'c': { stype = "carbohydrates"; } break;
+    case 'f': { stype = "fats"; } break;
+    case 'p': { stype = "proteins"; } break;
+    case 'k': { stype = "kkal"; } break;
+    default: {
+        stype = "";
+        prefix = "";
+    }
+    }
+    qDebug()<<stype<<interval<<"SELECT id FROM Recipes"
+                               "" + prefix.arg(stype).arg(interval.first).arg(interval.second);
+
+    QSqlQuery q("SELECT id FROM Recipes"
+                "" + prefix.arg(stype).arg(interval.first).arg(interval.second));
+    if(!q.exec()){
+        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
+        return recipes;
+    }
+    while(q.next()) {
+        auto prevErrorSize =  m_errorList.size();
+        RecipeEntity c = this->recipe(q.value("id").toInt());
+        auto avterErrorSize = m_errorList.size();
+        if(prevErrorSize == avterErrorSize) {
+            recipes.push_back(c);
+        }
+    }
+
+    return recipes;
 }
 
 void DatabaseModule::changeRecipeInformation(const RecipeEntity &newRecipe)

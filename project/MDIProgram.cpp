@@ -549,6 +549,55 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
         }
     });
 
+    connect(p, &RecipeEdit::productSearchLineReady, [this, p](const QString& s){
+        auto products = _database.products(s.split(' '));
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты с указанным названием не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты с указанным названием не были найдены");
+        }
+        QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
+    });
+    connect(p, &RecipeEdit::productSearchProteinReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'p');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона белков не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона белков не были найдены");
+        }
+        QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
+    });
+    connect(p, &RecipeEdit::productSearchFatsReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'f');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона жиров не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона жиров не были найдены");
+        }
+        QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
+    });
+    connect(p, &RecipeEdit::productSearchCarbohydratesReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'c');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона углеводов не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона углеводов не были найдены");
+        }
+        QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
+    });
+    connect(p, &RecipeEdit::productSelectedForShow, [this, p](){
+        QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
+//        auto selectedProduct = p->selectedProduct();
+//        m_formProductInfo = new ProductInfo;
+//        m_formProductInfo->setInformation(selectedProduct);
+//        this->setProductInfoConnect(m_formProductInfo);
+//        this->addSubWindowAndShow(m_formProductInfo);
+    });
+
 }
 
 void MainWindow::setRecipeInfoConnect(RecipeInfo *p)
