@@ -73,6 +73,11 @@ void RecipeEdit::setInformation(const RecipeEntity &r)
 }
 
 
+void RecipeEdit::setProducts(const QVector<ProductEntity> &products)
+{
+    _productSeach->setInformation(products);
+}
+
 void RecipeEdit::onPushButtonSave()
 {
     QString errorLog;

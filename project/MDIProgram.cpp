@@ -147,7 +147,7 @@ void MainWindow::slotAboutProgram()
 
 void MainWindow::setClientEditConnect(ClientEdit *ce)
 {
-    ce->setAttribute(Qt::WA_DeleteOnClose);
+    //ce->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(ce, &ClientEdit::formNewClientReady, [this, ce](){
         Client client = ce->client();
@@ -164,6 +164,7 @@ void MainWindow::setClientEditConnect(ClientEdit *ce)
         } else {
             QMessageBox::warning(this, tr("Добавление клиента"), tr("Клиент не был добавлен"));
         }
+        ce->parent()->deleteLater();
     });
 
     connect(ce, &ClientEdit::formEditedClientReady, [this, ce](){
@@ -182,6 +183,7 @@ void MainWindow::setClientEditConnect(ClientEdit *ce)
         } else {
             QMessageBox::warning(this, tr("Редактирование клиента"), tr("Клиент не был обновлен"));
         }
+        ce->parent()->deleteLater();
     });
 }
 
@@ -195,6 +197,7 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
         setExaminationEditConnect(m_formExaminationEdit);
         _ui.mdiArea->addSubWindow(m_formExaminationEdit);
         m_formExaminationEdit->show();
+        ci->parent()->deleteLater();
     });
 
     connect(ci, &ClientInfo::newExaminationFullButtonPressed, [this, ci](){
@@ -203,6 +206,7 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
         setExaminationEditConnect(m_formExaminationEdit);
         _ui.mdiArea->addSubWindow(m_formExaminationEdit);
         m_formExaminationEdit->show();
+        ci->parent()->deleteLater();
     });
 
     connect(ci, &ClientInfo::examinationSelectedForShow, [this, ci](){
@@ -211,9 +215,11 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
         setExaminationInfoConnect(m_formExaminationInfo);
         _ui.mdiArea->addSubWindow(m_formExaminationInfo);
         m_formExaminationInfo->show();
+        ci->parent()->deleteLater();
     });
 
     connect(ci, &ClientInfo::editClientButtonPressed, [this, ci](){
+        ci->parent()->deleteLater();
         m_formClientEdit = new ClientEdit;                       //NOTE: Сan we use the local version?
         m_formClientEdit->setInformation(ci->client());
         setClientEditConnect(m_formClientEdit);
@@ -224,7 +230,7 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
 
 void MainWindow::setClientSearchConnect(ClientSearch *cs)
 {
-    cs->setAttribute(Qt::WA_DeleteOnClose);
+    //cs->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(cs, &ClientSearch::seachLineReady, [this, cs](const QString& sl){
         QVector<Client> clients = _database.clients(sl);
@@ -246,7 +252,7 @@ void MainWindow::setClientSearchConnect(ClientSearch *cs)
 
 void MainWindow::setExaminationEditConnect(ExaminationEdit *ee)
 {
-    ee->setAttribute(Qt::WA_DeleteOnClose);
+    //ee->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(ee, &ExaminationEdit::formReady, [this, ee](){
         Examination examination = ee->examination();
@@ -264,6 +270,7 @@ void MainWindow::setExaminationEditConnect(ExaminationEdit *ee)
         } else {
             QMessageBox::warning(this, tr("Создание исследования"), tr("Исследование не было сохранено"));
         }
+        ee->parent()->deleteLater();
     });
 }
 
@@ -316,7 +323,7 @@ void MainWindow::setExaminationSearchConnect(ExaminationSearch *es)
 
 void MainWindow::setProductEditConnect(ProductEdit *p)
 {
-    p->setAttribute(Qt::WA_DeleteOnClose);
+    //p->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(p, &ProductEdit::formNewProductReady, [this, p](){
         auto newProduct = m_formProductEdit->product();
@@ -336,6 +343,7 @@ void MainWindow::setProductEditConnect(ProductEdit *p)
             QMessageBox::warning(this, "Добавление продукта", "Продукт не был добавлен");
             qDebug() << _database.unwatchedWorkError();
         }
+        p->parent()->deleteLater();
     });
     connect(p, &ProductEdit::formEditedProductReady, [this, p](){
         auto editedProduct = m_formProductEdit->product();
@@ -355,23 +363,25 @@ void MainWindow::setProductEditConnect(ProductEdit *p)
             QMessageBox::warning(this, "Редактирование продукта", "Продукт не был обновлен");
             qDebug() << _database.unwatchedWorkError();
         }
+        p->parent()->deleteLater();
     });
 }
 
 void MainWindow::setProductInfoConnect(ProductInfo *p)
 {
-    p->setAttribute(Qt::WA_DeleteOnClose);
+    //p->setAttribute(Qt::WA_DeleteOnClose);
     connect(p, &ProductInfo::editProductButtonPressed, [this, p](){
         m_formProductEdit = new ProductEdit;
         m_formProductEdit->setInformation(p->product());
         this->setProductEditConnect(m_formProductEdit);
         this->addSubWindowAndShow(m_formProductEdit);
+        p->parent()->deleteLater();
     });
 }
 
 void MainWindow::setProductSeachConnect(ProductSeach *p)
 {
-    p->setAttribute(Qt::WA_DeleteOnClose);
+    //p->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(p, &ProductSeach::seachLineProductReady, [this, p](const QString& s){
         auto products = _database.products(s.split(' '));
@@ -424,7 +434,7 @@ void MainWindow::setProductSeachConnect(ProductSeach *p)
 
 void MainWindow::setActivityEditConnect(ActivityEdit *p)
 {
-    p->setAttribute(Qt::WA_DeleteOnClose);
+    //p->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(p, &ActivityEdit::formNewActivityReady, [this, p](){
         auto newActivity = p->activity();
@@ -443,6 +453,7 @@ void MainWindow::setActivityEditConnect(ActivityEdit *p)
             QMessageBox::warning(this, "Добавление вида активности", "Новый вид двигательной активности не был добавлен");
             qDebug() << _database.unwatchedWorkError();
         }
+        p->parent()->deleteLater();
     });
     connect(p, &ActivityEdit::formEditedActivityReady, [this, p](){
         auto editiedActivity = p->activity();
@@ -461,23 +472,25 @@ void MainWindow::setActivityEditConnect(ActivityEdit *p)
             QMessageBox::warning(this, "Редактирование вида активности", "Информация о виде двигательной активности не была обновлена");
             qDebug() << _database.unwatchedWorkError();
         }
+        p->parent()->deleteLater();
     });
 }
 
 void MainWindow::setActivityInfoConnect(ActivityInfo *p)
 {
-    p->setAttribute(Qt::WA_DeleteOnClose);
+    //p->setAttribute(Qt::WA_DeleteOnClose);
     connect(p, &ActivityInfo::editActivityButtonPressed, [this, p](){
         m_formActivityEdit = new ActivityEdit;
         m_formActivityEdit->setInformation(p->activity());
         this->setActivityEditConnect(m_formActivityEdit);
         this->addSubWindowAndShow(m_formActivityEdit);
+        p->parent()->deleteLater();
     });
 }
 
 void MainWindow::setActivitySeachConnect(ActivitySeach *p)
 {
-    p->setAttribute(Qt::WA_DeleteOnClose);
+    //p->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(p, &ActivitySeach::seachLineActivityReady, [this, p](const QString& s){
         auto activities = _database.activities(s.split(' '));
@@ -510,7 +523,7 @@ void MainWindow::setActivitySeachConnect(ActivitySeach *p)
 
 void MainWindow::setRecipeEditConnect(RecipeEdit *p)
 {
-    p->setAttribute(Qt::WA_DeleteOnClose);
+    //p->setAttribute(Qt::WA_DeleteOnClose, true);
 
     connect(p, &RecipeEdit::formNewRecipeReady, [this, p](){
         auto newRecipe = p->recipe();
@@ -529,6 +542,7 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
             QMessageBox::warning(this, "Добавление рецепта", "Новый рецепт не был добавлен");
             qDebug() << _database.unwatchedWorkError();
         }
+        p->parent()->deleteLater();
     });
     connect(p, &RecipeEdit::formEditedRecipeReady, [this, p](){
         auto editiedRecipe = p->recipe();
@@ -547,25 +561,27 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
             QMessageBox::warning(this, "Редактирование рецепта", "Информация по рецепту не была обновлена");
             qDebug() << _database.unwatchedWorkError();
         }
+        p->parent()->deleteLater();
     });
 
 }
 
 void MainWindow::setRecipeInfoConnect(RecipeInfo *p)
 {
-    p->setAttribute(Qt::WA_DeleteOnClose);
+    //p->setAttribute(Qt::WA_DeleteOnClose);
     connect(p, &RecipeInfo::editRecipeButtonPressed, [this, p](){
         auto editiedRecipe = p->recipe();
         m_formRecipeEdit = new RecipeEdit;
         m_formRecipeEdit->setInformation(editiedRecipe);
         this->setRecipeEditConnect(m_formRecipeEdit);
         this->addSubWindowAndShow(m_formRecipeEdit);
+        p->parent()->deleteLater();
     });
 }
 
 void MainWindow::setRecipeSeachConnect(RecipeSeach *p)
 {
-    p->setAttribute(Qt::WA_DeleteOnClose);
+    //p->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(p, &RecipeSeach::seachLineRecipeReady, [this, p](const QString& s){
         auto recipe = _database.recipes(s.split(' '));

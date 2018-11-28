@@ -47,20 +47,21 @@ void RecipeSeach::onPushButtonSeach()
         QString seach = ui->lineEdit_recipeName->text();
         if (!seach.isEmpty()) {
             emit seachLineRecipeReady(seach);
-        } else if (ui->radioButton_proteinSearch->isChecked()) {
-            from = ui->spinBox_From->value();
-            to = ui->spinBox_To->value();
-            emit seachLineProteinReady(from, to);
-        } else if (ui->radioButton_fatsSearch->isChecked()) {
-            from = ui->spinBox_From->value();
-            to = ui->spinBox_To->value();
-            emit seachLineFatsReady(from, to);
-        } else if (ui->radioButton_carbohydratesSearch->isChecked()) {
-            from = ui->spinBox_From->value();
-            to = ui->spinBox_To->value();
-            emit seachLineCarbohydratesReady(from, to);
         }
+    }else if (ui->radioButton_proteinSearch->isChecked()) {
+        from = ui->spinBox_From->value();
+        to = ui->spinBox_To->value();
+        emit seachLineProteinReady(from, to);
+    } else if (ui->radioButton_fatsSearch->isChecked()) {
+        from = ui->spinBox_From->value();
+        to = ui->spinBox_To->value();
+        emit seachLineFatsReady(from, to);
+    } else if (ui->radioButton_carbohydratesSearch->isChecked()) {
+        from = ui->spinBox_From->value();
+        to = ui->spinBox_To->value();
+        emit seachLineCarbohydratesReady(from, to);
     }
+
 }
 
 void RecipeSeach::onRecipeNameSeachType()

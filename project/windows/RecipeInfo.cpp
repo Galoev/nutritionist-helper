@@ -25,15 +25,20 @@ void RecipeInfo::setInformation(const RecipeEntity &r)
     int sumFats = 0;
     int sumCarbohydrates = 0;
     int sumKcal = 0;
+    QVector<int> sumPFCK = _recipe.getSumPFCK();
 
     for (int iRow = 0; iRow < products.size(); ++iRow)
     {
         ui->tableWidget_ingredientList->setItem(iRow, 0, new QTableWidgetItem(products.at(iRow).product().name()));
         ui->tableWidget_ingredientList->setItem(iRow, 1, new QTableWidgetItem(QString::number(products.at(iRow).amound())));
-        sumProtein += products.at(iRow).product().proteins();
+        /*sumProtein += products.at(iRow).product().proteins();
         sumFats += products.at(iRow).product().fats();
         sumCarbohydrates += products.at(iRow).product().carbohydrates();
-        sumKcal += products.at(iRow).product().kilocalories();
+        sumKcal += products.at(iRow).product().kilocalories();*/
+        sumProtein = sumPFCK[0];
+        sumFats = sumPFCK[1];
+        sumCarbohydrates = sumPFCK[2];
+        sumKcal = sumPFCK[3];
     }
 
     ui->label_numProtein->setText(QString::number(sumProtein));

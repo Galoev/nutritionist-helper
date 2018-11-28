@@ -55,6 +55,11 @@
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
+     <row>
+      <property name="text">
+       <string>Новая строка</string>
+      </property>
+     </row>
      <column>
       <property name="text">
        <string>Ингредиент</string>

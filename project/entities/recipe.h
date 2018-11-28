@@ -21,6 +21,7 @@ public:
     void deleteDescription(unsigned int index);
     QVector<WeightedProduct> getPoducts();
     QStringList getCookingPoints();
+    QVector<int> getSumPFCK();
 
     void setId(int id);
 

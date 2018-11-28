@@ -1,6 +1,7 @@
 #pragma once
 #include <QWidget>
 #include "entities/recipe.h"
+#include "entities/product.h"
 #include "windows/ProductSeach.h"
 
 namespace Ui {
@@ -17,6 +18,7 @@ public:
 
     void setInformation(const RecipeEntity& );
     RecipeEntity recipe() const;
+    void setProducts(const QVector<ProductEntity>& );
 
 signals:
     void formNewRecipeReady();

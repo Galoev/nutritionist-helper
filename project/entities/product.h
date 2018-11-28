@@ -9,19 +9,19 @@ public:
     ProductEntity(int id
                  , QString name
                  , QString description
-                 , unsigned proteins
-                 , unsigned fats
-                 , unsigned carbohydrates
-                 , unsigned kilocalories
+                 , float proteins
+                 , float fats
+                 , float carbohydrates
+                 , float kilocalories
                  , UnitsType units);
 
     int id() const;
     QString name() const;
     QString description() const;
-    unsigned proteins() const;
-    unsigned fats() const;
-    unsigned carbohydrates() const;
-    unsigned kilocalories() const;
+    float proteins() const;
+    float fats() const;
+    float carbohydrates() const;
+    float kilocalories() const;
     UnitsType units() const;
 
     void setId(const int &id);
