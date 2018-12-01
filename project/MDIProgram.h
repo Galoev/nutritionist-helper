@@ -63,5 +63,7 @@ private:
     RecipeInfo*         m_formRecipeInfo;
     RecipeSeach*        m_formRecipeSeach;
 
+    QLabel* m_text;
+
     DatabaseModule _database;
 };

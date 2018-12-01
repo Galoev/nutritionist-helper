@@ -24,7 +24,6 @@ MainWindow::MainWindow(QMainWindow* wgt)
     connect(_ui.action_issueReport,         SIGNAL(triggered()), SLOT(slotIssueReport()));
     connect(_ui.action_aboutProgram,        SIGNAL(triggered()), SLOT(slotAboutProgram()));
     connect(_ui.action_exit,                SIGNAL(triggered()), SLOT(close()));
-
 }
 
 void MainWindow::slotImport()

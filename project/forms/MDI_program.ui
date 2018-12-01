@@ -32,7 +32,25 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QMdiArea" name="mdiArea"/>
+     <widget class="QMdiArea" name="mdiArea">
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QMdiArea{
+background-image: url(:/resources/mdi_back.png);
+};</string>
+      </property>
+      <property name="background">
+       <brush brushstyle="Dense7Pattern">
+        <color alpha="255">
+         <red>64</red>
+         <green>66</green>
+         <blue>68</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
