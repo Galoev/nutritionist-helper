@@ -103,19 +103,6 @@ void RecipeEntity::setId(int id)
 {
     m_id = id;
 }
-
-QVector<int> RecipeEntity::getSumPFCK()
-{
-    QVector<int> sumPFCK = {0, 0, 0, 0};
-    for(int i = 0; i<m_products.size(); i++)
-    {
-        sumPFCK[0] += m_products[i].product().proteins();
-        sumPFCK[1] += m_products[i].product().fats();
-        sumPFCK[2] += m_products[i].product().carbohydrates();
-        sumPFCK[3] += m_products[i].product().kilocalories();
-    }
-    return sumPFCK;
-}
    
 void RecipeEntity::setProducts(const QVector<WeightedProduct> &p)
 {

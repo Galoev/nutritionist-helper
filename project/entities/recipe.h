@@ -21,7 +21,6 @@ public:
     float kkal() const;
     QVector<WeightedProduct> getPoducts();
     QStringList getCookingPoints();
-    QVector<int> getSumPFCK();
 
     void setId(int id);
     void setProducts(const QVector<WeightedProduct>& );

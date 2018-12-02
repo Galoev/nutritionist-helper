@@ -571,7 +571,7 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
         } else if (products.isEmpty()){
             QMessageBox::information(this, "Поиск продуктов", "Продукты с указанным названием не были найдены");
         }
-        QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
+        p->setSearchedProducts(products);
     });
     connect(p, &RecipeEdit::productSearchProteinReady, [this, p](const int from, const int to){
         auto products = _database.products(QPair<float,float>(from, to),'p');
@@ -581,7 +581,7 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
         } else if (products.isEmpty()){
             QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона белков не были найдены");
         }
-        QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
+        p->setSearchedProducts(products);
     });
     connect(p, &RecipeEdit::productSearchFatsReady, [this, p](const int from, const int to){
         auto products = _database.products(QPair<float,float>(from, to),'f');
@@ -591,7 +591,7 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
         } else if (products.isEmpty()){
             QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона жиров не были найдены");
         }
-        QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
+        p->setSearchedProducts(products);
     });
     connect(p, &RecipeEdit::productSearchCarbohydratesReady, [this, p](const int from, const int to){
         auto products = _database.products(QPair<float,float>(from, to),'c');
@@ -601,10 +601,10 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
         } else if (products.isEmpty()){
             QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона углеводов не были найдены");
         }
-        QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
+        p->setSearchedProducts(products);
     });
     connect(p, &RecipeEdit::productSelectedForShow, [this, p](){
-        QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
+        //QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
 //        auto selectedProduct = p->selectedProduct();
 //        m_formProductInfo = new ProductInfo;
 //        m_formProductInfo->setInformation(selectedProduct);
@@ -618,8 +618,12 @@ void MainWindow::setRecipeInfoConnect(RecipeInfo *p)
 {
     //p->setAttribute(Qt::WA_DeleteOnClose);
     connect(p, &RecipeInfo::editRecipeButtonPressed, [this, p](){
-        auto editiedRecipe = p->recipe();
-        m_formRecipeEdit = new RecipeEdit;
+        auto editiedRecipe = _database.recipe(p->recipe().id());
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::critical(this, "Редактирование рецепта", "Рецепт не может быть отредактирован, так как он отсутствует в базе данных");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        m_formRecipeEdit = new RecipeEdit(this);
         m_formRecipeEdit->setInformation(editiedRecipe);
         this->setRecipeEditConnect(m_formRecipeEdit);
         this->addSubWindowAndShow(m_formRecipeEdit);

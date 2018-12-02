@@ -3,6 +3,7 @@
 #include "entities/recipe.h"
 #include "entities/product.h"
 #include "windows/ProductSeach.h"
+#include <QMap>
 
 namespace Ui {
 class RecipeEdit;
@@ -18,7 +19,7 @@ public:
 
     void setInformation(const RecipeEntity& );
     RecipeEntity recipe() const;
-    void setProducts(const QVector<ProductEntity>& );
+    void setSearchedProducts(const QVector<ProductEntity>& );
 
 signals:
     void formNewRecipeReady();
@@ -43,4 +44,5 @@ private:
     bool _isEditingMod = false;
 
     ProductSeach* _productSeach;
+    QMap<QString, ProductEntity> m_addedIngradients;
 };

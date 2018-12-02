@@ -13,7 +13,7 @@ RecipeEdit::RecipeEdit(QWidget *parent) :
     _productSeach = new ProductSeach(ui->widget_product_search);
     _productSeach->resize(457,200);
     ui->lineEdi_recipeName->setValidator(new QRegExpValidator(QRegExp("[A-Z/a-z/а-я/A-Я]{1,}\[A-Z/a-z/а-я/A-Я\\s]{1,}")));
-    ui->tableWidget_ingredientList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    //ui->tableWidget_ingredientList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     connect(ui->pushButton_save, SIGNAL(pressed()), SLOT(onPushButtonSave()));
     connect(ui->pushButton_cancel, SIGNAL(pressed()), SLOT(onPushButtonCancel()));
@@ -32,42 +32,33 @@ RecipeEdit::RecipeEdit(QWidget *parent) :
 void RecipeEdit::setInformation(const RecipeEntity &r)
 {
     _isEditingMod = true;
-
-    _recipe.setId(r.id());
-
+    _recipe = r;
     ui->lineEdi_recipeName->setText(r.name());
-    QVector<WeightedProduct> produsctsList = r.products();
-    for (int i = 0; i < produsctsList.size(); i++)
-    {
-        ui->tableWidget_ingredientList->insertRow(i);
-        QTableWidgetItem item;
-        item.setText(produsctsList.at(i).product().name());
-        ui->tableWidget_ingredientList->setItem(i,0, &item);
-        QString units = "";
-        if (produsctsList.at(i).product().units() == ProductEntity::GRAMM)  {
-            units = "гр";
-        } else if (produsctsList.at(i).product().units() == ProductEntity::MILLILITER) {
-            units = "мл";
-        } else {
-            units = "NONE";
-        }
-        item.setText(QString::number(produsctsList.at(i).amound())+" "+units);
-        ui->tableWidget_ingredientList->setItem(i, 1, &item);
+
+    for(const auto& wProduct : _recipe.products()){
+        const auto& product = wProduct.product();
+        const QString name = product.name();
+        const QString amound = QString::number(wProduct.amound());
+        const QString units = product.units() == ProductEntity::GRAMM      ? "гр"
+                            : product.units() == ProductEntity::MILLILITER ? "мл"
+                            : "???";
+        const auto rowCount = ui->tableWidget_ingredientList->rowCount();
+        ui->tableWidget_ingredientList->insertRow(rowCount);
+        ui->tableWidget_ingredientList->setItem(rowCount, 0, new QTableWidgetItem(name));
+        ui->tableWidget_ingredientList->setItem(rowCount, 1, new QTableWidgetItem(amound));
+        ui->tableWidget_ingredientList->setItem(rowCount, 2, new QTableWidgetItem(units));
     }
-    QStringList cookingPointList = r.cookingPoints();
-    for (int i = 0; i < cookingPointList.size(); i++)
-    {
-        ui->tableWidget_recipeDescription->insertRow(i);
-        QTableWidgetItem item;
-        item.setText(cookingPointList.takeAt(i));
-        ui->tableWidget_recipeDescription->setItem(i, 0, &item);
+    for(QString cookingPoint : _recipe.cookingPoints()){
+        const int rowCount = ui->tableWidget_recipeDescription->rowCount();
+        ui->tableWidget_recipeDescription->insertRow(rowCount);
+        ui->tableWidget_recipeDescription->setItem(rowCount, 0, new QTableWidgetItem(cookingPoint));
     }
 
     this->repaint();
 }
 
 
-void RecipeEdit::setProducts(const QVector<ProductEntity> &products)
+void RecipeEdit::setSearchedProducts(const QVector<ProductEntity> &products)
 {
     _productSeach->setInformation(products);
 }
@@ -96,19 +87,18 @@ void RecipeEdit::onPushButtonSave()
     QStringList cookingPoints;
     QTableWidgetItem item;
     int descriptionRows = ui->tableWidget_recipeDescription->rowCount();
-    /*
-    for (int i=0; i<tableRows; i++)
-    {
 
-        item = *ui->tableWidget_ingredientList->takeItem(i, 0);
-        produsctsList.push_back(WeightedProduct());
-    }*/
-    for (int i = 0; i<descriptionRows; i++)
-    {
+    int index(0);
+    for(auto product : m_addedIngradients){
+        auto amound = ui->tableWidget_ingredientList->takeItem(index++, 1)->text().toFloat();
+        produsctsList.push_back(WeightedProduct(product, amound));
+    }
+    for (int i = 0; i<descriptionRows; i++) {
         item = *ui->tableWidget_recipeDescription->takeItem(i, 0);
         cookingPoints.push_back(item.text());
     }
-    _recipe = RecipeEntity(_recipe.id(), recipeName, _recipe.getPoducts(), cookingPoints);
+    _recipe = RecipeEntity(_recipe.id(), recipeName, produsctsList, cookingPoints);
+
 
     if (_isEditingMod) {
         emit formEditedRecipeReady();
@@ -120,6 +110,7 @@ void RecipeEdit::onPushButtonSave()
 
 void RecipeEdit::onPushButtonAddIngredient()
 {
+    _productSeach->selectedProduct();
     if (!(_productSeach->getCurrentRow() < 0))
     {
         ProductEntity product = _productSeach->selectedProduct();
@@ -132,7 +123,9 @@ void RecipeEdit::onPushButtonAddIngredient()
         ui->tableWidget_ingredientList->insertRow(productRow);
         ui->tableWidget_ingredientList->setItem(productRow, 0, new QTableWidgetItem(product.name()));
         ui->tableWidget_ingredientList->setItem(productRow, 1, new QTableWidgetItem("0"));
-        _recipe.addProduct(WeightedProduct(product, -1), productRow);
+
+        m_addedIngradients[product.name()] = product;
+        //_recipe.addProduct(WeightedProduct(product, 0), productRow);
 
     } else {
         qDebug()<<"Error: RecipeEdit::onPushButtonAddIngredient()"
@@ -146,7 +139,11 @@ void RecipeEdit::onPushButtoDeleteIngredient()
     {
         int deletedProductRow = ui->tableWidget_ingredientList->currentRow();
         ui->tableWidget_ingredientList->removeRow(deletedProductRow);
-        _recipe.deleteProduct(deletedProductRow);
+
+        auto productName = ui->tableWidget_ingredientList->currentItem()->text();
+        m_addedIngradients.remove(productName);
+        // _recipe.deleteProduct(deletedProductRow);
+
     } else {
         qDebug()<<"RecipeEdit::onPushButtoDeleteIngredient()"
                <<"Nothing selected";

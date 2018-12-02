@@ -190,7 +190,7 @@ unsigned DatabaseModule::addRecipe(const RecipeEntity &re)
     ///
     QSqlQuery q;
     q.prepare("INSERT INTO Recipes (name, proteins, fats, carbohydrates, kkal )"
-              "VALUES( ?, ?, ?, ? );");
+              "VALUES( ?, ?, ?, ?, ? );");
     q.addBindValue(re.name());
     q.addBindValue(re.proteins());
     q.addBindValue(re.fats());
@@ -345,6 +345,7 @@ QVector<RecipeEntity> DatabaseModule::recipes(QPair<float, float> interval, cons
 
 void DatabaseModule::changeRecipeInformation(const RecipeEntity &newRecipe)
 {
+    for(auto p : newRecipe.products()) qDebug() << p.product().name();
     //call this for testing to exists product
     auto prevErrorSize =  m_errorList.size();
     recipe(newRecipe.id());
