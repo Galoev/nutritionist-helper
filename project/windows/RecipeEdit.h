@@ -44,5 +44,4 @@ private:
     bool _isEditingMod = false;
 
     ProductSeach* _productSeach;
-    QMap<QString, ProductEntity> m_addedIngradients;
 };

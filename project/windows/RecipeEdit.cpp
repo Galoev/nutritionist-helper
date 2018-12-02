@@ -83,15 +83,14 @@ void RecipeEdit::onPushButtonSave()
     }
 
     QString recipeName = ui->lineEdi_recipeName->text();
-    QVector<WeightedProduct> produsctsList;
+    QVector<WeightedProduct> produsctsList = _recipe.getPoducts();
     QStringList cookingPoints;
     QTableWidgetItem item;
     int descriptionRows = ui->tableWidget_recipeDescription->rowCount();
 
-    int index(0);
-    for(auto product : m_addedIngradients){
-        auto amound = ui->tableWidget_ingredientList->takeItem(index++, 1)->text().toFloat();
-        produsctsList.push_back(WeightedProduct(product, amound));
+    for(int i = 0; i<produsctsList.size(); i++){
+        auto amound = ui->tableWidget_ingredientList->takeItem(i, 1)->text().toFloat();
+        produsctsList[i].setAmound(amound);
     }
     for (int i = 0; i<descriptionRows; i++) {
         item = *ui->tableWidget_recipeDescription->takeItem(i, 0);
@@ -123,9 +122,11 @@ void RecipeEdit::onPushButtonAddIngredient()
         ui->tableWidget_ingredientList->insertRow(productRow);
         ui->tableWidget_ingredientList->setItem(productRow, 0, new QTableWidgetItem(product.name()));
         ui->tableWidget_ingredientList->setItem(productRow, 1, new QTableWidgetItem("0"));
+        ui->tableWidget_ingredientList->setItem(productRow, 2, new QTableWidgetItem(product.units() == ProductEntity::GRAMM ? "гр"
+                                                                                                                            : product.units() == ProductEntity::MILLILITER ? "мл"
+                                                                                                                            : "???"));
 
-        m_addedIngradients[product.name()] = product;
-        //_recipe.addProduct(WeightedProduct(product, 0), productRow);
+        _recipe.addProduct(WeightedProduct(product, 0), productRow);
 
     } else {
         qDebug()<<"Error: RecipeEdit::onPushButtonAddIngredient()"
@@ -140,9 +141,9 @@ void RecipeEdit::onPushButtoDeleteIngredient()
         int deletedProductRow = ui->tableWidget_ingredientList->currentRow();
         ui->tableWidget_ingredientList->removeRow(deletedProductRow);
 
-        auto productName = ui->tableWidget_ingredientList->currentItem()->text();
-        m_addedIngradients.remove(productName);
-        // _recipe.deleteProduct(deletedProductRow);
+        //auto productName = ui->tableWidget_ingredientList->currentItem()->text();
+
+        _recipe.deleteProduct(deletedProductRow);
 
     } else {
         qDebug()<<"RecipeEdit::onPushButtoDeleteIngredient()"

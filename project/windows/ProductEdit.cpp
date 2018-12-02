@@ -33,6 +33,7 @@ void ProductEdit::setInformation(const ProductEntity &p)
     ui->lineEdit_numCarbohydrates->setText(QString::number(p.carbohydrates()));
     ui->lineEdit_numKcal->setText(QString::number(p.kilocalories()));
     ui->textEdit_description->setText(p.description());
+    ui->comboBox->setCurrentIndex(p.units() == ProductEntity::GRAMM ? 0 : 1);
 
     this->repaint();
 }
@@ -76,7 +77,7 @@ void ProductEdit::onPushButtonSave()
                              , fats
                              , carbohydrates
                              , kcal
-                             , ProductEntity::UNDEF); //WARNIND: TODO:
+                             , ui->comboBox->currentIndex() == 0 ? ProductEntity::GRAMM : ui->comboBox->currentIndex() == 1 ? ProductEntity::MILLILITER : ProductEntity::UNDEF); //WARNIND: TODO:
 
     if (_isEditingMod) {
         emit formEditedProductReady();

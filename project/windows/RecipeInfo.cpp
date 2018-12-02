@@ -7,9 +7,10 @@ RecipeInfo::RecipeInfo(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tableWidget_ingredientList->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableWidget_ingredientList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_ingredientList->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableWidget_recipeDescription->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget_recipeDescription->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
 
     connect(ui->pushButton_recipeEdit, SIGNAL(pressed()), SIGNAL(editRecipeButtonPressed()));
 }
@@ -24,6 +25,7 @@ void RecipeInfo::setInformation(const RecipeEntity &r)
     for (int iRow = 0; iRow < products.size(); ++iRow) {
         ui->tableWidget_ingredientList->setItem(iRow, 0, new QTableWidgetItem(products.at(iRow).product().name()));
         ui->tableWidget_ingredientList->setItem(iRow, 1, new QTableWidgetItem(QString::number(products.at(iRow).amound())));
+        ui->tableWidget_ingredientList->setItem(iRow, 2, new QTableWidgetItem(products.at(iRow).product().units() == ProductEntity::GRAMM ? "гр" : products.at(iRow).product().units() == ProductEntity::MILLILITER ? "мл" : "???"));
     }
 
     auto proteins = QString::number(_recipe.proteins());

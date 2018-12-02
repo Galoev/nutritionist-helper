@@ -91,3 +91,8 @@ int WeightedProduct::amound() const
 {
     return m_amound;
 }
+
+void WeightedProduct::setAmound(unsigned int amound)
+{
+    m_amound = amound;
+}

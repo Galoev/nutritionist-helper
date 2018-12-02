@@ -47,6 +47,7 @@ public:
 public:
     ProductEntity product() const;
     int amound() const;
+    void setAmound(unsigned int amound);
 
 private:
     ProductEntity m_product;
