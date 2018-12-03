@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QString>
 #include <QRegExpValidator>
+#include <QLocale>
 
 ActivityEdit::ActivityEdit(QWidget *parent) :
     QWidget(parent),
@@ -10,7 +11,7 @@ ActivityEdit::ActivityEdit(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->lineEdit_activityName->setValidator(new QRegExpValidator(QRegExp("[\\w]")));
+    ui->lineEdit_activityName->setValidator(new QRegExpValidator(QRegExp("[A-Z/a-z/а-я/A-Я]{1,}\[A-Z/a-z/а-я/A-Я\\s]{1,}")));
     ui->lineEdit_calories->setValidator(new QDoubleValidator(0.0, 100000.0, 2));
 
     connect(ui->pushButton_save, SIGNAL(pressed()), SLOT(onPushButtonSave()));
@@ -45,7 +46,7 @@ void ActivityEdit::onPushButtonSave()
     }
 
     QString activityName = ui->lineEdit_activityName->text();
-    float kkm = ui->lineEdit_calories->text().toFloat();
+    float kkm = QLocale::system().toDouble(ui->lineEdit_calories->text());
 
     _activity = ActivityEntity(_activity.id(), activityName, kkm);
 
@@ -60,7 +61,7 @@ void ActivityEdit::onPushButtonSave()
 
 void ActivityEdit::onPushButtonCancel()
 {
-    this->close();
+    this->parent()->deleteLater();
 }
 
 ActivityEntity ActivityEdit::activity() const

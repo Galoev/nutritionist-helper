@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QRegExpValidator>
 #include <QMessageBox>
+#include <QDebug>
 
 ProductEdit::ProductEdit(QWidget *parent) :
     QWidget(parent),
@@ -10,7 +11,7 @@ ProductEdit::ProductEdit(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->lineEdit_productName->setValidator(new QRegExpValidator(QRegExp("[\\w]")));
+    ui->lineEdit_productName->setValidator(new QRegExpValidator(QRegExp("[A-Z/a-z/а-я/A-Я]{1,}\[A-Z/a-z/а-я/A-Я\\s]{1,}")));
     ui->lineEdit_numProtein->setValidator(new QDoubleValidator(0.0, 1000.0, 2));
     ui->lineEdit_numFats->setValidator(new QDoubleValidator(0.0, 1000.0, 2));
     ui->lineEdit_numCarbohydrates->setValidator(new QDoubleValidator(0.0, 1000.0, 2));
@@ -32,6 +33,7 @@ void ProductEdit::setInformation(const ProductEntity &p)
     ui->lineEdit_numCarbohydrates->setText(QString::number(p.carbohydrates()));
     ui->lineEdit_numKcal->setText(QString::number(p.kilocalories()));
     ui->textEdit_description->setText(p.description());
+    ui->comboBox->setCurrentIndex(p.units() == ProductEntity::GRAMM ? 0 : 1);
 
     this->repaint();
 }
@@ -62,13 +64,20 @@ void ProductEdit::onPushButtonSave()
     }
 
     QString productName = ui->lineEdit_productName->text();
-    float protein = ui->lineEdit_numProtein->text().toFloat();
-    float fats = ui->lineEdit_numFats->text().toFloat();
-    float carbohydrates = ui->lineEdit_numCarbohydrates->text().toFloat();
-    float kcal = ui->lineEdit_numKcal->text().toFloat();
+    float protein = QLocale::system().toDouble(ui->lineEdit_numProtein->text());
+    float fats = QLocale::system().toDouble(ui->lineEdit_numFats->text());
+    float carbohydrates = QLocale::system().toDouble(ui->lineEdit_numCarbohydrates->text());
+    float kcal = QLocale::system().toDouble(ui->lineEdit_numKcal->text());
     QString description = ui->textEdit_description->toPlainText();
 
-    _product = ProductEntity(_product.id(), productName, description, (unsigned int)protein, (unsigned int)fats, (unsigned int)carbohydrates, (unsigned int)kcal);
+    _product = ProductEntity(_product.id()
+                             , productName
+                             , description
+                             , protein
+                             , fats
+                             , carbohydrates
+                             , kcal
+                             , ui->comboBox->currentIndex() == 0 ? ProductEntity::GRAMM : ui->comboBox->currentIndex() == 1 ? ProductEntity::MILLILITER : ProductEntity::UNDEF); //WARNIND: TODO:
 
     if (_isEditingMod) {
         emit formEditedProductReady();
@@ -81,7 +90,7 @@ void ProductEdit::onPushButtonSave()
 
 void ProductEdit::onPushButtonCancel()
 {
-    this->close();
+    this->parent()->deleteLater();
 }
 
 ProductEntity ProductEdit::product() const

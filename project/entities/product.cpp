@@ -15,10 +15,10 @@ ProductEntity::ProductEntity()
 ProductEntity::ProductEntity(int id
                             , QString name
                             , QString description
-                            , unsigned proteins
-                            , unsigned fats
-                            , unsigned carbohydrates
-                            , unsigned kilocalories
+                            , float proteins
+                            , float fats
+                            , float carbohydrates
+                            , float kilocalories
                             , UnitsType units)
     :m_id(id)
     ,m_name(name)
@@ -41,22 +41,22 @@ QString ProductEntity::description() const
     return m_description;
 }
 
-unsigned ProductEntity::proteins() const
+float ProductEntity::proteins() const
 {
     return m_proteins;
 }
 
-unsigned ProductEntity::fats() const
+float ProductEntity::fats() const
 {
     return m_fats;
 }
 
-unsigned ProductEntity::carbohydrates() const
+float ProductEntity::carbohydrates() const
 {
     return m_carbohydrates;
 }
 
-unsigned ProductEntity::kilocalories() const
+float ProductEntity::kilocalories() const
 {
     return m_kilocalories;
 }
@@ -90,4 +90,9 @@ ProductEntity WeightedProduct::product() const
 int WeightedProduct::amound() const
 {
     return m_amound;
+}
+
+void WeightedProduct::setAmound(unsigned int amound)
+{
+    m_amound = amound;
 }

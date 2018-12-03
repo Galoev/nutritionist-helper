@@ -4,5 +4,6 @@
         <file>resources/settings_icon.png</file>
         <file>resources/user_img.png</file>
         <file>resources/icon.ico</file>
+        <file>resources/mdi_back.png</file>
     </qresource>
 </RCC>

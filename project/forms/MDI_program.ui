@@ -32,7 +32,25 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QMdiArea" name="mdiArea"/>
+     <widget class="QMdiArea" name="mdiArea">
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QMdiArea{
+background-image: url(:/resources/mdi_back.png);
+};</string>
+      </property>
+      <property name="background">
+       <brush brushstyle="Dense7Pattern">
+        <color alpha="255">
+         <red>64</red>
+         <green>66</green>
+         <blue>68</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -45,52 +63,77 @@
      <height>20</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="menu_file">
     <property name="title">
      <string>Файл</string>
     </property>
-    <widget class="QMenu" name="menu_6">
+    <widget class="QMenu" name="menu_db">
      <property name="title">
       <string>База данных</string>
      </property>
      <addaction name="action_import"/>
      <addaction name="action_export"/>
     </widget>
-    <addaction name="menu_6"/>
+    <addaction name="menu_db"/>
     <addaction name="separator"/>
     <addaction name="action_exit"/>
    </widget>
-   <widget class="QMenu" name="menu_7">
+   <widget class="QMenu" name="menu_about">
     <property name="title">
      <string>Справка</string>
     </property>
     <addaction name="action_issueReport"/>
     <addaction name="action_aboutProgram"/>
    </widget>
-   <widget class="QMenu" name="menu_2">
+   <widget class="QMenu" name="menu_overwiew">
     <property name="title">
      <string>Вид</string>
     </property>
     <addaction name="action_windowsSort"/>
    </widget>
-   <widget class="QMenu" name="menu_3">
+   <widget class="QMenu" name="menu_edit">
     <property name="title">
      <string>Редактирование</string>
     </property>
-    <widget class="QMenu" name="menu_5">
+    <widget class="QMenu" name="menu_cients">
      <property name="title">
-      <string>Клиенты</string>
+      <string>&amp;Клиенты</string>
      </property>
      <addaction name="action_clientAdd"/>
      <addaction name="action_clientSeach"/>
     </widget>
-    <addaction name="menu_5"/>
+    <widget class="QMenu" name="menu_products">
+     <property name="title">
+      <string>&amp;Продукты</string>
+     </property>
+     <addaction name="action_productAdd"/>
+     <addaction name="action_productSearch"/>
+    </widget>
+    <widget class="QMenu" name="menu_recipes">
+     <property name="title">
+      <string>&amp;Рецепты</string>
+     </property>
+     <addaction name="action_recipeAdd"/>
+     <addaction name="action_recipeSearch"/>
+    </widget>
+    <widget class="QMenu" name="menu_activities">
+     <property name="title">
+      <string>&amp;Активности</string>
+     </property>
+     <addaction name="action_activityAdd"/>
+     <addaction name="action_activitySearch"/>
+    </widget>
     <addaction name="action_examinationSeach"/>
+    <addaction name="separator"/>
+    <addaction name="menu_cients"/>
+    <addaction name="menu_products"/>
+    <addaction name="menu_recipes"/>
+    <addaction name="menu_activities"/>
    </widget>
-   <addaction name="menu"/>
-   <addaction name="menu_3"/>
-   <addaction name="menu_2"/>
-   <addaction name="menu_7"/>
+   <addaction name="menu_file"/>
+   <addaction name="menu_edit"/>
+   <addaction name="menu_overwiew"/>
+   <addaction name="menu_about"/>
   </widget>
   <action name="action_issueReport">
    <property name="text">
@@ -112,22 +155,34 @@
   </action>
   <action name="action_examinationSeach">
    <property name="text">
-    <string>Поиск по исследованиям</string>
+    <string>Поиск по &amp;исследованиям</string>
+   </property>
+   <property name="toolTip">
+    <string>Поиск по исследованиям для просмотра или редактирования</string>
    </property>
   </action>
   <action name="action_clientAdd">
    <property name="text">
     <string>Добавить...</string>
    </property>
+   <property name="toolTip">
+    <string>Добавить нового клиента</string>
+   </property>
   </action>
   <action name="action_clientSeach">
    <property name="text">
     <string>Поиск...</string>
    </property>
+   <property name="toolTip">
+    <string>Поиск по клиентам для просмотра или редактирования</string>
+   </property>
   </action>
   <action name="action_exit">
    <property name="text">
     <string>Выход</string>
+   </property>
+   <property name="toolTip">
+    <string>Выход из приложения</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
@@ -137,10 +192,64 @@
    <property name="text">
     <string>Экспорт...</string>
    </property>
+   <property name="toolTip">
+    <string>Экспорт файла базы данных</string>
+   </property>
   </action>
   <action name="action_import">
    <property name="text">
     <string>Импорт...</string>
+   </property>
+   <property name="toolTip">
+    <string>Импорт базы данных из файла</string>
+   </property>
+  </action>
+  <action name="action_productAdd">
+   <property name="text">
+    <string>&amp;Добавить...</string>
+   </property>
+   <property name="toolTip">
+    <string>Добавить новый продукт</string>
+   </property>
+  </action>
+  <action name="action_productSearch">
+   <property name="text">
+    <string>&amp;Поиск...</string>
+   </property>
+   <property name="toolTip">
+    <string>Поиск по продуктам для просмотра или редактирования</string>
+   </property>
+  </action>
+  <action name="action_recipeAdd">
+   <property name="text">
+    <string>&amp;Добавить...</string>
+   </property>
+   <property name="toolTip">
+    <string>Добавить новый рецепт</string>
+   </property>
+  </action>
+  <action name="action_recipeSearch">
+   <property name="text">
+    <string>&amp;Поиск...</string>
+   </property>
+   <property name="toolTip">
+    <string>Поиск по рецептам для просмотра или редактирования</string>
+   </property>
+  </action>
+  <action name="action_activityAdd">
+   <property name="text">
+    <string>&amp;Добавить...</string>
+   </property>
+   <property name="toolTip">
+    <string>Добавить новый вид активности</string>
+   </property>
+  </action>
+  <action name="action_activitySearch">
+   <property name="text">
+    <string>&amp;Поиск...</string>
+   </property>
+   <property name="toolTip">
+    <string>Поиск по активностям для просмотра или редактирования</string>
    </property>
   </action>
  </widget>

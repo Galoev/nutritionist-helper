@@ -1,4 +1,4 @@
-#include "MDIProgram.h"
+﻿#include "MDIProgram.h"
 #include "printer.h"
 #include <QMessageBox>
 #include <QDesktopServices>
@@ -9,12 +9,17 @@ MainWindow::MainWindow(QMainWindow* wgt)
     :QMainWindow(wgt)
 {
     _ui.setupUi(this);
-
     connect(_ui.action_import,              SIGNAL(triggered()), SLOT(slotImport()));
     connect(_ui.action_export,              SIGNAL(triggered()), SLOT(slotExport()));
+    connect(_ui.action_examinationSeach,    SIGNAL(triggered()), SLOT(slotExaminationSeach()));
     connect(_ui.action_clientAdd,           SIGNAL(triggered()), SLOT(slotClientAdd()));
     connect(_ui.action_clientSeach,         SIGNAL(triggered()), SLOT(slotClientSeach()));
-    connect(_ui.action_examinationSeach,    SIGNAL(triggered()), SLOT(slotExaminationSeach()));
+    connect(_ui.action_productAdd,          SIGNAL(triggered()), SLOT(slotProductAdd()));
+    connect(_ui.action_productSearch,       SIGNAL(triggered()), SLOT(slotProductSearch()));
+    connect(_ui.action_activityAdd,         SIGNAL(triggered()), SLOT(slotActivityAdd()));
+    connect(_ui.action_activitySearch,      SIGNAL(triggered()), SLOT(slotActivitySearch()));
+    connect(_ui.action_recipeAdd,           SIGNAL(triggered()), SLOT(slotRecipeAdd()));
+    connect(_ui.action_recipeSearch,        SIGNAL(triggered()), SLOT(slotRecipeSearch()));
     connect(_ui.action_windowsSort,         SIGNAL(triggered()), SLOT(slotWindowsSort()));
     connect(_ui.action_issueReport,         SIGNAL(triggered()), SLOT(slotIssueReport()));
     connect(_ui.action_aboutProgram,        SIGNAL(triggered()), SLOT(slotAboutProgram()));
@@ -59,26 +64,65 @@ void MainWindow::slotExport()
 
 void MainWindow::slotClientAdd()
 {
-    _formClientEdit = new ClientEdit;                       //NOTE: Сan we use the local version?
-    setClientEditConnect(_formClientEdit);
-    _ui.mdiArea->addSubWindow(_formClientEdit);
-    _formClientEdit->show();
+    m_formClientEdit = new ClientEdit;                       //NOTE: Сan we use the local version?
+    setClientEditConnect(m_formClientEdit);
+    addSubWindowAndShow(m_formClientEdit);
 }
 
 void MainWindow::slotClientSeach()
 {
-    _formClientSeach = new ClientSearch;                    //NOTE: Сan we use the local version?
-    setClientSearchConnect(_formClientSeach);
-    _ui.mdiArea->addSubWindow(_formClientSeach);
-    _formClientSeach->show();
+    m_formClientSeach = new ClientSearch;                    //NOTE: Сan we use the local version?
+    setClientSearchConnect(m_formClientSeach);
+    addSubWindowAndShow(m_formClientSeach);
 }
 
 void MainWindow::slotExaminationSeach()
 {
-    _formExaminationSearch = new ExaminationSearch;         //NOTE: Сan we use the local version?
-    setExaminationSearchConnect(_formExaminationSearch);
-    _ui.mdiArea->addSubWindow(_formExaminationSearch);
-    _formExaminationSearch->show();
+    m_formExaminationSearch = new ExaminationSearch;         //NOTE: Сan we use the local version?
+    setExaminationSearchConnect(m_formExaminationSearch);
+    addSubWindowAndShow(m_formExaminationSearch);
+}
+
+void MainWindow::slotProductAdd()
+{
+    m_formProductEdit = new ProductEdit;
+    setProductEditConnect(m_formProductEdit);
+    addSubWindowAndShow(m_formProductEdit);
+}
+
+void MainWindow::slotProductSearch()
+{
+    m_formProductSearch = new ProductSeach;
+    setProductSeachConnect(m_formProductSearch);
+    addSubWindowAndShow(m_formProductSearch);
+}
+
+void MainWindow::slotActivityAdd()
+{
+    m_formActivityEdit = new ActivityEdit;
+    setActivityEditConnect(m_formActivityEdit);
+    addSubWindowAndShow(m_formActivityEdit);
+}
+
+void MainWindow::slotActivitySearch()
+{
+    m_formActivitySeach = new ActivitySeach;
+    setActivitySeachConnect(m_formActivitySeach);
+    addSubWindowAndShow(m_formActivitySeach);
+}
+
+void MainWindow::slotRecipeAdd()
+{
+    m_formRecipeEdit = new RecipeEdit;
+    setRecipeEditConnect(m_formRecipeEdit);
+    addSubWindowAndShow(m_formRecipeEdit);
+}
+
+void MainWindow::slotRecipeSearch()
+{
+    m_formRecipeSeach = new RecipeSeach;
+    setRecipeSeachConnect(m_formRecipeSeach);
+    addSubWindowAndShow(m_formRecipeSeach);
 }
 
 void MainWindow::slotWindowsSort()
@@ -93,13 +137,16 @@ void MainWindow::slotIssueReport()
 
 void MainWindow::slotAboutProgram()
 {
-    QMessageBox::about(this, tr("О программе"), tr("Программа ""Помощник Диетолога"""
-                                                   "\nРазработчик: Аржевитин Б.К."));
+    QString msgText = "Программа: \"Помощник Диетолога\""
+                      "\nРазработчики: Аржевитин Б.К., Галоев И.Б."
+                      "\nВерсия: " + QString(APP_VERSION);
+    ///
+    QMessageBox::about(this, "О программе", msgText);
 }
 
 void MainWindow::setClientEditConnect(ClientEdit *ce)
 {
-    ce->setAttribute(Qt::WA_DeleteOnClose);
+    //ce->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(ce, &ClientEdit::formNewClientReady, [this, ce](){
         Client client = ce->client();
@@ -107,15 +154,16 @@ void MainWindow::setClientEditConnect(ClientEdit *ce)
             if ( QMessageBox::question(this, tr("Добавление клиента")
                                        , tr("Клиент успешно добавлен\nЖелаете открыть окно Информации о клиенте?")
                                        , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
-                _formClientInfo = new ClientInfo();
-                setClientInfoConnect(_formClientInfo);
-                _formClientInfo->setInformation(client, _database.examinations(client));
-                _ui.mdiArea->addSubWindow(_formClientInfo);
-                _formClientInfo->show();
+                m_formClientInfo = new ClientInfo();
+                setClientInfoConnect(m_formClientInfo);
+                m_formClientInfo->setInformation(client, _database.examinations(client));
+                _ui.mdiArea->addSubWindow(m_formClientInfo);
+                m_formClientInfo->show();
             }
         } else {
             QMessageBox::warning(this, tr("Добавление клиента"), tr("Клиент не был добавлен"));
         }
+        ce->parent()->deleteLater();
     });
 
     connect(ce, &ClientEdit::formEditedClientReady, [this, ce](){
@@ -125,15 +173,16 @@ void MainWindow::setClientEditConnect(ClientEdit *ce)
             if ( QMessageBox::question(this, tr("Редактирование клиента")
                                        , tr("Клиент успешно отредактирован\nЖелаете открыть окно Информации о клиенте?")
                                        , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
-                _formClientInfo = new ClientInfo();
-                setClientInfoConnect(_formClientInfo);
-                _formClientInfo->setInformation(client, _database.examinations(client));
-                _ui.mdiArea->addSubWindow(_formClientInfo);
-                _formClientInfo->show();
+                m_formClientInfo = new ClientInfo();
+                setClientInfoConnect(m_formClientInfo);
+                m_formClientInfo->setInformation(client, _database.examinations(client));
+                _ui.mdiArea->addSubWindow(m_formClientInfo);
+                m_formClientInfo->show();
             }
         } else {
-            QMessageBox::warning(this, tr("Добавление клиента"), tr("Клиент не был добавлен"));
+            QMessageBox::warning(this, tr("Редактирование клиента"), tr("Клиент не был обновлен"));
         }
+        ce->parent()->deleteLater();
     });
 }
 
@@ -142,41 +191,45 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
     ci->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(ci, &ClientInfo::newExaminationHalfButtonPressed, [this, ci](){
-        _formExaminationEdit = new ExaminationEdit;             //NOTE: Сan we use the local version?
-        _formExaminationEdit->setInformation(ci->client(), false);
-        setExaminationEditConnect(_formExaminationEdit);
-        _ui.mdiArea->addSubWindow(_formExaminationEdit);
-        _formExaminationEdit->show();
+        m_formExaminationEdit = new ExaminationEdit;             //NOTE: Сan we use the local version?
+        m_formExaminationEdit->setInformation(ci->client(), false);
+        setExaminationEditConnect(m_formExaminationEdit);
+        _ui.mdiArea->addSubWindow(m_formExaminationEdit);
+        m_formExaminationEdit->show();
+        ci->parent()->deleteLater();
     });
 
     connect(ci, &ClientInfo::newExaminationFullButtonPressed, [this, ci](){
-        _formExaminationEdit = new ExaminationEdit;             //NOTE: Сan we use the local version?
-        _formExaminationEdit->setInformation(ci->client(), true);
-        setExaminationEditConnect(_formExaminationEdit);
-        _ui.mdiArea->addSubWindow(_formExaminationEdit);
-        _formExaminationEdit->show();
+        m_formExaminationEdit = new ExaminationEdit;             //NOTE: Сan we use the local version?
+        m_formExaminationEdit->setInformation(ci->client(), true);
+        setExaminationEditConnect(m_formExaminationEdit);
+        _ui.mdiArea->addSubWindow(m_formExaminationEdit);
+        m_formExaminationEdit->show();
+        ci->parent()->deleteLater();
     });
 
     connect(ci, &ClientInfo::examinationSelectedForShow, [this, ci](){
-        _formExaminationInfo = new ExaminationInfo;             //NOTE: Сan we use the local version?
-        _formExaminationInfo->setInformation(ci->selectedExamination());
-        setExaminationInfoConnect(_formExaminationInfo);
-        _ui.mdiArea->addSubWindow(_formExaminationInfo);
-        _formExaminationInfo->show();
+        m_formExaminationInfo = new ExaminationInfo;             //NOTE: Сan we use the local version?
+        m_formExaminationInfo->setInformation(ci->selectedExamination());
+        setExaminationInfoConnect(m_formExaminationInfo);
+        _ui.mdiArea->addSubWindow(m_formExaminationInfo);
+        m_formExaminationInfo->show();
+        ci->parent()->deleteLater();
     });
 
     connect(ci, &ClientInfo::editClientButtonPressed, [this, ci](){
-        _formClientEdit = new ClientEdit;                       //NOTE: Сan we use the local version?
-        _formClientEdit->setInformation(ci->client());
-        setClientEditConnect(_formClientEdit);
-        _ui.mdiArea->addSubWindow(_formClientEdit);
-        _formClientEdit->show();
+        ci->parent()->deleteLater();
+        m_formClientEdit = new ClientEdit;                       //NOTE: Сan we use the local version?
+        m_formClientEdit->setInformation(ci->client());
+        setClientEditConnect(m_formClientEdit);
+        _ui.mdiArea->addSubWindow(m_formClientEdit);
+        m_formClientEdit->show();
     });
 }
 
 void MainWindow::setClientSearchConnect(ClientSearch *cs)
 {
-    cs->setAttribute(Qt::WA_DeleteOnClose);
+    //cs->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(cs, &ClientSearch::seachLineReady, [this, cs](const QString& sl){
         QVector<Client> clients = _database.clients(sl);
@@ -188,17 +241,17 @@ void MainWindow::setClientSearchConnect(ClientSearch *cs)
 
     connect(cs, &ClientSearch::selectedForShow, [this, cs](){
         QVector<Examination> examinations = _database.examinations(cs->selectedClient());
-        _formClientInfo = new ClientInfo;                                //NOTE: Сan we use the local version?
-        _formClientInfo->setInformation(cs->selectedClient(), examinations);
-        setClientInfoConnect(_formClientInfo);
-        _ui.mdiArea->addSubWindow(_formClientInfo);
-        _formClientInfo->show();
+        m_formClientInfo = new ClientInfo;                                //NOTE: Сan we use the local version?
+        m_formClientInfo->setInformation(cs->selectedClient(), examinations);
+        setClientInfoConnect(m_formClientInfo);
+        _ui.mdiArea->addSubWindow(m_formClientInfo);
+        m_formClientInfo->show();
     });
 }
 
 void MainWindow::setExaminationEditConnect(ExaminationEdit *ee)
 {
-    ee->setAttribute(Qt::WA_DeleteOnClose);
+    //ee->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(ee, &ExaminationEdit::formReady, [this, ee](){
         Examination examination = ee->examination();
@@ -207,15 +260,16 @@ void MainWindow::setExaminationEditConnect(ExaminationEdit *ee)
             if (QMessageBox::question(this, tr("Создание исследования")
                                        , tr("Исследование успешно сохранено\nЖелаете открыть окно Информации об исследовании?")
                                        , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
-                _formExaminationInfo = new ExaminationInfo();
-                setExaminationInfoConnect(_formExaminationInfo);
-                _formExaminationInfo->setInformation(examination);
-                _ui.mdiArea->addSubWindow(_formExaminationInfo);
-                _formExaminationInfo->show();
+                m_formExaminationInfo = new ExaminationInfo();
+                setExaminationInfoConnect(m_formExaminationInfo);
+                m_formExaminationInfo->setInformation(examination);
+                _ui.mdiArea->addSubWindow(m_formExaminationInfo);
+                m_formExaminationInfo->show();
             }
         } else {
             QMessageBox::warning(this, tr("Создание исследования"), tr("Исследование не было сохранено"));
         }
+        ee->parent()->deleteLater();
     });
 }
 
@@ -254,14 +308,384 @@ void MainWindow::setExaminationSearchConnect(ExaminationSearch *es)
         if(examinations.isEmpty()) {
             QMessageBox::information(this, tr("Поиск исследований"), tr("Информация не найдена"));
         }
-        es->setInformation(examinations);        
+        es->setInformation(examinations);
     });
 
     connect(es, &ExaminationSearch::selectedForShow, [this, es](){
-        _formExaminationInfo = new ExaminationInfo;                 //NOTE: Сan we use the local version?
-        _formExaminationInfo->setInformation(es->selectedExamination());
-        setExaminationInfoConnect(_formExaminationInfo);
-        _ui.mdiArea->addSubWindow(_formExaminationInfo);
-        _formExaminationInfo->show();
+        m_formExaminationInfo = new ExaminationInfo;                 //NOTE: Сan we use the local version?
+        m_formExaminationInfo->setInformation(es->selectedExamination());
+        setExaminationInfoConnect(m_formExaminationInfo);
+        _ui.mdiArea->addSubWindow(m_formExaminationInfo);
+        m_formExaminationInfo->show();
     });
+}
+
+void MainWindow::setProductEditConnect(ProductEdit *p)
+{
+    //p->setAttribute(Qt::WA_DeleteOnClose);
+
+    connect(p, &ProductEdit::formNewProductReady, [this, p](){
+        auto newProduct = m_formProductEdit->product();
+
+        _database.addProduct(newProduct);
+        if(!_database.hasUnwatchedWorkError()){
+            auto ret = QMessageBox::question(this, "Добавление продукта"
+                                             ,"Продукт успешно добавлен\nЖелаете открыть окно Информации о продукте?"
+                                             , QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::Yes){
+                m_formProductInfo = new ProductInfo;
+                this->setProductInfoConnect(m_formProductInfo);
+                m_formProductInfo->setInformation(newProduct);
+                this->addSubWindowAndShow(m_formProductInfo);
+            }
+        } else {
+            QMessageBox::warning(this, "Добавление продукта", "Продукт не был добавлен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->parent()->deleteLater();
+    });
+    connect(p, &ProductEdit::formEditedProductReady, [this, p](){
+        auto editedProduct = m_formProductEdit->product();
+
+        _database.changeProductInformation(editedProduct);
+        if(!_database.hasUnwatchedWorkError()){
+            auto ret = QMessageBox::question(this, "Редактирование продукта"
+                                             ,"Информация о продукте успешно обновлена\nЖелаете открыть окно Информации о продукте?"
+                                             , QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::Yes){
+                m_formProductInfo = new ProductInfo;
+                this->setProductInfoConnect(m_formProductInfo);
+                m_formProductInfo->setInformation(editedProduct);
+                this->addSubWindowAndShow(m_formProductInfo);
+            }
+        } else {
+            QMessageBox::warning(this, "Редактирование продукта", "Продукт не был обновлен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->parent()->deleteLater();
+    });
+}
+
+void MainWindow::setProductInfoConnect(ProductInfo *p)
+{
+    //p->setAttribute(Qt::WA_DeleteOnClose);
+    connect(p, &ProductInfo::editProductButtonPressed, [this, p](){
+        m_formProductEdit = new ProductEdit;
+        m_formProductEdit->setInformation(p->product());
+        this->setProductEditConnect(m_formProductEdit);
+        this->addSubWindowAndShow(m_formProductEdit);
+        p->parent()->deleteLater();
+    });
+}
+
+void MainWindow::setProductSeachConnect(ProductSeach *p)
+{
+    //p->setAttribute(Qt::WA_DeleteOnClose);
+
+    connect(p, &ProductSeach::seachLineProductReady, [this, p](const QString& s){
+        auto products = _database.products(s.split(' '));
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты с указанным названием не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты с указанным названием не были найдены");
+        }
+        p->setInformation(products);
+    });
+    connect(p, &ProductSeach::seachLineProteinReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'p');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона белков не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона белков не были найдены");
+        }
+        p->setInformation(products);
+    });
+    connect(p, &ProductSeach::seachLineFatsReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'f');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона жиров не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона жиров не были найдены");
+        }
+        p->setInformation(products);
+    });
+    connect(p, &ProductSeach::seachLineCarbohydratesReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'c');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона углеводов не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона углеводов не были найдены");
+        }
+        p->setInformation(products);
+    });
+    connect(p, &ProductSeach::selectedForShow, [this, p](){
+        auto selectedProduct = p->selectedProduct();
+        m_formProductInfo = new ProductInfo;
+        m_formProductInfo->setInformation(selectedProduct);
+        this->setProductInfoConnect(m_formProductInfo);
+        this->addSubWindowAndShow(m_formProductInfo);
+    });
+}
+
+void MainWindow::setActivityEditConnect(ActivityEdit *p)
+{
+    //p->setAttribute(Qt::WA_DeleteOnClose);
+
+    connect(p, &ActivityEdit::formNewActivityReady, [this, p](){
+        auto newActivity = p->activity();
+        _database.addActivity(newActivity);
+        if(!_database.hasUnwatchedWorkError()){
+            auto ret = QMessageBox::question(this, "Добавление вида активности"
+                                             ,"Вид двигательной активности был успешно добавлен\nЖелаете открыть окно Информации об активности?"
+                                             , QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::Yes){
+                m_formActivityInfo = new ActivityInfo;
+                this->setActivityInfoConnect(m_formActivityInfo);
+                m_formActivityInfo->setInformation(newActivity);
+                this->addSubWindowAndShow(m_formActivityInfo);
+            }
+        } else {
+            QMessageBox::warning(this, "Добавление вида активности", "Новый вид двигательной активности не был добавлен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->parent()->deleteLater();
+    });
+    connect(p, &ActivityEdit::formEditedActivityReady, [this, p](){
+        auto editiedActivity = p->activity();
+        _database.changeActivityInformation(editiedActivity);
+        if(!_database.hasUnwatchedWorkError()){
+            auto ret = QMessageBox::question(this, "Редактирование вида активности"
+                                             ,"Информация о двигательной активности была успешно обновлена\nЖелаете открыть окно Информации об активности?"
+                                             , QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::Yes){
+                m_formActivityInfo = new ActivityInfo;
+                this->setActivityInfoConnect(m_formActivityInfo);
+                m_formActivityInfo->setInformation(editiedActivity);
+                this->addSubWindowAndShow(m_formActivityInfo);
+            }
+        } else {
+            QMessageBox::warning(this, "Редактирование вида активности", "Информация о виде двигательной активности не была обновлена");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->parent()->deleteLater();
+    });
+}
+
+void MainWindow::setActivityInfoConnect(ActivityInfo *p)
+{
+    //p->setAttribute(Qt::WA_DeleteOnClose);
+    connect(p, &ActivityInfo::editActivityButtonPressed, [this, p](){
+        m_formActivityEdit = new ActivityEdit;
+        m_formActivityEdit->setInformation(p->activity());
+        this->setActivityEditConnect(m_formActivityEdit);
+        this->addSubWindowAndShow(m_formActivityEdit);
+        p->parent()->deleteLater();
+    });
+}
+
+void MainWindow::setActivitySeachConnect(ActivitySeach *p)
+{
+    //p->setAttribute(Qt::WA_DeleteOnClose);
+
+    connect(p, &ActivitySeach::seachLineActivityReady, [this, p](const QString& s){
+        auto activities = _database.activities(s.split(' '));
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск информации об активности", "Виды двигательной активности по указанному запросу не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (activities.isEmpty()){
+            QMessageBox::information(this, "Поиск информации об активности", "Виды двигательной активности по указанному запросу не были найдены");
+        }
+        p->setInformation(activities);
+    });
+    connect(p, &ActivitySeach::seachLineKcalReady, [this, p](const int from, const int to){
+        auto products = _database.activities(QPair<float, float>(from, to));
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск информации об активности", "Виды двигательной активности для заданного интервала не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск информации об активности", "Виды двигательной активности для заданного интервала не были найдены");
+        }
+        p->setInformation(products);
+    });
+    connect(p, &ActivitySeach::selectedForShow, [this, p](){
+        auto selectedActivity = p->selectedActivity();
+        m_formActivityInfo = new ActivityInfo;
+        m_formActivityInfo->setInformation(selectedActivity);
+        this->setActivityInfoConnect(m_formActivityInfo);
+        this->addSubWindowAndShow(m_formActivityInfo);
+    });
+}
+
+void MainWindow::setRecipeEditConnect(RecipeEdit *p)
+{
+    //p->setAttribute(Qt::WA_DeleteOnClose, true);
+
+    connect(p, &RecipeEdit::formNewRecipeReady, [this, p](){
+        auto newRecipe = p->recipe();
+        _database.addRecipe(newRecipe);
+        if(!_database.hasUnwatchedWorkError()){
+            auto ret = QMessageBox::question(this, "Добавление рецепта"
+                                             ,"Новый рецепт был успешно добавлен\nЖелаете открыть окно Информации о рецепте?"
+                                             , QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::Yes){
+                m_formRecipeInfo = new RecipeInfo;
+                this->setRecipeInfoConnect(m_formRecipeInfo);
+                m_formRecipeInfo->setInformation(newRecipe);
+                this->addSubWindowAndShow(m_formRecipeInfo);
+            }
+        } else {
+            QMessageBox::warning(this, "Добавление рецепта", "Новый рецепт не был добавлен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->parent()->deleteLater();
+    });
+    connect(p, &RecipeEdit::formEditedRecipeReady, [this, p](){
+        auto editiedRecipe = p->recipe();
+        _database.changeRecipeInformation(editiedRecipe);
+        if(!_database.hasUnwatchedWorkError()){
+            auto ret = QMessageBox::question(this, "Редактирование рецепта"
+                                             ,"Информация по рецепту была успешно обновлена\nЖелаете открыть окно Информации о рецепте?"
+                                             , QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::Yes){
+                m_formRecipeInfo = new RecipeInfo;
+                m_formRecipeInfo->setInformation(editiedRecipe);
+                this->setRecipeInfoConnect(m_formRecipeInfo);
+                this->addSubWindowAndShow(m_formRecipeInfo);
+            }
+        } else {
+            QMessageBox::warning(this, "Редактирование рецепта", "Информация по рецепту не была обновлена");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->parent()->deleteLater();
+    });
+
+    connect(p, &RecipeEdit::productSearchLineReady, [this, p](const QString& s){
+        auto products = _database.products(s.split(' '));
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты с указанным названием не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты с указанным названием не были найдены");
+        }
+        p->setSearchedProducts(products);
+    });
+    connect(p, &RecipeEdit::productSearchProteinReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'p');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона белков не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона белков не были найдены");
+        }
+        p->setSearchedProducts(products);
+    });
+    connect(p, &RecipeEdit::productSearchFatsReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'f');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона жиров не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона жиров не были найдены");
+        }
+        p->setSearchedProducts(products);
+    });
+    connect(p, &RecipeEdit::productSearchCarbohydratesReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'c');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона углеводов не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона углеводов не были найдены");
+        }
+        p->setSearchedProducts(products);
+    });
+    connect(p, &RecipeEdit::productSelectedForShow, [this, p](){
+        //QMessageBox::critical(this, "NOT IMPLEMENTED", "---");
+//        auto selectedProduct = p->selectedProduct();
+//        m_formProductInfo = new ProductInfo;
+//        m_formProductInfo->setInformation(selectedProduct);
+//        this->setProductInfoConnect(m_formProductInfo);
+//        this->addSubWindowAndShow(m_formProductInfo);
+    });
+
+}
+
+void MainWindow::setRecipeInfoConnect(RecipeInfo *p)
+{
+    //p->setAttribute(Qt::WA_DeleteOnClose);
+    connect(p, &RecipeInfo::editRecipeButtonPressed, [this, p](){
+        auto editiedRecipe = _database.recipe(p->recipe().id());
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::critical(this, "Редактирование рецепта", "Рецепт не может быть отредактирован, так как он отсутствует в базе данных");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        m_formRecipeEdit = new RecipeEdit(this);
+        m_formRecipeEdit->setInformation(editiedRecipe);
+        this->setRecipeEditConnect(m_formRecipeEdit);
+        this->addSubWindowAndShow(m_formRecipeEdit);
+        p->parent()->deleteLater();
+    });
+}
+
+void MainWindow::setRecipeSeachConnect(RecipeSeach *p)
+{
+    //p->setAttribute(Qt::WA_DeleteOnClose);
+
+    connect(p, &RecipeSeach::seachLineRecipeReady, [this, p](const QString& s){
+        auto recipe = _database.recipes(s.split(' '));
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск рецепта", "Рецепты по заданному запросу не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (recipe.isEmpty()){
+            QMessageBox::information(this, "Поиск рецепта", "Рецепты по заданному запросу не были найдены");
+        }
+        p->setInformation(recipe);
+    });
+    connect(p, &RecipeSeach::seachLineProteinReady, [this, p](const int from, const int to){
+        auto recipe = _database.recipes(QPair<float,float>(from, to),'p');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск рецепта", "Рецепты для указанного диапазона белков не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (recipe.isEmpty()){
+            QMessageBox::information(this, "Поиск рецепта", "Рецепты для указанного диапазонабелков не были найдены");
+        }
+        p->setInformation(recipe);
+    });
+    connect(p, &RecipeSeach::seachLineFatsReady, [this, p](const int from, const int to){
+        auto recipe = _database.recipes(QPair<float,float>(from, to),'f');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск рецепта", "Рецепты для указанного диапазона жиров не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (recipe.isEmpty()){
+            QMessageBox::information(this, "Поиск рецепта", "Рецепты для указанного диапазона жиров не были найдены");
+        }
+        p->setInformation(recipe);
+    });
+    connect(p, &RecipeSeach::seachLineCarbohydratesReady, [this, p](const int from, const int to){
+        auto recipe = _database.recipes(QPair<float,float>(from, to),'c');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск рецепта", "Рецепты для указанного диапазона углеводов не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (recipe.isEmpty()){
+            QMessageBox::information(this, "Поиск рецепта", "Рецепты для указанного диапазона углеводов не были найдены");
+        }
+        p->setInformation(recipe);
+    });
+    connect(p, &RecipeSeach::selectedForShow, [this, p](){
+        auto selectedRecipe = p->selectedRecipe();
+        m_formRecipeInfo = new RecipeInfo;
+        m_formRecipeInfo->setInformation(selectedRecipe);
+        this->setRecipeInfoConnect(m_formRecipeInfo);
+        this->addSubWindowAndShow(m_formRecipeInfo);
+    });
+}
+
+void MainWindow::addSubWindowAndShow(QWidget *widget)
+{
+    _ui.mdiArea->addSubWindow(widget);
+    widget->show();
 }

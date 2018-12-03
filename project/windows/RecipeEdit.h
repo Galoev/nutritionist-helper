@@ -1,7 +1,9 @@
 #pragma once
 #include <QWidget>
 #include "entities/recipe.h"
+#include "entities/product.h"
 #include "windows/ProductSeach.h"
+#include <QMap>
 
 namespace Ui {
 class RecipeEdit;
@@ -17,10 +19,16 @@ public:
 
     void setInformation(const RecipeEntity& );
     RecipeEntity recipe() const;
+    void setSearchedProducts(const QVector<ProductEntity>& );
 
 signals:
     void formNewRecipeReady();
     void formEditedRecipeReady();
+    void productSearchLineReady(const QString& );
+    void productSearchProteinReady(const int from, const int to);
+    void productSearchFatsReady(const int from, const int to);
+    void productSearchCarbohydratesReady(const int from, const int to);
+    void productSelectedForShow();
 
 private slots:
     void onPushButtonSave();

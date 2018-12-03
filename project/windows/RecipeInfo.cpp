@@ -6,6 +6,11 @@ RecipeInfo::RecipeInfo(QWidget *parent) :
     ui(new Ui::RecipeInfo)
 {
     ui->setupUi(this);
+    ui->tableWidget_ingredientList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget_ingredientList->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableWidget_recipeDescription->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget_recipeDescription->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
 
     connect(ui->pushButton_recipeEdit, SIGNAL(pressed()), SIGNAL(editRecipeButtonPressed()));
 }
@@ -17,34 +22,34 @@ void RecipeInfo::setInformation(const RecipeEntity &r)
     ui->label_recipeName->setText(_recipe.name());
     ui->tableWidget_ingredientList->setRowCount(products.size());
 
-    int sumProtein = 0;
-    int sumFats = 0;
-    int sumCarbohydrates = 0;
-    int sumKcal = 0;
-
-    for (int iRow = 0; iRow < products.size(); ++iRow)
-    {
+    for (int iRow = 0; iRow < products.size(); ++iRow) {
         ui->tableWidget_ingredientList->setItem(iRow, 0, new QTableWidgetItem(products.at(iRow).product().name()));
-        ui->tableWidget_ingredientList->setItem(iRow, 1, new QTableWidgetItem(products.at(iRow).amound()));
-        sumProtein += products.at(iRow).product().proteins();
-        sumFats += products.at(iRow).product().fats();
-        sumCarbohydrates += products.at(iRow).product().carbohydrates();
-        sumKcal += products.at(iRow).product().kilocalories();
+        ui->tableWidget_ingredientList->setItem(iRow, 1, new QTableWidgetItem(QString::number(products.at(iRow).amound())));
+        ui->tableWidget_ingredientList->setItem(iRow, 2, new QTableWidgetItem(products.at(iRow).product().units() == ProductEntity::GRAMM ? "гр" : products.at(iRow).product().units() == ProductEntity::MILLILITER ? "мл" : "???"));
     }
 
-    ui->label_numProtein->setText(QString::number(sumProtein));
-    ui->label_numFats->setText(QString::number(sumFats));
-    ui->label_numCarbohydrates->setText(QString::number(sumCarbohydrates));
-    ui->label_numKcal->setText(QString::number(sumKcal));
+    auto proteins = QString::number(_recipe.proteins());
+    ui->label_numProtein->setText(proteins);
+    auto fats = QString::number(_recipe.fats());
+    ui->label_numFats->setText(fats);
+    auto carbohydrates = QString::number(_recipe.carbohydrates());
+    ui->label_numCarbohydrates->setText(carbohydrates);
+    auto kcal = QString::number(_recipe.kkal());
+    ui->label_numKcal->setText(kcal);
 
     QStringList cookingPoints = _recipe.getCookingPoints();
+    ui->tableWidget_recipeDescription->setRowCount(cookingPoints.size());
 
-    for (int iRow = 0; iRow < cookingPoints.size(); ++iRow)
-    {
+    for (int iRow = 0; iRow < cookingPoints.size(); ++iRow) {
         ui->tableWidget_recipeDescription->setItem(iRow, 0, new QTableWidgetItem(cookingPoints.at(iRow)));
     }
 
     this->repaint();
+}
+
+RecipeEntity RecipeInfo::recipe() const
+{
+    return _recipe;
 }
 
 RecipeInfo::~RecipeInfo()

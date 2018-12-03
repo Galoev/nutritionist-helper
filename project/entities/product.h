@@ -9,19 +9,19 @@ public:
     ProductEntity(int id
                  , QString name
                  , QString description
-                 , unsigned proteins
-                 , unsigned fats
-                 , unsigned carbohydrates
-                 , unsigned kilocalories
+                 , float proteins
+                 , float fats
+                 , float carbohydrates
+                 , float kilocalories
                  , UnitsType units);
 
     int id() const;
     QString name() const;
     QString description() const;
-    unsigned proteins() const;
-    unsigned fats() const;
-    unsigned carbohydrates() const;
-    unsigned kilocalories() const;
+    float proteins() const;
+    float fats() const;
+    float carbohydrates() const;
+    float kilocalories() const;
     UnitsType units() const;
 
     void setId(const int &id);
@@ -31,10 +31,10 @@ private:
     int m_id;
     QString m_name;
     QString m_description;
-    unsigned m_proteins;
-    unsigned m_fats;
-    unsigned m_carbohydrates;
-    unsigned m_kilocalories;
+    float m_proteins;
+    float m_fats;
+    float m_carbohydrates;
+    float m_kilocalories;
     UnitsType m_units;
 };
 
@@ -47,6 +47,7 @@ public:
 public:
     ProductEntity product() const;
     int amound() const;
+    void setAmound(unsigned int amound);
 
 private:
     ProductEntity m_product;

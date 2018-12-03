@@ -1,5 +1,6 @@
 #include "ProductInfo.h"
 #include "ui_Product_info.h"
+#include <QDebug>
 
 ProductInfo::ProductInfo(QWidget *parent) :
     QWidget(parent),
@@ -19,9 +20,15 @@ void ProductInfo::setInformation(const ProductEntity &p)
     ui->label_numFats->setText(QString::number(p.fats()));
     ui->label_numCarbohydrates->setText(QString::number(p.carbohydrates()));
     ui->label_numKcal->setText(QString::number(p.kilocalories()));
-    ui->textBrowser_description->setText(p.description());
+    ui->label_unitsType->setText(p.units() == ProductEntity::GRAMM ? "гр" : p.units() == ProductEntity::MILLILITER ? "мл" : "???");
+    ui->textBrowser_description->setText(p.description());    
 
     this->repaint();
+}
+
+ProductEntity ProductInfo::product() const
+{
+    return _product;
 }
 
 ProductInfo::~ProductInfo()

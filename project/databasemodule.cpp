@@ -3,7 +3,7 @@
 #include <QtSql/QSqlError>
 #include <QFile>
 #include <QDebug>
-
+#include <QDir>
 
 DatabaseModule::DatabaseModule()
 {
@@ -16,9 +16,9 @@ DatabaseModule::DatabaseModule()
 
     if (!QFile::exists(_DB_NAME)){
         initEmptyDB();
+    } else{
+        _db.setDatabaseName(_DB_NAME);
     }
-
-    _db.setDatabaseName(_DB_NAME);
 
     if (!_db.open()) {
         qDebug() << "Error: " << Q_FUNC_INFO
@@ -106,7 +106,7 @@ QVector<ProductEntity> DatabaseModule::products(const QStringList &seachLine)
                             "    OR description LIKE '%%2%'"
                             ).arg(snp).arg(snp));
         if(!q.exec()){
-            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
             return products;
         }
 
@@ -122,7 +122,7 @@ QVector<ProductEntity> DatabaseModule::products(const QStringList &seachLine)
     return products;
 }
 
-QVector<ProductEntity> DatabaseModule::products(QPair<int, int> interval, const char type)
+QVector<ProductEntity> DatabaseModule::products(QPair<float, float> interval, const char type)
 {
     QVector<ProductEntity> products;
     ///
@@ -140,7 +140,7 @@ QVector<ProductEntity> DatabaseModule::products(QPair<int, int> interval, const 
     QSqlQuery q("SELECT id FROM Products"
                     "" + prefix.arg(stype).arg(interval.first).arg(interval.second));
     if(!q.exec()){
-        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
         return products;
     }
     while(q.next()) {
@@ -154,52 +154,60 @@ QVector<ProductEntity> DatabaseModule::products(QPair<int, int> interval, const 
     return products;
 }
 
+void DatabaseModule::changeProductInformation(const ProductEntity &newProduct)
+{
+    //call this for testing to exists product
+    auto prevErrorSize =  m_errorList.size();
+    product(newProduct.id());
+    auto avterErrorSize = m_errorList.size();
+    if(prevErrorSize != avterErrorSize) {
+        m_errorList << "Error:" << Q_FUNC_INFO << " Error with searching product for update";
+        return;
+    }
+
+    QSqlQuery q;
+    q.prepare("UPDATE Products "
+              "SET name = ?, description = ?, proteins = ?, fats = ?, carbohydrates = ?, kkal = ?, units = ? "
+              "WHERE id = ?"
+              );
+    q.addBindValue(newProduct.name());
+    q.addBindValue(newProduct.description());
+    q.addBindValue(newProduct.proteins());
+    q.addBindValue(newProduct.fats());
+    q.addBindValue(newProduct.carbohydrates());
+    q.addBindValue(newProduct.kilocalories());
+    q.addBindValue(newProduct.units());
+    q.addBindValue(newProduct.id());
+
+    if(!q.exec()) {
+        m_errorList << "Error:" << Q_FUNC_INFO <<  q.lastError().text();
+        return;
+    }
+}
+
 unsigned DatabaseModule::addRecipe(const RecipeEntity &re)
 {
     ///
     QSqlQuery q;
-    q.prepare("INSERT INTO Recipes (name)"
-              "VALUES( ? );");
+    q.prepare("INSERT INTO Recipes (name, proteins, fats, carbohydrates, kkal )"
+              "VALUES( ?, ?, ?, ?, ? );");
     q.addBindValue(re.name());
+    q.addBindValue(re.proteins());
+    q.addBindValue(re.fats());
+    q.addBindValue(re.carbohydrates());
+    q.addBindValue(re.kkal());
     if(!q.exec()) {
         qDebug() <<
         m_errorList << "Error: in " << Q_FUNC_INFO << "!q!" << q.lastError().text();
         return 0;
     }
     ///
-    auto resipeID = q.lastInsertId().toUInt();
+    auto recipeID = q.lastInsertId().toUInt();
     ///
-    const auto& cookingP = re.cookingPoints();
-    for (auto i = 0; i < cookingP.size(); ++i) {
-        auto pointDescription = cookingP.at(i);
-        QSqlQuery q2;
-        q2.prepare("INSERT INTO CookingPoints (recipe_id, point_num, description)"
-                  "VALUES( ?, ?, ? );");
-        qDebug() << resipeID << i << pointDescription;
-        q2.addBindValue(resipeID);
-        q2.addBindValue(i);
-        q2.addBindValue(pointDescription);
-
-        if(!q2.exec()) {
-            m_errorList << "Error: in " << Q_FUNC_INFO << "!q2!" << q2.lastError().text();
-            return 0;
-        }
-    }
+    insertIntoCookingPoints(recipeID, re.cookingPoints());
+    insertIntoProductsInRecipes(recipeID, re.products());
     ///
-    for(const auto& product : re.products()){
-        QSqlQuery q3;
-        q3.prepare("INSERT INTO ProductsInRecipes (recipe_id, product_id, amound)"
-                   "VALUES( ?, ?, ? );");
-        q3.addBindValue(resipeID);
-        q3.addBindValue(product.product().id());
-        q3.addBindValue(product.amound());
-        if(!q3.exec()) {
-            m_errorList << "Error: in " << Q_FUNC_INFO << "!q3!" << q3.lastError().text();
-            return 0;
-        }
-    }
-    ///
-    return resipeID;
+    return recipeID;
 }
 
 RecipeEntity DatabaseModule::recipe(unsigned recipeId)
@@ -283,7 +291,7 @@ QVector<RecipeEntity> DatabaseModule::recipes(const QStringList &seachLine)
                             " WHERE name LIKE '%%1%'       "
                             ).arg(snp));
         if(!q.exec()){
-            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
             return recipes;
         }
 
@@ -299,13 +307,83 @@ QVector<RecipeEntity> DatabaseModule::recipes(const QStringList &seachLine)
     return recipes;
 }
 
-QVector<RecipeEntity> DatabaseModule::recipes(QPair<int, int> interval, const char type)
+QVector<RecipeEntity> DatabaseModule::recipes(QPair<float, float> interval, const char type)
 {
-    QString str = "ERROR: FUNCTION [" + QString(Q_FUNC_INFO) + "] IS NOT IMPLEMENTED"
-                  "\n >>> empty QVector<RecipeEntity> returned";
-    qDebug() << str;
-    m_errorList << str;
-    return QVector<RecipeEntity>();
+    QVector<RecipeEntity> recipes;
+    ///
+    QString stype, prefix = " WHERE %1 BETWEEN %2 AND %3";
+    switch (type) {
+    case 'c': { stype = "carbohydrates"; } break;
+    case 'f': { stype = "fats"; } break;
+    case 'p': { stype = "proteins"; } break;
+    case 'k': { stype = "kkal"; } break;
+    default: {
+        stype = "";
+        prefix = "";
+    }
+    }
+    qDebug()<<stype<<interval<<"SELECT id FROM Recipes"
+                               "" + prefix.arg(stype).arg(interval.first).arg(interval.second);
+
+    QSqlQuery q("SELECT id FROM Recipes"
+                "" + prefix.arg(stype).arg(interval.first).arg(interval.second));
+    if(!q.exec()){
+        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
+        return recipes;
+    }
+    while(q.next()) {
+        auto prevErrorSize =  m_errorList.size();
+        RecipeEntity c = this->recipe(q.value("id").toInt());
+        auto avterErrorSize = m_errorList.size();
+        if(prevErrorSize == avterErrorSize) {
+            recipes.push_back(c);
+        }
+    }
+
+    return recipes;
+}
+
+void DatabaseModule::changeRecipeInformation(const RecipeEntity &newRecipe)
+{
+    for(auto p : newRecipe.products()) qDebug() << p.product().name();
+    //call this for testing to exists product
+    auto prevErrorSize =  m_errorList.size();
+    recipe(newRecipe.id());
+    auto avterErrorSize = m_errorList.size();
+    if(prevErrorSize != avterErrorSize) {
+        m_errorList << "Error:" << Q_FUNC_INFO << " Error with searching Recipe for update";
+        return;
+    }
+    //QSqlQuery q("SELECT count(*) FROM Recipes WHERE id = ");
+
+    //update RecipesTable
+    QSqlQuery updRecipesQ;
+    updRecipesQ.prepare(" UPDATE Recipes "
+                        " SET name = ? "
+                        " WHERE id = ? ");
+    updRecipesQ.addBindValue(newRecipe.name());
+    updRecipesQ.addBindValue(newRecipe.id());
+    if(!updRecipesQ.exec()){
+        m_errorList << "Error:" << Q_FUNC_INFO << updRecipesQ.lastError().text();
+        return;
+    }
+
+    //update ProductsInRecipes table
+    QSqlQuery dltProdInRecQ("DELETE FROM ProductsInRecipes WHERE recipe_id = " + QString::number(newRecipe.id()));
+    if(!dltProdInRecQ.exec()){
+        m_errorList << "Error:" << Q_FUNC_INFO << "DELETE ProductsInRecipes ERROR" << dltProdInRecQ.lastError().text();
+        return;
+    }
+    if(!insertIntoProductsInRecipes(newRecipe.id(), newRecipe.products())) return;
+
+    //update CookingPoints table
+    QSqlQuery dltCookingQ("DELETE FROM CookingPoints WHERE recipe_id = " + QString::number(newRecipe.id()));
+    if(!dltCookingQ.exec()){
+        m_errorList << "Error:" << Q_FUNC_INFO << "DELETE CookingPoints ERROR" << dltCookingQ.lastError().text();
+        return;
+    }
+    if(!insertIntoCookingPoints(newRecipe.id(), newRecipe.cookingPoints())) return;
+
 }
 
 unsigned DatabaseModule::addActivity(const ActivityEntity &ae)
@@ -366,7 +444,7 @@ QVector<ActivityEntity> DatabaseModule::activities()
     return activities;
 }
 
-QVector<ActivityEntity> DatabaseModule::activities(const QString &seachLine)
+QVector<ActivityEntity> DatabaseModule::activities(const QStringList &seachLine)
 {
     QVector<ActivityEntity> activities;
     foreach (QString snp, seachLine) {
@@ -374,7 +452,7 @@ QVector<ActivityEntity> DatabaseModule::activities(const QString &seachLine)
                             " WHERE type LIKE '%1%'       "
                             ).arg(snp));
         if(!q.exec()){
-            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+            m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
             return activities;
         }
         while(q.next()) {
@@ -398,7 +476,7 @@ QVector<ActivityEntity> DatabaseModule::activities(QPair<float, float> kkmInterv
                 .arg(kkmInterval.first)
                 .arg(kkmInterval.second));
     if(!q.exec()){
-        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastQuery();
+        m_errorList << "Error:" << Q_FUNC_INFO << "Wrong condition" << q.lastError().text();
         return activities;
     }
     while(q.next()) {
@@ -411,6 +489,32 @@ QVector<ActivityEntity> DatabaseModule::activities(QPair<float, float> kkmInterv
     }
 
     return activities;
+}
+
+void DatabaseModule::changeActivityInformation(const ActivityEntity &newActivity)
+{
+    //call this for testing to exists product
+    auto prevErrorSize =  m_errorList.size();
+    activity(newActivity.id());
+    auto avterErrorSize = m_errorList.size();
+    if(prevErrorSize != avterErrorSize) {
+        m_errorList << "Error:" << Q_FUNC_INFO << " Error with searching activity for update";
+        return;
+    }
+
+    QSqlQuery q;
+    q.prepare("UPDATE Activities "
+              "SET type = ?, kkal_m_km = ? "
+              "WHERE id = ?"
+              );
+    qDebug() << newActivity.type() << newActivity.kkm() << newActivity.id();
+    q.addBindValue(newActivity.type());
+    q.addBindValue(newActivity.kkm());
+    q.addBindValue(newActivity.id());
+    if(!q.exec()) {
+        m_errorList << "Error:" << Q_FUNC_INFO << q.lastError().text();
+        return;
+    }
 }
 
 bool DatabaseModule::addExaminationAndSetID(Examination &examination)
@@ -476,7 +580,7 @@ bool DatabaseModule::changeClientInformation(const Client &client)
 
     QSqlQuery q;
     q.prepare("UPDATE Clients "
-              "SET surname = ?, name = ?, patronymic = ?, birth_date = ?, gender = ?, age = ?, tel_number = ?"
+              "SET surname = ?, name = ?, patronymic = ?, birth_date = ?, gender = ?, age = ?, tel_number = ? "
               "WHERE id = ?"
               );
     q.addBindValue(client.surname());
@@ -547,7 +651,7 @@ QVector<Client> DatabaseModule::clients(const QString& snp) const
         if(!q.exec()){
             qDebug() << "Error:" << Q_FUNC_INFO
                      << "Wrong condition";
-            qDebug() << q.lastQuery();
+            qDebug() << q.lastError().text();
             return clients;
         }
 
@@ -733,47 +837,154 @@ QStringList DatabaseModule::unwatchedWorkError()
 
 void DatabaseModule::initEmptyDB()
 {
+    QFile file(_DB_NAME);
+    QDir dir;
+    dir.mkdir("./database/");
+    file.open(QIODevice::ReadWrite);
+    file.close();
+
+
+    QSqlQuery queryCreate("CREATE DATABASE");
+    queryCreate.exec();
     _db.setDatabaseName(_DB_NAME);
-    QSqlQuery query;
+
 
     if (!_db.open()) {
         qDebug() << "Error: " << Q_FUNC_INFO
                  << _db.lastError().text();
+        return;
     }
+    QStringList querys;
 
-    QString q1("CREATE TABLE `Clients` ("
-               "`id`           INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
-               "`surname`      TEXT NOT NULL,"
-               "`name`         TEXT NOT NULL,"
-               "`patronymic`	TEXT NOT NULL,"
-               "`birth_date`	TEXT NOT NULL,"
-               "`gender`       TEXT NOT NULL,"
-               "`age`          INTEGER NOT NULL,"
-               "`tel_number`	TEXT NOT NULL"
-               ");"
-               );
-    if(!query.exec(q1)){
-        qDebug() << "Error:" << Q_FUNC_INFO
-                 << "DB was not init new empty table";
-    }
-
+    /*
+     * Clients table
+    */
+    querys << QString("CREATE TABLE `Clients` ("
+                      "`id`           INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
+                      "`surname`      TEXT NOT NULL,"
+                      "`name`         TEXT NOT NULL,"
+                      "`patronymic`	TEXT NOT NULL,"
+                      "`birth_date`	TEXT NOT NULL,"
+                      "`gender`       TEXT NOT NULL,"
+                      "`age`          INTEGER NOT NULL,"
+                      "`tel_number`	TEXT NOT NULL"
+                      ");"
+                      );
+    /*
+     * Examination table
+    */
     QString formfieldNames;
     Examination exm;
     foreach (FormField field, exm.fields()) {
         formfieldNames += QString(" `%1` TEXT, ").arg(field.name());
     }
+    querys << QString("CREATE TABLE `Examinations` ("
+                      "`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
+                      "`client_id`	INTEGER NOT NULL,"
+                      "`is_full_examination`	INTEGER NOT NULL,"
+                      "`date`	TEXT NOT NULL,"
+                      + formfieldNames +
+                      "FOREIGN KEY(`client_id`) REFERENCES `Clients`(`id`) ON DELETE CASCADE ON UPDATE CASCADE"
+                      ");"
+                      );
+    /*
+     * Activities table
+    */
+    querys << QString("CREATE TABLE `Activities` ("
+                      "`id`        INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,"
+                      "`type`      TEXT NOT NULL UNIQUE,"
+                      "`kkal_m_km`	REAL NOT NULL"
+                      ");"
+                      );
+    /*
+     * CookingPoints table
+    */
+    querys << QString("CREATE TABLE `CookingPoints` ("
+                      "`recipe_id`     INTEGER NOT NULL,"
+                      "`point_num`     INTEGER NOT NULL,"
+                      "`description`	TEXT NOT NULL,"
+                      "    FOREIGN KEY(`recipe_id`) REFERENCES `Recipes`(`id`) ON DELETE CASCADE ON UPDATE CASCADE"
+                      ");"
+                      );
+    /*
+     * Products table
+    */
+    querys << QString("CREATE TABLE `Products` ("
+                      "`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,"
+                      "`name`	TEXT NOT NULL UNIQUE,"
+                      "`proteins`	REAL NOT NULL,"
+                      "`fats`	REAL NOT NULL,"
+                      "`carbohydrates`	REAL NOT NULL,"
+                      "`kkal`	REAL NOT NULL,"
+                      "`description`	TEXT NOT NULL,"
+                      "`units`	INTEGER NOT NULL"
+                      ");"
+                      );
+    /*
+     * ProductsInRecipes table
+    */
+    querys << QString("CREATE TABLE `ProductsInRecipes` ("
+                      "`recipe_id`	INTEGER NOT NULL,"
+                      "`product_id`	INTEGER NOT NULL,"
+                      "`amound`	REAL NOT NULL,"
+                      "FOREIGN KEY(`product_id`) REFERENCES `Products`(`id`) ON UPDATE CASCADE,"
+                      "FOREIGN KEY(`recipe_id`) REFERENCES `Recipes`(`id`) ON DELETE CASCADE ON UPDATE CASCADE"
+                      ");"
+                      );
+    /*
+     * Recipes table
+    */
+    querys << QString("CREATE TABLE `Recipes` ("
+                      "`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,"
+                      "`name`	TEXT NOT NULL"
+                      ");"
+                      );
 
-    QString q2("CREATE TABLE `Examinations` ("
-               "`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
-               "`client_id`	INTEGER NOT NULL,"
-               "`is_full_examination`	INTEGER NOT NULL,"
-               "`date`	TEXT NOT NULL,"
-               + formfieldNames +
-               "FOREIGN KEY(`client_id`) REFERENCES `Clients`(`id`) ON DELETE CASCADE ON UPDATE CASCADE"
-               ");"
-               );
-    if(!query.exec(q2)){
-        qDebug() << "Error:" << Q_FUNC_INFO
-                 << "DB was not init new empty table";
+    QSqlQuery query;
+    for (auto q : querys){
+        if(!query.exec(q)){
+            qDebug() << "Error:" << Q_FUNC_INFO
+                     << "DB was not init new empty table. ";
+            qDebug() << "QUERY: --------";
+            qDebug() << q;
+            qDebug() << "---------------";
+            return;
+        }
     }
+}
+
+bool DatabaseModule::insertIntoCookingPoints(unsigned recipeID, const QStringList &cookingP)
+{
+    for (auto i = 0; i < cookingP.size(); ++i) {
+        auto pointDescription = cookingP.at(i);
+        QSqlQuery q2;
+        q2.prepare("INSERT INTO CookingPoints (recipe_id, point_num, description)"
+                  "VALUES( ?, ?, ? );");
+        q2.addBindValue(recipeID);
+        q2.addBindValue(i);
+        q2.addBindValue(pointDescription);
+
+        if(!q2.exec()) {
+            m_errorList << "Error: in " << Q_FUNC_INFO << "!q2!" << q2.lastError().text();
+            return false;
+        }
+    }
+    return true;
+}
+
+bool DatabaseModule::insertIntoProductsInRecipes(unsigned recipeId, const QVector<WeightedProduct> &products)
+{
+    for(const auto& product : products){
+        QSqlQuery q3;
+        q3.prepare("INSERT INTO ProductsInRecipes (recipe_id, product_id, amound)"
+                   "VALUES( ?, ?, ? );");
+        q3.addBindValue(recipeId);
+        q3.addBindValue(product.product().id());
+        q3.addBindValue(product.amound());
+        if(!q3.exec()) {
+            m_errorList << "Error: in " << Q_FUNC_INFO << "!q3!" << q3.lastError().text();
+            return false;
+        }
+    }
+    return true;
 }
