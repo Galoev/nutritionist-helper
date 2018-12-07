@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include "MDIProgram.h"
+#include "windows/ActivityCalculation.h"
 
 int main(int argc, char *argv[])
 {
@@ -20,8 +21,11 @@ int main(int argc, char *argv[])
     //        db.exportDB(fileName);
     //    }
 
-    MainWindow mw;
-    mw.show();
+    //MainWindow mw;
+    //mw.show();
+
+    ActivityCalculation ac;
+    ac.show();
 
     return a.exec();
 }
