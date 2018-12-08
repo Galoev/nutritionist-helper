@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>626</width>
-    <height>504</height>
+    <width>698</width>
+    <height>609</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
      <property name="handleWidth">
       <number>15</number>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QLabel" name="label">
@@ -47,7 +47,7 @@
           <enum>QTabWidget::West</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_activities">
           <attribute name="title">
@@ -56,6 +56,9 @@
           <layout class="QGridLayout" name="gridLayout">
            <item row="1" column="1">
             <widget class="QPushButton" name="addSelectedActivity">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Добавить</string>
              </property>
@@ -75,7 +78,7 @@
             </spacer>
            </item>
            <item row="0" column="0" colspan="2">
-            <widget class="ActivitySeach" name="ativitySearch" native="true"/>
+            <widget class="ActivitySeach" name="ativitySearch"/>
            </item>
           </layout>
          </widget>
@@ -105,7 +108,7 @@
             </spacer>
            </item>
            <item row="0" column="0" colspan="2">
-            <widget class="ProductSeach" name="productSearch" native="true"/>
+            <widget class="ProductSeach" name="productSearch"/>
            </item>
           </layout>
          </widget>
@@ -113,7 +116,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLabel" name="label_4">
@@ -135,6 +138,9 @@
           <layout class="QGridLayout" name="gridLayout_3">
            <item row="1" column="1">
             <widget class="QPushButton" name="pushButton">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Удалить</string>
              </property>
@@ -155,6 +161,27 @@
            </item>
            <item row="0" column="0" colspan="2">
             <widget class="QTableWidget" name="activitiesTable">
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
+             </property>
+             <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <attribute name="verticalHeaderDefaultSectionSize">
+              <number>25</number>
+             </attribute>
              <row>
               <property name="text">
                <string>1</string>
@@ -172,7 +199,7 @@
              </row>
              <column>
               <property name="text">
-               <string>Новый столбец</string>
+               <string>Активность</string>
               </property>
              </column>
              <column>
@@ -294,6 +321,9 @@
           <layout class="QGridLayout" name="gridLayout_4">
            <item row="1" column="1">
             <widget class="QPushButton" name="pushButton_2">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Удалить</string>
              </property>
@@ -314,6 +344,27 @@
            </item>
            <item row="0" column="0" colspan="2">
             <widget class="QTableWidget" name="productsTable">
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
+             </property>
+             <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <attribute name="verticalHeaderDefaultSectionSize">
+              <number>25</number>
+             </attribute>
              <row>
               <property name="text">
                <string>1</string>
@@ -326,7 +377,7 @@
              </row>
              <column>
               <property name="text">
-               <string>Название</string>
+               <string>Продукт</string>
               </property>
              </column>
              <column>

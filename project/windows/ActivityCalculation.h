@@ -1,6 +1,4 @@
-#ifndef ACTIVITYCALCULATION_H
-#define ACTIVITYCALCULATION_H
-
+#pragma once
 #include <QWidget>
 
 namespace Ui {
@@ -13,10 +11,10 @@ class ActivityCalculation : public QWidget
 
 public:
     explicit ActivityCalculation(QWidget *parent = nullptr);
-    ~ActivityCalculation();
+    ~ActivityCalculation() override;
+
+    void paintEvent(QPaintEvent *event) override;
 
 private:
     Ui::ActivityCalculation *ui;
 };
-
-#endif // ACTIVITYCALCULATION_H
