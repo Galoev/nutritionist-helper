@@ -1,6 +1,8 @@
 #pragma once
 #include <QWidget>
 
+class QTableWidget;
+
 namespace Ui {
 class ActivityCalculation;
 }
@@ -14,6 +16,16 @@ public:
     ~ActivityCalculation() override;
 
     void paintEvent(QPaintEvent *event) override;
+
+private:
+    void removeSelectedRow(QTableWidget*);
+
+private slots:
+    void calculateActivity();
+    void onPushButtonAddProduct();
+    void onPushButtonAddActivity();
+    void onPushButtonDeleteProduct();
+    void onPushButtonDeleteActivity();
 
 private:
     Ui::ActivityCalculation *ui;

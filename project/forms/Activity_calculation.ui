@@ -137,7 +137,7 @@
          <item>
           <layout class="QGridLayout" name="gridLayout_3">
            <item row="1" column="1">
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="deleteActivity">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -197,6 +197,11 @@
                <string>3</string>
               </property>
              </row>
+             <row>
+              <property name="text">
+               <string>4</string>
+              </property>
+             </row>
              <column>
               <property name="text">
                <string>Активность</string>
@@ -214,7 +219,7 @@
              </item>
              <item row="0" column="1">
               <property name="text">
-               <string>1342</string>
+               <string>1</string>
               </property>
              </item>
              <item row="1" column="0">
@@ -224,7 +229,7 @@
              </item>
              <item row="1" column="1">
               <property name="text">
-               <string>12</string>
+               <string>2</string>
               </property>
              </item>
              <item row="2" column="0">
@@ -234,7 +239,17 @@
              </item>
              <item row="2" column="1">
               <property name="text">
-               <string>334</string>
+               <string>3</string>
+              </property>
+             </item>
+             <item row="3" column="0">
+              <property name="text">
+               <string>Teст</string>
+              </property>
+             </item>
+             <item row="3" column="1">
+              <property name="text">
+               <string>4</string>
               </property>
              </item>
             </widget>
@@ -270,9 +285,14 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_2">
+            <widget class="QLabel" name="resKcal">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;000.0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>000.0</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -280,9 +300,14 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_3">
+            <widget class="QLabel" name="calculationSign">
+             <property name="font">
+              <font>
+               <pointsize>20</pointsize>
+              </font>
+             </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;&amp;lt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -320,7 +345,7 @@
          <item>
           <layout class="QGridLayout" name="gridLayout_4">
            <item row="1" column="1">
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="deleteProduct">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -392,7 +417,7 @@
              </item>
              <item row="0" column="1">
               <property name="text">
-               <string>42</string>
+               <string>1</string>
               </property>
              </item>
              <item row="1" column="0">
@@ -402,7 +427,7 @@
              </item>
              <item row="1" column="1">
               <property name="text">
-               <string>24</string>
+               <string>2</string>
               </property>
              </item>
             </widget>
