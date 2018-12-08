@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLineEdit" name="lineEdi_recipeName">
+    <widget class="QLineEdit" name="lineEdit_recipeName">
      <property name="placeholderText">
       <string>Название рецепта</string>
      </property>

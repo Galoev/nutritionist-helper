@@ -151,7 +151,7 @@ void ExaminationEdit::onSaveForm()
 
     _examination.setDate(QDateTime::currentDateTime());
 
-    this->close();
+    //this->close();
 
     emit formReady();
 }

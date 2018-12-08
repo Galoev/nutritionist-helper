@@ -132,7 +132,7 @@ void MainWindow::slotWindowsSort()
 
 void MainWindow::slotIssueReport()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/ArnMips/nutritionist-helper/issues/new"));
+    QDesktopServices::openUrl(QUrl("https://github.com/Ilkin-Galoev/nutritionist-helper/issues/new"));
 }
 
 void MainWindow::slotAboutProgram()
@@ -171,7 +171,7 @@ void MainWindow::setClientEditConnect(ClientEdit *ce)
         qDebug() << "ok";
         if(_database.changeClientInformation(client)){
             if ( QMessageBox::question(this, tr("Редактирование клиента")
-                                       , tr("Клиент успешно отредактирован\nЖелаете открыть окно Информации о клиенте?")
+                                       , tr("Клиент успешно отредактирован\nЖелаете открыть окно Информация о клиенте?")
                                        , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
                 m_formClientInfo = new ClientInfo();
                 setClientInfoConnect(m_formClientInfo);
@@ -255,10 +255,10 @@ void MainWindow::setExaminationEditConnect(ExaminationEdit *ee)
 
     connect(ee, &ExaminationEdit::formReady, [this, ee](){
         Examination examination = ee->examination();
-        _ui.mdiArea->removeSubWindow(ee);
+        //_ui.mdiArea->removeSubWindow(ee);
         if(_database.addExaminationAndSetID(examination)){
             if (QMessageBox::question(this, tr("Создание исследования")
-                                       , tr("Исследование успешно сохранено\nЖелаете открыть окно Информации об исследовании?")
+                                       , tr("Исследование успешно сохранено\nЖелаете открыть окно Информация об исследовании?")
                                        , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
                 m_formExaminationInfo = new ExaminationInfo();
                 setExaminationInfoConnect(m_formExaminationInfo);
@@ -330,7 +330,7 @@ void MainWindow::setProductEditConnect(ProductEdit *p)
         _database.addProduct(newProduct);
         if(!_database.hasUnwatchedWorkError()){
             auto ret = QMessageBox::question(this, "Добавление продукта"
-                                             ,"Продукт успешно добавлен\nЖелаете открыть окно Информации о продукте?"
+                                             ,"Продукт успешно добавлен\nЖелаете открыть окно Информация о продукте?"
                                              , QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::Yes){
                 m_formProductInfo = new ProductInfo;
@@ -350,7 +350,7 @@ void MainWindow::setProductEditConnect(ProductEdit *p)
         _database.changeProductInformation(editedProduct);
         if(!_database.hasUnwatchedWorkError()){
             auto ret = QMessageBox::question(this, "Редактирование продукта"
-                                             ,"Информация о продукте успешно обновлена\nЖелаете открыть окно Информации о продукте?"
+                                             ,"Информация о продукте успешно обновлена\nЖелаете открыть окно Информация о продукте?"
                                              , QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::Yes){
                 m_formProductInfo = new ProductInfo;
@@ -440,7 +440,7 @@ void MainWindow::setActivityEditConnect(ActivityEdit *p)
         _database.addActivity(newActivity);
         if(!_database.hasUnwatchedWorkError()){
             auto ret = QMessageBox::question(this, "Добавление вида активности"
-                                             ,"Вид двигательной активности был успешно добавлен\nЖелаете открыть окно Информации об активности?"
+                                             ,"Вид двигательной активности был успешно добавлен\nЖелаете открыть окно Информация об активности?"
                                              , QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::Yes){
                 m_formActivityInfo = new ActivityInfo;
@@ -459,7 +459,7 @@ void MainWindow::setActivityEditConnect(ActivityEdit *p)
         _database.changeActivityInformation(editiedActivity);
         if(!_database.hasUnwatchedWorkError()){
             auto ret = QMessageBox::question(this, "Редактирование вида активности"
-                                             ,"Информация о двигательной активности была успешно обновлена\nЖелаете открыть окно Информации об активности?"
+                                             ,"Информация о двигательной активности была успешно обновлена\nЖелаете открыть окно Информация об активности?"
                                              , QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::Yes){
                 m_formActivityInfo = new ActivityInfo;
@@ -529,7 +529,7 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
         _database.addRecipe(newRecipe);
         if(!_database.hasUnwatchedWorkError()){
             auto ret = QMessageBox::question(this, "Добавление рецепта"
-                                             ,"Новый рецепт был успешно добавлен\nЖелаете открыть окно Информации о рецепте?"
+                                             ,"Новый рецепт был успешно добавлен\nЖелаете открыть окно Информация о рецепте?"
                                              , QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::Yes){
                 m_formRecipeInfo = new RecipeInfo;
@@ -548,7 +548,7 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
         _database.changeRecipeInformation(editiedRecipe);
         if(!_database.hasUnwatchedWorkError()){
             auto ret = QMessageBox::question(this, "Редактирование рецепта"
-                                             ,"Информация по рецепту была успешно обновлена\nЖелаете открыть окно Информации о рецепте?"
+                                             ,"Информация по рецепту была успешно обновлена\nЖелаете открыть окно Информация о рецепте?"
                                              , QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::Yes){
                 m_formRecipeInfo = new RecipeInfo;

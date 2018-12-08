@@ -9,6 +9,7 @@ RecipeSeach::RecipeSeach(QWidget *parent) :
     ui(new Ui::RecipeSeach)
 {
     ui->setupUi(this);
+    ui->lineEdit_recipeName->setValidator(new QRegExpValidator(QRegExp("[A-Z/a-z/а-я/A-Я\\s]{1,}\[A-Z/a-z/а-я/A-Я\\s]{1,}")));
 
     connect(ui->pushButton_search, SIGNAL(pressed()), SLOT(onPushButtonSeach()));
     connect(ui->radioButton_productSearch, SIGNAL(pressed()), SLOT(onRecipeNameSeachType()));

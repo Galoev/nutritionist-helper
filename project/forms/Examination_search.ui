@@ -64,7 +64,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QDateEdit" name="dateEdit_examinationTo">
+             <widget class="QDateEdit" name="dateEdit_examinationFrom">
               <property name="calendarPopup">
                <bool>true</bool>
               </property>
@@ -78,7 +78,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QDateEdit" name="dateEdit_examinationFrom">
+             <widget class="QDateEdit" name="dateEdit_examinationTo">
               <property name="calendarPopup">
                <bool>true</bool>
               </property>
