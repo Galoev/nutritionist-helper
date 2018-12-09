@@ -16,7 +16,8 @@ public:
     DatabaseModule();
 
     /* functions to work with Product entities */
-    unsigned                addProduct(const ProductEntity&);
+    unsigned                addProduct(const ProductEntity& );
+    void                    deleteProduct(const ProductEntity& );
     ProductEntity           product(unsigned id);
     QVector<ProductEntity>  products();
     QVector<ProductEntity>  products(const QStringList &seachLine);
@@ -24,7 +25,8 @@ public:
     void                    changeProductInformation(const ProductEntity& );
 
     /* functions to work with Recipe entities */
-    unsigned                addRecipe(const RecipeEntity&);
+    unsigned                addRecipe(const RecipeEntity& );
+    void                    deleteRecipe(const RecipeEntity& );
     RecipeEntity            recipe(unsigned id);
     QVector<RecipeEntity>   recipes();
     QVector<RecipeEntity>   recipes(const QStringList &seachLine);
@@ -32,7 +34,8 @@ public:
     void                    changeRecipeInformation(const RecipeEntity& );
 
     /* functions to work with Activity entities */
-    unsigned                addActivity(const ActivityEntity&);
+    unsigned                addActivity(const ActivityEntity& );
+    void                    deleteActivity(const ActivityEntity& );
     ActivityEntity          activity(unsigned id);
     QVector<ActivityEntity> activities();
     QVector<ActivityEntity> activities(const QStringList &seachLine);
@@ -41,6 +44,7 @@ public:
 
     /* functions to work with Client entities */
     bool                    addClientAndSetID(Client & );                       //TODO: Need to be change as in the previous style
+    void                    deleteClient(const Client& );
     Client                  client(int id, bool &isOk) const;
     QVector<Client>         clients(const QString& snp) const;
     QVector<Client>         clients() const;
@@ -48,6 +52,7 @@ public:
 
     /* functions to work with Examination entities */
     bool                    addExaminationAndSetID(Examination& );      //TODO: Need to be change as in the previous style
+    void                    deleteExamination(const Examination& );
     Examination             examination(int id, bool &isOk, Client client = Client()) const;
     QVector<Examination>    examinations(Client client = Client()) const;
     QVector<Examination>    examinations(QDate from, QDate to) const;
