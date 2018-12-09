@@ -43,7 +43,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox_calorieFrom"/>
+          <widget class="QSpinBox" name="spinBox_calorieFrom">
+           <property name="maximum">
+            <number>10000</number>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_from">
@@ -53,7 +57,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox_calorieTo"/>
+          <widget class="QSpinBox" name="spinBox_calorieTo">
+           <property name="maximum">
+            <number>10000</number>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer_2">

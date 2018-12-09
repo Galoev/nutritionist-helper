@@ -43,7 +43,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox_From"/>
+          <widget class="QSpinBox" name="spinBox_From">
+           <property name="maximum">
+            <number>10000</number>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_to">
@@ -53,7 +57,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox_To"/>
+          <widget class="QSpinBox" name="spinBox_To">
+           <property name="maximum">
+            <number>10000</number>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer_3">

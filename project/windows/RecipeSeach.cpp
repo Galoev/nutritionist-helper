@@ -28,10 +28,10 @@ void RecipeSeach::setInformation(const QVector<RecipeEntity> &recipes)
     for (int iRow = 0; iRow < _recipes.size(); ++iRow) {
         QVector<QString> itemValues = {
             _recipes[iRow].name(),
-            QString::number(_recipes[iRow].proteins()),
-            QString::number(_recipes[iRow].fats()),
-            QString::number(_recipes[iRow].carbohydrates()),
-            QString::number(_recipes[iRow].kkal())
+            QLocale::system().toString(_recipes[iRow].proteins()),
+            QLocale::system().toString(_recipes[iRow].fats()),
+            QLocale::system().toString(_recipes[iRow].carbohydrates()),
+            QLocale::system().toString(_recipes[iRow].kkal())
         };
         for(int i = 0; i < itemValues.size(); ++i){
             QTableWidgetItem* item = new QTableWidgetItem(itemValues[i]);

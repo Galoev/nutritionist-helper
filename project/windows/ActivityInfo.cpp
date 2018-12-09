@@ -14,7 +14,7 @@ void ActivityInfo::setInformation(const ActivityEntity &a)
     _activity = a;
 
     ui->label_activityName->setText(a.type());
-    ui->label_kcal->setText(QString::number(a.kkm()));
+    ui->label_kcal->setText(QLocale::system().toString(a.kkm()));
 
     this->repaint();
 }

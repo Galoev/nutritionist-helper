@@ -28,10 +28,10 @@ void ProductEdit::setInformation(const ProductEntity &p)
     _product.setId(p.id());
 
     ui->lineEdit_productName->setText(p.name());
-    ui->lineEdit_numProtein->setText(QString::number(p.proteins()));
-    ui->lineEdit_numFats->setText(QString::number(p.fats()));
-    ui->lineEdit_numCarbohydrates->setText(QString::number(p.carbohydrates()));
-    ui->lineEdit_numKcal->setText(QString::number(p.kilocalories()));
+    ui->lineEdit_numProtein->setText(QLocale::system().toString(p.proteins()));
+    ui->lineEdit_numFats->setText(QLocale::system().toString(p.fats()));
+    ui->lineEdit_numCarbohydrates->setText(QLocale::system().toString(p.carbohydrates()));
+    ui->lineEdit_numKcal->setText(QLocale::system().toString(p.kilocalories()));
     ui->textEdit_description->setText(p.description());
     ui->comboBox->setCurrentIndex(p.units() == ProductEntity::GRAMM ? 0 : 1);
 

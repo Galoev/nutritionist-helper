@@ -38,7 +38,7 @@ void RecipeEdit::setInformation(const RecipeEntity &r)
     for(const auto& wProduct : _recipe.products()){
         const auto& product = wProduct.product();
         const QString name = product.name();
-        const QString amound = QString::number(wProduct.amound());
+        const QString amound = QLocale::system().toString(wProduct.amound());
         const QString units = product.units() == ProductEntity::GRAMM      ? "гр"
                             : product.units() == ProductEntity::MILLILITER ? "мл"
                             : "???";

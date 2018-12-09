@@ -28,7 +28,7 @@ void ActivitySeach::setInformation(const QVector<ActivityEntity> &activitys)
     for (int iRow = 0; iRow < _activitys.size(); ++iRow)
     {
         ui->tableWidget_activitys->setItem(iRow, 0, new QTableWidgetItem(_activitys[iRow].type()));
-        ui->tableWidget_activitys->setItem(iRow, 1, new QTableWidgetItem(QString::number(_activitys[iRow].kkm())));
+        ui->tableWidget_activitys->setItem(iRow, 1, new QTableWidgetItem(QLocale::system().toString(_activitys[iRow].kkm())));
     }
 
     this->repaint();

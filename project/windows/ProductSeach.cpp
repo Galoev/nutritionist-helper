@@ -35,10 +35,10 @@ void ProductSeach::setInformation(const QVector<ProductEntity> &products)
     for(int iRow = 0; iRow < _products.size(); ++iRow) {
         QStringList strColumns;
         strColumns << _products[iRow].name()
-                   << QString::number(_products[iRow].proteins())
-                   << QString::number(_products[iRow].fats())
-                   << QString::number(_products[iRow].carbohydrates())
-                   << QString::number(_products[iRow].kilocalories());
+                   << QLocale::system().toString(_products[iRow].proteins())
+                   << QLocale::system().toString(_products[iRow].fats())
+                   << QLocale::system().toString(_products[iRow].carbohydrates())
+                   << QLocale::system().toString(_products[iRow].kilocalories());
         for(int iCol = 0; iCol < strColumns.size(); ++iCol) {
             ui->tableWidget_products->setItem(iRow, iCol, new QTableWidgetItem(strColumns[iCol]));
         }

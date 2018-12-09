@@ -25,7 +25,7 @@ void ActivityEdit::setInformation(const ActivityEntity &a)
     _activity.setId(a.id());
 
     ui->lineEdit_activityName->setText(a.type());
-    ui->lineEdit_calories->setText(QString::number(a.kkm()));
+    ui->lineEdit_calories->setText(QLocale::system().toString(a.kkm()));
 
     this->repaint();
 }
