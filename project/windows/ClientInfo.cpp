@@ -8,6 +8,7 @@ ClientInfo::ClientInfo(QWidget *wgt)
     connect(_ui.pushButton_addExaminationFull, SIGNAL(pressed()), SIGNAL(newExaminationFullButtonPressed()));
     connect(_ui.pushButton_addExaminationHalf, SIGNAL(pressed()), SIGNAL(newExaminationHalfButtonPressed()));
     connect(_ui.pushButton_clientEdit, SIGNAL(pressed()), SIGNAL(editClientButtonPressed()));
+    connect(_ui.pushButton_delete, SIGNAL(pressed()), SIGNAL(deleteClientButtonPressed()));
     connect(_ui.tableWidget_examinations, SIGNAL(pressed(QModelIndex)), SLOT(onSelectExamination(QModelIndex)));
 }
 

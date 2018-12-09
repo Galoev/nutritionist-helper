@@ -243,7 +243,7 @@
         <item>
          <widget class="QPushButton" name="pushButton_examinationDelete">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>Удалить</string>

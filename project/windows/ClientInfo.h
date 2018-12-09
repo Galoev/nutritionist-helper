@@ -15,6 +15,7 @@ signals:
     void newExaminationFullButtonPressed();
     void examinationSelectedForShow();
     void editClientButtonPressed();
+    void deleteClientButtonPressed();
 
 private slots:
     void onSelectExamination(const QModelIndex& );

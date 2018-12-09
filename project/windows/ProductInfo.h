@@ -21,6 +21,7 @@ public:
 
 signals:
     void editProductButtonPressed();
+    void deleteProductButtonPressed();
 
 private:
     Ui::ProductInfo *ui;

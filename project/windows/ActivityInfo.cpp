@@ -7,6 +7,7 @@ ActivityInfo::ActivityInfo(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->pushButton_activityEdit, SIGNAL(pressed()), SIGNAL(editActivityButtonPressed()));
+    connect(ui->pushButton_delete, SIGNAL(pressed()), SIGNAL(deleteActivityButtonPressed()));
 }
 
 void ActivityInfo::setInformation(const ActivityEntity &a)

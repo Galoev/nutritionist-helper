@@ -13,6 +13,7 @@ RecipeInfo::RecipeInfo(QWidget *parent) :
 
 
     connect(ui->pushButton_recipeEdit, SIGNAL(pressed()), SIGNAL(editRecipeButtonPressed()));
+    connect(ui->pushButton_delete, SIGNAL(pressed()), SIGNAL(deleteRecipeButtonPressed()));
 }
 
 void RecipeInfo::setInformation(const RecipeEntity &r)

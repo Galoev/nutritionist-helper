@@ -9,6 +9,7 @@ ProductInfo::ProductInfo(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->pushButton_productEdit, SIGNAL(pressed()), SIGNAL(editProductButtonPressed()));
+    connect(ui->pushButton_delete, SIGNAL(pressed()), SIGNAL(deleteProductButtonPressed()));
 }
 
 void ProductInfo::setInformation(const ProductEntity &p)
