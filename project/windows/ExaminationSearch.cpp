@@ -6,6 +6,7 @@ ExaminationSearch::ExaminationSearch(QWidget *wgt)
     _ui.setupUi(this);
 
     connect(_ui.pushButton_seach, SIGNAL(pressed()), SLOT(onPushButtonSeach()));
+    connect(_ui.pushButton_searchAll, SIGNAL(pressed()), SIGNAL(requireUpdateAllInform()));
     connect(_ui.radioButton_clientSeach, SIGNAL(pressed()), SLOT(onClientSeachType()));
     connect(_ui.radioButton_dateSeach, SIGNAL(pressed()), SLOT(onDateSeachType()));
     connect(_ui.tableWidget_examinations, SIGNAL(pressed(QModelIndex)), SLOT(onSelectExamination(QModelIndex)));
@@ -14,6 +15,55 @@ ExaminationSearch::ExaminationSearch(QWidget *wgt)
 Examination ExaminationSearch::selectedExamination() const
 {
     return _selectedExamination;
+}
+
+void ExaminationSearch::hideInformationIfExists(const Examination &examination)
+{
+    for(const auto &tmp : _examinations){
+        if (tmp.id() == examination.id()){
+            for(int i = 0; _ui.tableWidget_examinations->rowCount(); ++i){
+                if (tmp.date().date().toString() == _ui.tableWidget_examinations->item(i, 0)->text() &&
+                    tmp.date().time().toString() == _ui.tableWidget_examinations->item(i, 1)->text()){
+                    _ui.tableWidget_examinations->removeRow(i);
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void ExaminationSearch::updateInformationIfExist(Examination &examinaton)
+{
+    for(const auto &tmp : _examinations){
+        if (tmp.id() == examinaton.id()){
+            for(int i = 0; _ui.tableWidget_examinations->rowCount(); ++i){
+                if (tmp.date().date().toString() == _ui.tableWidget_examinations->item(i, 0)->text() &&
+                    tmp.date().time().toString() == _ui.tableWidget_examinations->item(i, 1)->text()){
+                    QString name = QString("%1 %2. %3.")
+                            .arg(examinaton.client().surname())
+                            .arg(examinaton.client().name()[0])
+                            .arg(examinaton.client().patronymic()[0]);
+                    _ui.tableWidget_examinations->item(i, 0)->setText(examinaton.date().date().toString());
+                    _ui.tableWidget_examinations->item(i, 1)->setText(examinaton.date().time().toString());
+                    _ui.tableWidget_examinations->item(i, 2)->setText(name);
+                    _ui.tableWidget_examinations->item(i, 3)->setText(examinaton.isFullExamination() ? tr("Прием") : tr("Консультация"));
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void ExaminationSearch::paintEvent(QPaintEvent *event)
+{
+    auto width = _ui.tableWidget_examinations->width();
+    _ui.tableWidget_examinations->horizontalHeader()->setStretchLastSection(true);
+    _ui.tableWidget_examinations->setColumnWidth(0, width * 3/12-10);
+    _ui.tableWidget_examinations->setColumnWidth(1, width * 2/12-10);
+    _ui.tableWidget_examinations->setColumnWidth(2, width * 5/12-10);
+    _ui.tableWidget_examinations->setColumnWidth(3, width * 2/12-10);
+
+    QWidget::paintEvent(event);
 }
 
 void ExaminationSearch::setInformation(const QVector<Examination> &exms)

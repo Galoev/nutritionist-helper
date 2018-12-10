@@ -9,6 +9,7 @@ ProductSeach::ProductSeach(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->pushButton_search, SIGNAL(pressed()), SLOT(onPushButtonSeach()));
+    connect(ui->pushButton_searchAll, SIGNAL(pressed()), SIGNAL(requireUpdateAllInform()));
     connect(ui->radioButton_productSearch, SIGNAL(pressed()), SLOT(onProductNameSeachType()));
     connect(ui->radioButton_proteinSearch, SIGNAL(pressed()), SLOT(onPFCSeachType()));
     connect(ui->radioButton_fatsSearch, SIGNAL(pressed()), SLOT(onPFCSeachType()));
@@ -19,6 +20,19 @@ ProductSeach::ProductSeach(QWidget *parent) :
 ProductSeach::~ProductSeach()
 {
     delete ui;
+}
+
+void ProductSeach::paintEvent(QPaintEvent *event)
+{
+    auto width = ui->tableWidget_products->width();
+    ui->tableWidget_products->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_products->setColumnWidth(0, width * 8/12-10);
+    ui->tableWidget_products->setColumnWidth(1, width * 1/12-10);
+    ui->tableWidget_products->setColumnWidth(2, width * 1/12-10);
+    ui->tableWidget_products->setColumnWidth(3, width * 1/12-10);
+    ui->tableWidget_products->setColumnWidth(4, width * 1/12-10);
+
+    QWidget::paintEvent(event);
 }
 
 ProductEntity ProductSeach::selectedProduct() const
@@ -45,6 +59,38 @@ void ProductSeach::setInformation(const QVector<ProductEntity> &products)
     }
 
     this->repaint();
+}
+
+void ProductSeach::hideInformationIfExists(const ProductEntity &product)
+{
+    for(const auto &tmp : _products){
+        if (tmp.id() == product.id()){
+            for(int i = 0; ui->tableWidget_products->rowCount(); ++i){
+                if (tmp.name() == ui->tableWidget_products->item(i, 0)->text()){
+                    ui->tableWidget_products->removeRow(i);
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void ProductSeach::updateInformationIfExist(ProductEntity &product)
+{
+    for(const auto &tmp : _products){
+        if (tmp.id() == product.id()){
+            for(int i = 0; ui->tableWidget_products->rowCount(); ++i){
+                if (tmp.name() == ui->tableWidget_products->item(i, 0)->text()){
+                    ui->tableWidget_products->item(i, 0)->setText(product.name());
+                    ui->tableWidget_products->item(i, 1)->setText(QLocale::system().toString(product.proteins()));
+                    ui->tableWidget_products->item(i, 2)->setText(QLocale::system().toString(product.fats()));
+                    ui->tableWidget_products->item(i, 3)->setText(QLocale::system().toString(product.carbohydrates()));
+                    ui->tableWidget_products->item(i, 4)->setText(QLocale::system().toString(product.kilocalories()));
+                    return;
+                }
+            }
+        }
+    }
 }
 
 int ProductSeach::getCurrentRow()

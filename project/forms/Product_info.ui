@@ -50,6 +50,14 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_delete">
+       <property name="icon">
+        <iconset resource="../rec.qrc">
+         <normaloff>:/resources/deelete_icon.png</normaloff>:/resources/deelete_icon.png</iconset>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -231,30 +239,6 @@
    </item>
    <item>
     <widget class="QTextBrowser" name="textBrowser_description"/>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_7">
-     <item>
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_delete">
-       <property name="text">
-        <string>Удалить</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>

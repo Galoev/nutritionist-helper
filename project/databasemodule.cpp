@@ -48,6 +48,16 @@ unsigned DatabaseModule::addProduct(const ProductEntity &pe)
     return q.lastInsertId().toUInt();
 }
 
+void DatabaseModule::deleteProduct(const ProductEntity &product)
+{
+    QSqlQuery q;
+    q.prepare("DELETE FROM Products WHERE id=?");
+    q.addBindValue(product.id());
+    if(!q.exec()) {
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+    }
+}
+
 ProductEntity DatabaseModule::product(unsigned id)
 {
     QSqlQuery q;
@@ -189,7 +199,7 @@ unsigned DatabaseModule::addRecipe(const RecipeEntity &re)
 {
     ///
     QSqlQuery q;
-    q.prepare("INSERT INTO Recipes (name, proteins, fats, carbohydrates, kkal )"
+    q.prepare("INSERT INTO Recipes (name, proteins, fats, carbohydrates, kcal )"
               "VALUES( ?, ?, ?, ?, ? );");
     q.addBindValue(re.name());
     q.addBindValue(re.proteins());
@@ -208,6 +218,16 @@ unsigned DatabaseModule::addRecipe(const RecipeEntity &re)
     insertIntoProductsInRecipes(recipeID, re.products());
     ///
     return recipeID;
+}
+
+void DatabaseModule::deleteRecipe(const RecipeEntity &recipe)
+{
+    QSqlQuery q;
+    q.prepare("DELETE FROM Recipes WHERE id=?");
+    q.addBindValue(recipe.id());
+    if(!q.exec()) {
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+    }
 }
 
 RecipeEntity DatabaseModule::recipe(unsigned recipeId)
@@ -401,6 +421,16 @@ unsigned DatabaseModule::addActivity(const ActivityEntity &ae)
     return q.lastInsertId().toUInt();
 }
 
+void DatabaseModule::deleteActivity(const ActivityEntity &activity)
+{
+    QSqlQuery q;
+    q.prepare("DELETE FROM Activities WHERE id=?");
+    q.addBindValue(activity.id());
+    if(!q.exec()) {
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+    }
+}
+
 ActivityEntity DatabaseModule::activity(unsigned id)
 {
     QSqlQuery q;
@@ -548,6 +578,16 @@ bool DatabaseModule::addExaminationAndSetID(Examination &examination)
     return true;
 }
 
+void DatabaseModule::deleteExamination(const Examination &examination)
+{
+    QSqlQuery q;
+    q.prepare("DELETE FROM Examinations WHERE id=?");
+    q.addBindValue(examination.id());
+    if(!q.exec()) {
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+    }
+}
+
 bool DatabaseModule::addClientAndSetID(Client &client)
 {
     QSqlQuery q;
@@ -568,6 +608,16 @@ bool DatabaseModule::addClientAndSetID(Client &client)
     client.setId(q.lastInsertId().toInt());
 
     return true;
+}
+
+void DatabaseModule::deleteClient(const Client &client)
+{
+    QSqlQuery q;
+    q.prepare("DELETE FROM Clients WHERE id=?");
+    q.addBindValue(client.id());
+    if(!q.exec()) {
+        m_errorList << "Error: in " << Q_FUNC_INFO << q.lastError().text();
+    }
 }
 
 bool DatabaseModule::changeClientInformation(const Client &client)
@@ -937,6 +987,10 @@ void DatabaseModule::initEmptyDB()
     querys << QString("CREATE TABLE `Recipes` ("
                       "`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,"
                       "`name`	TEXT NOT NULL"
+                      "`proteins`	REAL NOT NULL,"
+                      "`fats`	REAL NOT NULL,"
+                      "`carbohydrates`	BLOB NOT NULL,"
+                      "`kcal`	TEXT NOT NULL"
                       ");"
                       );
 

@@ -17,7 +17,12 @@ public:
     explicit ProductSeach(QWidget *parent = nullptr);
     ~ProductSeach();
 
+    void paintEvent(QPaintEvent *event) override;
+
     void setInformation(const QVector<ProductEntity>& );
+    void hideInformationIfExists(const ProductEntity &product);
+    void updateInformationIfExist(ProductEntity & );
+
     ProductEntity selectedProduct() const;
     int getCurrentRow();
 
@@ -27,6 +32,7 @@ signals:
     void seachLineFatsReady(const int from, const int to);
     void seachLineCarbohydratesReady(const int from, const int to);
     void selectedForShow();
+    void requireUpdateAllInform();
 
 private slots:
     void onPushButtonSeach();

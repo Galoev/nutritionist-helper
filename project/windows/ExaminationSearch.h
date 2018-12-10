@@ -8,11 +8,16 @@ public:
 
     void setInformation(const QVector<Examination>& );
     Examination selectedExamination() const;
+    void hideInformationIfExists(const Examination &examination);
+    void updateInformationIfExist(Examination & );
+
+    void paintEvent(QPaintEvent *event) override;
 
 signals:
     void seachLineDateReady(const QDate& from, const QDate& to);
     void seachLineClientReady(const QString& );
     void selectedForShow();
+    void requireUpdateAllInform();
 
 private slots:
     void onPushButtonSeach();

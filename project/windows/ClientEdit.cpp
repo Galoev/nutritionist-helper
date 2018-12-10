@@ -28,7 +28,7 @@ void ClientEdit::setInformation(const Client &c)
     _ui.lineEdit_name->setText(c.name());
     _ui.lineEdit_surname->setText(c.surname());
     _ui.lineEdit_patronymic->setText(c.patronymic());
-    _ui.lineEdit_birthdayYear->setText(QLocale::system().toString(c.birthDate().year()));
+    _ui.lineEdit_birthdayYear->setText(QString::number(c.birthDate().year()));
     _ui.radioButton_genderM->setChecked(c.gender() == 'm');
     _ui.radioButton_genderF->setChecked(c.gender() == 'f');
     _ui.lineEdit_telNumber->setText(c.telNumber());
