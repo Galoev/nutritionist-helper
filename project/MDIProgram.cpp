@@ -72,6 +72,12 @@ void MainWindow::slotClientAdd()
 void MainWindow::slotClientSeach()
 {
     m_formClientSeach = new ClientSearch;                    //NOTE: Сan we use the local version?
+    auto allClients = _database.clients();
+    if(_database.hasUnwatchedWorkError()){
+        QMessageBox::warning(this, "Получение списка Клиентов", "Список всех Клиентов не был получен");
+        qDebug() << _database.unwatchedWorkError();
+    }
+    m_formClientSeach->setInformation(allClients);
     setClientSearchConnect(m_formClientSeach);
     addSubWindowAndShow(m_formClientSeach);
 }
@@ -79,6 +85,13 @@ void MainWindow::slotClientSeach()
 void MainWindow::slotExaminationSeach()
 {
     m_formExaminationSearch = new ExaminationSearch;         //NOTE: Сan we use the local version?
+    auto allExaminations = _database.examinations();
+    if(_database.hasUnwatchedWorkError()){
+        QMessageBox::warning(this, "Получение списка Исследований", "Список всех Исследований не был получен");
+        qDebug() << _database.unwatchedWorkError();
+    }
+    m_formExaminationSearch->setInformation(allExaminations);
+
     setExaminationSearchConnect(m_formExaminationSearch);
     addSubWindowAndShow(m_formExaminationSearch);
 }
@@ -93,6 +106,12 @@ void MainWindow::slotProductAdd()
 void MainWindow::slotProductSearch()
 {
     m_formProductSearch = new ProductSeach;
+    auto allProducts = _database.products();
+    if(_database.hasUnwatchedWorkError()){
+        QMessageBox::warning(this, "Получение списка Продуктов", "Список всех Продуктов не был получен");
+        qDebug() << _database.unwatchedWorkError();
+    }
+    m_formProductSearch->setInformation(allProducts);
     setProductSeachConnect(m_formProductSearch);
     addSubWindowAndShow(m_formProductSearch);
 }
@@ -107,6 +126,12 @@ void MainWindow::slotActivityAdd()
 void MainWindow::slotActivitySearch()
 {
     m_formActivitySeach = new ActivitySeach;
+    auto allActivities = _database.activities();
+    if(_database.hasUnwatchedWorkError()){
+        QMessageBox::warning(this, "Получение списка Активностей", "Список всех Активностей не был получен");
+        qDebug() << _database.unwatchedWorkError();
+    }
+    m_formActivitySeach->setInformation(allActivities);
     setActivitySeachConnect(m_formActivitySeach);
     addSubWindowAndShow(m_formActivitySeach);
 }
@@ -121,6 +146,12 @@ void MainWindow::slotRecipeAdd()
 void MainWindow::slotRecipeSearch()
 {
     m_formRecipeSeach = new RecipeSeach;
+    auto allRecipes = _database.recipes();
+    if(_database.hasUnwatchedWorkError()){
+        QMessageBox::warning(this, "Получение списка Рецептов", "Список всех Рецептов не был получен");
+        qDebug() << _database.unwatchedWorkError();
+    }
+    m_formRecipeSeach->setInformation(allRecipes);
     setRecipeSeachConnect(m_formRecipeSeach);
     addSubWindowAndShow(m_formRecipeSeach);
 }
@@ -170,6 +201,9 @@ void MainWindow::setClientEditConnect(ClientEdit *ce)
         Client client = ce->client();
         qDebug() << "ok";
         if(_database.changeClientInformation(client)){
+//            if (m_formClientSeach){
+//                m_formClientSeach->updateInformationIfExist(client);
+//            }
             if ( QMessageBox::question(this, tr("Редактирование клиента")
                                        , tr("Клиент успешно отредактирован\nЖелаете открыть окно Информация о клиенте?")
                                        , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
@@ -178,7 +212,7 @@ void MainWindow::setClientEditConnect(ClientEdit *ce)
                 m_formClientInfo->setInformation(client, _database.examinations(client));
                 _ui.mdiArea->addSubWindow(m_formClientInfo);
                 m_formClientInfo->show();
-            }
+            } 
         } else {
             QMessageBox::warning(this, tr("Редактирование клиента"), tr("Клиент не был обновлен"));
         }
@@ -225,6 +259,26 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
         _ui.mdiArea->addSubWindow(m_formClientEdit);
         m_formClientEdit->show();
     });
+
+    connect(ci, &ClientInfo::deleteClientButtonPressed, [this, ci](){
+        if ( QMessageBox::question(this, "Удаление клиента"
+                                   , "Вы уверены, что хотите удалить всю информацию о Клиенте?"
+                                   , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+
+            _database.deleteClient(ci->client());
+            if(_database.hasUnwatchedWorkError()){
+                QMessageBox::warning(this, "Удаление клиента", "Ошибка удаления информации о клиенте");
+                qDebug() << _database.unwatchedWorkError();
+            } else {
+                auto client = ci->client();
+                ci->parent()->deleteLater();
+                QMessageBox::information(this, "Удаление клиента", "Вся информация о Клиенте была удалена");
+//                if (m_formClientSeach){
+//                    m_formClientSeach->hideInformationIfExists(client);
+//                }
+            }
+        }
+    });
 }
 
 void MainWindow::setClientSearchConnect(ClientSearch *cs)
@@ -246,6 +300,15 @@ void MainWindow::setClientSearchConnect(ClientSearch *cs)
         setClientInfoConnect(m_formClientInfo);
         _ui.mdiArea->addSubWindow(m_formClientInfo);
         m_formClientInfo->show();
+    });
+
+    connect(cs, &ClientSearch::requireUpdateAllInform, [this, cs](){
+        auto allClients = _database.clients();
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Получение списка Клиентов", "Список всех Клиентов не был получен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        cs->setInformation(allClients);
     });
 }
 
@@ -278,8 +341,23 @@ void MainWindow::setExaminationInfoConnect(ExaminationInfo *ei)
     ei->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(ei, &ExaminationInfo::deleteExamination, [this, ei](){
-        QMessageBox::information(this, "No content", "Delete examination"); //TODO: Need to add functionality!
-        ei->examination();
+        if ( QMessageBox::question(this, "Удаление Иследования"
+                                   , "Вы уверены, что хотите удалить Исследование?"
+                                   , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+
+            _database.deleteExamination(ei->examination());
+            if(_database.hasUnwatchedWorkError()){
+                QMessageBox::warning(this, "Удаление Иследования", "Ошибка удаления Исследования");
+                qDebug() << _database.unwatchedWorkError();
+            } else {
+                auto examination = ei->examination();
+                ei->parent()->deleteLater();
+                QMessageBox::information(this, "Удаление Иследования", "Исследование успешно удалено");
+//                if(m_formExaminationSearch){
+//                    m_formExaminationSearch->hideInformationIfExists(examination);
+//                }
+            }
+        }
     });
 
     connect(ei, &ExaminationInfo::printExamination, [this, ei](bool ifFull){
@@ -318,6 +396,16 @@ void MainWindow::setExaminationSearchConnect(ExaminationSearch *es)
         _ui.mdiArea->addSubWindow(m_formExaminationInfo);
         m_formExaminationInfo->show();
     });
+
+    connect(es, &ExaminationSearch::requireUpdateAllInform, [this, es](){
+        auto allExaminations = _database.examinations();
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Получение списка Исследований", "Список всех Исследований не был получен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        es->setInformation(allExaminations);
+
+    });
 }
 
 void MainWindow::setProductEditConnect(ProductEdit *p)
@@ -349,6 +437,9 @@ void MainWindow::setProductEditConnect(ProductEdit *p)
 
         _database.changeProductInformation(editedProduct);
         if(!_database.hasUnwatchedWorkError()){
+//            if (m_formProductSearch){
+//                m_formProductSearch->hideInformationIfExists(editedProduct);
+//            }
             auto ret = QMessageBox::question(this, "Редактирование продукта"
                                              ,"Информация о продукте успешно обновлена\nЖелаете открыть окно Информация о продукте?"
                                              , QMessageBox::Yes, QMessageBox::No);
@@ -375,6 +466,26 @@ void MainWindow::setProductInfoConnect(ProductInfo *p)
         this->setProductEditConnect(m_formProductEdit);
         this->addSubWindowAndShow(m_formProductEdit);
         p->parent()->deleteLater();
+    });
+
+    connect(p, &ProductInfo::deleteProductButtonPressed, [this, p](){
+        if ( QMessageBox::question(this, "Удаление Продукта"
+                                   , "Вы уверены, что хотите удалить Продукт?"
+                                   , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+
+            _database.deleteProduct(p->product());
+            if(_database.hasUnwatchedWorkError()){
+                QMessageBox::warning(this, "Удаление Продукта", "Ошибка удаления Продукта");
+                qDebug() << _database.unwatchedWorkError();
+            } else {
+                auto product = p->product();
+                p->parent()->deleteLater();
+                QMessageBox::information(this, "Удаление Продукта", "Продукт успешно удален");
+//                if (m_formProductSearch){
+//                    m_formProductSearch->hideInformationIfExists(product);
+//                }
+            }
+        }
     });
 }
 
@@ -429,6 +540,15 @@ void MainWindow::setProductSeachConnect(ProductSeach *p)
         this->setProductInfoConnect(m_formProductInfo);
         this->addSubWindowAndShow(m_formProductInfo);
     });
+
+    connect(p, &ProductSeach::requireUpdateAllInform, [this, p](){
+        auto allProducts = _database.products();
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Получение списка Продуктов", "Список всех Продуктов не был получен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->setInformation(allProducts);
+    });
 }
 
 void MainWindow::setActivityEditConnect(ActivityEdit *p)
@@ -439,6 +559,9 @@ void MainWindow::setActivityEditConnect(ActivityEdit *p)
         auto newActivity = p->activity();
         _database.addActivity(newActivity);
         if(!_database.hasUnwatchedWorkError()){
+//            if(m_formActivitySeach){
+//                m_formActivitySeach->updateInformationIfExist(newActivity);
+//            }
             auto ret = QMessageBox::question(this, "Добавление вида активности"
                                              ,"Вид двигательной активности был успешно добавлен\nЖелаете открыть окно Информация об активности?"
                                              , QMessageBox::Yes, QMessageBox::No);
@@ -458,6 +581,9 @@ void MainWindow::setActivityEditConnect(ActivityEdit *p)
         auto editiedActivity = p->activity();
         _database.changeActivityInformation(editiedActivity);
         if(!_database.hasUnwatchedWorkError()){
+//            if(m_formActivitySeach){
+//                m_formActivitySeach->updateInformationIfExist(editiedActivity);
+//            }
             auto ret = QMessageBox::question(this, "Редактирование вида активности"
                                              ,"Информация о двигательной активности была успешно обновлена\nЖелаете открыть окно Информация об активности?"
                                              , QMessageBox::Yes, QMessageBox::No);
@@ -484,6 +610,26 @@ void MainWindow::setActivityInfoConnect(ActivityInfo *p)
         this->setActivityEditConnect(m_formActivityEdit);
         this->addSubWindowAndShow(m_formActivityEdit);
         p->parent()->deleteLater();
+    });
+
+    connect(p, &ActivityInfo::deleteActivityButtonPressed, [this, p](){
+        if ( QMessageBox::question(this, "Удаление Активности"
+                                   , "Вы уверены, что хотите удалить Активность?"
+                                   , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+
+            _database.deleteActivity(p->activity());
+            if(_database.hasUnwatchedWorkError()){
+                QMessageBox::warning(this, "Удаление Активности", "Ошибка удаления Активности");
+                qDebug() << _database.unwatchedWorkError();
+            } else {
+                auto activity = p->activity();
+//                if(m_formActivitySeach){
+//                    m_formActivitySeach->hideInformationIfExists(activity);
+//                }
+                p->parent()->deleteLater();
+                QMessageBox::information(this, "Удаление Активности", "Активность успешно удалена");
+            }
+        }
     });
 }
 
@@ -518,6 +664,15 @@ void MainWindow::setActivitySeachConnect(ActivitySeach *p)
         this->setActivityInfoConnect(m_formActivityInfo);
         this->addSubWindowAndShow(m_formActivityInfo);
     });
+
+    connect(p, &ActivitySeach::requireUpdateAllInform, [this, p](){
+        auto allActivities = _database.activities();
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Получение списка Активностей", "Список всех Активностей не был получен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->setInformation(allActivities);
+    });
 }
 
 void MainWindow::setRecipeEditConnect(RecipeEdit *p)
@@ -547,6 +702,9 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
         auto editiedRecipe = p->recipe();
         _database.changeRecipeInformation(editiedRecipe);
         if(!_database.hasUnwatchedWorkError()){
+//            if(m_formRecipeSeach){
+//                m_formRecipeSeach->hideInformationIfExists(editiedRecipe);
+//            }
             auto ret = QMessageBox::question(this, "Редактирование рецепта"
                                              ,"Информация по рецепту была успешно обновлена\nЖелаете открыть окно Информация о рецепте?"
                                              , QMessageBox::Yes, QMessageBox::No);
@@ -629,6 +787,27 @@ void MainWindow::setRecipeInfoConnect(RecipeInfo *p)
         this->addSubWindowAndShow(m_formRecipeEdit);
         p->parent()->deleteLater();
     });
+
+
+    connect(p, &RecipeInfo::deleteRecipeButtonPressed, [this, p](){
+        if ( QMessageBox::question(this, "Удаление Рецепта"
+                                   , "Вы уверены, что хотите удалить Рецепт?"
+                                   , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+
+            _database.deleteRecipe(p->recipe());
+            if(_database.hasUnwatchedWorkError()){
+                QMessageBox::warning(this, "Удаление Рецепта", "Ошибка удаления Рецепта");
+                qDebug() << _database.unwatchedWorkError();
+            } else {
+                auto recipe = p->recipe();
+                p->parent()->deleteLater();
+                QMessageBox::information(this, "Удаление Рецепта", "Рецепт успешно удалена");
+//                if(m_formRecipeSeach){
+//                    m_formRecipeSeach->hideInformationIfExists(recipe);
+//                }
+            }
+        }
+    });
 }
 
 void MainWindow::setRecipeSeachConnect(RecipeSeach *p)
@@ -651,7 +830,7 @@ void MainWindow::setRecipeSeachConnect(RecipeSeach *p)
             QMessageBox::warning(this, "Поиск рецепта", "Рецепты для указанного диапазона белков не были получены из базы данных");
             qDebug() << _database.unwatchedWorkError();
         } else if (recipe.isEmpty()){
-            QMessageBox::information(this, "Поиск рецепта", "Рецепты для указанного диапазонабелков не были найдены");
+            QMessageBox::information(this, "Поиск рецепта", "Рецепты для указанного диапазона белков не были найдены");
         }
         p->setInformation(recipe);
     });
@@ -681,6 +860,15 @@ void MainWindow::setRecipeSeachConnect(RecipeSeach *p)
         m_formRecipeInfo->setInformation(selectedRecipe);
         this->setRecipeInfoConnect(m_formRecipeInfo);
         this->addSubWindowAndShow(m_formRecipeInfo);
+    });
+
+    connect(p, &RecipeSeach::requireUpdateAllInform, [this, p](){
+        auto allRecipes = _database.recipes();
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Получение списка Рецептов", "Список всех Рецептов не был получен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->setInformation(allRecipes);
     });
 }
 

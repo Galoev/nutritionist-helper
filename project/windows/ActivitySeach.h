@@ -16,6 +16,10 @@ public:
     explicit ActivitySeach(QWidget *parent = nullptr);
     ~ActivitySeach();
 
+    void paintEvent(QPaintEvent *event) override;
+
+    void hideInformationIfExists(ActivityEntity & );
+    void updateInformationIfExist(ActivityEntity & );
     void setInformation(const QVector<ActivityEntity>& );
     ActivityEntity selectedActivity() const;
 
@@ -23,6 +27,7 @@ signals:
     void seachLineActivityReady(const QString& );
     void seachLineKcalReady(const int from, const int to);
     void selectedForShow();
+    void requireUpdateAllInform();
 
 private slots:
     void onPushButtonSeach();
