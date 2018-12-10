@@ -22,6 +22,7 @@ public:
 
 signals:
     void editRecipeButtonPressed();
+    void deleteRecipeButtonPressed();
 
 private:
     Ui::RecipeInfo *ui;

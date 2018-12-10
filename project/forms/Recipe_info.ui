@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>321</width>
-    <height>578</height>
+    <width>340</width>
+    <height>581</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -47,6 +47,14 @@
        <property name="icon">
         <iconset resource="../rec.qrc">
          <normaloff>:/resources/settings_icon.png</normaloff>:/resources/settings_icon.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_delete">
+       <property name="icon">
+        <iconset resource="../rec.qrc">
+         <normaloff>:/resources/deelete_icon.png</normaloff>:/resources/deelete_icon.png</iconset>
        </property>
       </widget>
      </item>

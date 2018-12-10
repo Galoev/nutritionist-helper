@@ -12,7 +12,7 @@ RecipeEdit::RecipeEdit(QWidget *parent) :
     ui->setupUi(this);
     _productSeach = new ProductSeach(ui->widget_product_search);
     _productSeach->resize(457,200);
-    ui->lineEdi_recipeName->setValidator(new QRegExpValidator(QRegExp("[A-Z/a-z/а-я/A-Я]{1,}\[A-Z/a-z/а-я/A-Я\\s]{1,}")));
+    ui->lineEdit_recipeName->setValidator(new QRegExpValidator(QRegExp("[A-Z/a-z/а-я/A-Я]{1,}\[A-Z/a-z/а-я/A-Я\\s]{1,}")));
     //ui->tableWidget_ingredientList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     connect(ui->pushButton_save, SIGNAL(pressed()), SLOT(onPushButtonSave()));
@@ -33,12 +33,12 @@ void RecipeEdit::setInformation(const RecipeEntity &r)
 {
     _isEditingMod = true;
     _recipe = r;
-    ui->lineEdi_recipeName->setText(r.name());
+    ui->lineEdit_recipeName->setText(r.name());
 
     for(const auto& wProduct : _recipe.products()){
         const auto& product = wProduct.product();
         const QString name = product.name();
-        const QString amound = QString::number(wProduct.amound());
+        const QString amound = QLocale::system().toString(wProduct.amound());
         const QString units = product.units() == ProductEntity::GRAMM      ? "гр"
                             : product.units() == ProductEntity::MILLILITER ? "мл"
                             : "???";
@@ -67,7 +67,7 @@ void RecipeEdit::onPushButtonSave()
 {
     QString errorLog;
 
-    if (!ui->lineEdi_recipeName->hasAcceptableInput()) {
+    if (!ui->lineEdit_recipeName->hasAcceptableInput()) {
         errorLog += tr("Неправильное имя рецепта\n");
     }
     if (ui->tableWidget_ingredientList->rowCount() == 0) {
@@ -82,7 +82,7 @@ void RecipeEdit::onPushButtonSave()
         return;
     }
 
-    QString recipeName = ui->lineEdi_recipeName->text();
+    QString recipeName = ui->lineEdit_recipeName->text();
     QVector<WeightedProduct> produsctsList = _recipe.getPoducts();
     QStringList cookingPoints;
     QTableWidgetItem item;

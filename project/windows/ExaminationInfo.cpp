@@ -42,7 +42,7 @@ Examination ExaminationInfo::examination() const
 void ExaminationInfo::onDeleteExamination()
 {
     emit deleteExamination();
-    this->close();
+    this->parent()->deleteLater();
 }
 
 void ExaminationInfo::onEditExamination()

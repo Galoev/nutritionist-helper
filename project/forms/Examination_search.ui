@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>465</height>
+    <width>650</width>
+    <height>384</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>650</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Поиск исследований</string>
@@ -64,7 +70,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QDateEdit" name="dateEdit_examinationTo">
+             <widget class="QDateEdit" name="dateEdit_examinationFrom">
               <property name="calendarPopup">
                <bool>true</bool>
               </property>
@@ -78,7 +84,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QDateEdit" name="dateEdit_examinationFrom">
+             <widget class="QDateEdit" name="dateEdit_examinationTo">
               <property name="calendarPopup">
                <bool>true</bool>
               </property>
@@ -115,6 +121,12 @@
             </property>
             <item>
              <widget class="QLineEdit" name="lineEdit_clientName">
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string/>
               </property>
@@ -125,6 +137,19 @@
             </item>
            </layout>
           </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_searchAll">
+          <property name="maximumSize">
+           <size>
+            <width>35</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Все</string>
+          </property>
          </widget>
         </item>
         <item>
@@ -194,7 +219,10 @@
       <number>87</number>
      </attribute>
      <attribute name="verticalHeaderVisible">
-      <bool>true</bool>
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>25</number>
      </attribute>
      <attribute name="verticalHeaderShowSortIndicator" stdset="0">
       <bool>true</bool>

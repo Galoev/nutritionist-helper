@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>314</width>
-    <height>422</height>
+    <width>370</width>
+    <height>490</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Информация о клиенте</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,1">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="spacing">
@@ -132,6 +132,14 @@
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QPushButton" name="pushButton_delete">
+         <property name="icon">
+          <iconset resource="../rec.qrc">
+           <normaloff>:/resources/deelete_icon.png</normaloff>:/resources/deelete_icon.png</iconset>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QPushButton" name="pushButton_clientEdit">
          <property name="icon">

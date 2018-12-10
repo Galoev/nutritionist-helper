@@ -13,6 +13,7 @@ RecipeInfo::RecipeInfo(QWidget *parent) :
 
 
     connect(ui->pushButton_recipeEdit, SIGNAL(pressed()), SIGNAL(editRecipeButtonPressed()));
+    connect(ui->pushButton_delete, SIGNAL(pressed()), SIGNAL(deleteRecipeButtonPressed()));
 }
 
 void RecipeInfo::setInformation(const RecipeEntity &r)
@@ -24,17 +25,17 @@ void RecipeInfo::setInformation(const RecipeEntity &r)
 
     for (int iRow = 0; iRow < products.size(); ++iRow) {
         ui->tableWidget_ingredientList->setItem(iRow, 0, new QTableWidgetItem(products.at(iRow).product().name()));
-        ui->tableWidget_ingredientList->setItem(iRow, 1, new QTableWidgetItem(QString::number(products.at(iRow).amound())));
+        ui->tableWidget_ingredientList->setItem(iRow, 1, new QTableWidgetItem(QLocale::system().toString(products.at(iRow).amound())));
         ui->tableWidget_ingredientList->setItem(iRow, 2, new QTableWidgetItem(products.at(iRow).product().units() == ProductEntity::GRAMM ? "гр" : products.at(iRow).product().units() == ProductEntity::MILLILITER ? "мл" : "???"));
     }
 
-    auto proteins = QString::number(_recipe.proteins());
+    auto proteins = QLocale::system().toString(_recipe.proteins());
     ui->label_numProtein->setText(proteins);
-    auto fats = QString::number(_recipe.fats());
+    auto fats = QLocale::system().toString(_recipe.fats());
     ui->label_numFats->setText(fats);
-    auto carbohydrates = QString::number(_recipe.carbohydrates());
+    auto carbohydrates = QLocale::system().toString(_recipe.carbohydrates());
     ui->label_numCarbohydrates->setText(carbohydrates);
-    auto kcal = QString::number(_recipe.kkal());
+    auto kcal = QLocale::system().toString(_recipe.kkal());
     ui->label_numKcal->setText(kcal);
 
     QStringList cookingPoints = _recipe.getCookingPoints();

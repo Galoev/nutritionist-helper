@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
-    <height>462</height>
+    <width>500</width>
+    <height>228</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>500</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Поиск клиентов</string>
@@ -18,11 +24,30 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLineEdit" name="lineEdit_clientName">
+       <property name="font">
+        <font>
+         <family>Calibri Light</family>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string/>
        </property>
        <property name="placeholderText">
         <string>Клиент: Ф. И. О.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_searchAll">
+       <property name="maximumSize">
+        <size>
+         <width>35</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Все</string>
        </property>
       </widget>
      </item>

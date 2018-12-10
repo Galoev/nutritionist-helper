@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLineEdit" name="lineEdi_recipeName">
+    <widget class="QLineEdit" name="lineEdit_recipeName">
      <property name="placeholderText">
       <string>Название рецепта</string>
      </property>
@@ -44,7 +44,7 @@
       <bool>true</bool>
      </property>
      <attribute name="horizontalHeaderVisible">
-      <bool>true</bool>
+      <bool>false</bool>
      </attribute>
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>false</bool>
@@ -113,7 +113,7 @@
    <item>
     <widget class="QTableWidget" name="tableWidget_recipeDescription">
      <attribute name="horizontalHeaderVisible">
-      <bool>true</bool>
+      <bool>false</bool>
      </attribute>
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>false</bool>

@@ -151,7 +151,7 @@ void ExaminationEdit::onSaveForm()
 
     _examination.setDate(QDateTime::currentDateTime());
 
-    this->close();
+    //this->close();
 
     emit formReady();
 }
@@ -159,7 +159,7 @@ void ExaminationEdit::onSaveForm()
 void ExaminationEdit::onPushButtonCalculate_65()
 {
     if (_ui.formfield_65->isEnabled()){
-        _ui.formfield_65->setText(QString::number(qrand()%50));   //TODO:Calculate
+        _ui.formfield_65->setText(QLocale::system().toString(qrand()%50));   //TODO:Calculate
     }
 }
 
@@ -173,7 +173,7 @@ void ExaminationEdit::onPushButtonCalculate_69_77()
             return;
         }
         if(field->isEnabled()){
-            field->setText(QString::number(qrand()%50));      //TODO:Calculate
+            field->setText(QLocale::system().toString(qrand()%50));      //TODO:Calculate
         }
     }
 }

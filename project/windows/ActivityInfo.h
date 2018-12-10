@@ -21,6 +21,7 @@ public:
 
 signals:
     void editActivityButtonPressed();
+    void deleteActivityButtonPressed();
 
 private:
     Ui::ActivityInfo *ui;

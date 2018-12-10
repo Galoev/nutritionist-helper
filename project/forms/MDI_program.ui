@@ -60,7 +60,7 @@ background-image: url(:/resources/mdi_back.png);
      <x>0</x>
      <y>0</y>
      <width>899</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_file">
@@ -130,8 +130,16 @@ background-image: url(:/resources/mdi_back.png);
     <addaction name="menu_recipes"/>
     <addaction name="menu_activities"/>
    </widget>
+   <widget class="QMenu" name="menu_express">
+    <property name="title">
+     <string>Экспресс</string>
+    </property>
+    <addaction name="action_activityCalc"/>
+    <addaction name="action_fastProtocol"/>
+   </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_edit"/>
+   <addaction name="menu_express"/>
    <addaction name="menu_overwiew"/>
    <addaction name="menu_about"/>
   </widget>
@@ -250,6 +258,16 @@ background-image: url(:/resources/mdi_back.png);
    </property>
    <property name="toolTip">
     <string>Поиск по активностям для просмотра или редактирования</string>
+   </property>
+  </action>
+  <action name="action_activityCalc">
+   <property name="text">
+    <string>Калькулятор активности</string>
+   </property>
+  </action>
+  <action name="action_fastProtocol">
+   <property name="text">
+    <string>Протокол ИСЗиАП</string>
    </property>
   </action>
  </widget>
