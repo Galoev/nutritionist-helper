@@ -20,6 +20,8 @@ MainWindow::MainWindow(QMainWindow* wgt)
     connect(_ui.action_activitySearch,      SIGNAL(triggered()), SLOT(slotActivitySearch()));
     connect(_ui.action_recipeAdd,           SIGNAL(triggered()), SLOT(slotRecipeAdd()));
     connect(_ui.action_recipeSearch,        SIGNAL(triggered()), SLOT(slotRecipeSearch()));
+    connect(_ui.action_fastProtocol,        SIGNAL(triggered()), SLOT(slotFastProtocol()));
+    connect(_ui.action_activityCalc,        SIGNAL(triggered()), SLOT(slotActivityCalc()));
     connect(_ui.action_windowsSort,         SIGNAL(triggered()), SLOT(slotWindowsSort()));
     connect(_ui.action_issueReport,         SIGNAL(triggered()), SLOT(slotIssueReport()));
     connect(_ui.action_aboutProgram,        SIGNAL(triggered()), SLOT(slotAboutProgram()));
@@ -154,6 +156,18 @@ void MainWindow::slotRecipeSearch()
     m_formRecipeSeach->setInformation(allRecipes);
     setRecipeSeachConnect(m_formRecipeSeach);
     addSubWindowAndShow(m_formRecipeSeach);
+}
+
+void MainWindow::slotActivityCalc()
+{
+    m_formActivityCalculation = new ActivityCalculation;
+    setActivityCalculationConnect(m_formActivityCalculation);
+    addSubWindowAndShow(m_formActivityCalculation);
+}
+
+void MainWindow::slotFastProtocol()
+{
+    QMessageBox::warning(this, "slotFastProtocol", "slotFastProtocol");
 }
 
 void MainWindow::slotWindowsSort()
@@ -870,6 +884,11 @@ void MainWindow::setRecipeSeachConnect(RecipeSeach *p)
         }
         p->setInformation(allRecipes);
     });
+}
+
+void MainWindow::setActivityCalculationConnect(ActivityCalculation *)
+{
+
 }
 
 void MainWindow::addSubWindowAndShow(QWidget *widget)

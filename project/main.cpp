@@ -11,21 +11,8 @@ int main(int argc, char *argv[])
 
     DatabaseModule db;
 
-    //    QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-    //    QString fileName = QFileDialog::getOpenFileName(nullptr, "Импорт файла базы данных", path, "Файл базы данных (*.sqlite);;All Files (*)");
-    //    if (!fileName.isEmpty()) {
-    //        db.importDB(fileName);
-    //    }
-    //    fileName = QFileDialog::getSaveFileName(nullptr, "Экспорт файла базы данных", path, "Файл базы данных (*.sqlite);;All Files (*)");
-    //    if (!fileName.isEmpty()) {
-    //        db.exportDB(fileName);
-    //    }
-
-    //MainWindow mw;
-    //mw.show();
-
-    ActivityCalculation ac;
-    ac.show();
+    MainWindow mw;
+    mw.show();
 
     return a.exec();
 }

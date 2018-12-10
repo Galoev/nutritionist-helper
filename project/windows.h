@@ -14,6 +14,7 @@
 #include "windows/ActivityEdit.h"
 #include "windows/ActivityInfo.h"
 #include "windows/ActivitySeach.h"
+#include "windows/ActivityCalculation.h"
 
 namespace Forms {
     //TODO

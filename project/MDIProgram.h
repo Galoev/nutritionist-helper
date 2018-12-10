@@ -21,6 +21,8 @@ private slots:
     void slotActivitySearch();
     void slotRecipeAdd();
     void slotRecipeSearch();
+    void slotActivityCalc();
+    void slotFastProtocol();
     void slotWindowsSort();
     void slotIssueReport();
     void slotAboutProgram();
@@ -41,6 +43,7 @@ private:
     void setRecipeEditConnect(RecipeEdit* );
     void setRecipeInfoConnect(RecipeInfo* );
     void setRecipeSeachConnect(RecipeSeach* );
+    void setActivityCalculationConnect(ActivityCalculation* );
 
     void addSubWindowAndShow(QWidget *widget );
 
@@ -62,6 +65,7 @@ private:
     RecipeEdit*         m_formRecipeEdit;
     RecipeInfo*         m_formRecipeInfo;
     RecipeSeach*        m_formRecipeSeach;
+    ActivityCalculation*m_formActivityCalculation;
 
     QLabel* m_text;
 
