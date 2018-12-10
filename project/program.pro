@@ -28,6 +28,7 @@ SOURCES += main.cpp \
     windows/ProductSeach.cpp \
     windows/ProductInfo.cpp \
     windows/ProductEdit.cpp \
+    windows/ActivityCalculation.cpp \
     databasemodule.cpp \
     MDIProgram.cpp \
     printer.cpp \
@@ -53,6 +54,7 @@ HEADERS += \
     windows/ProductSeach.h \
     windows/ProductInfo.h \
     windows/ProductEdit.h \
+    windows/ActivityCalculation.h \
     databasemodule.h \
     MDIProgram.h \
     windows.h \
@@ -79,7 +81,8 @@ FORMS += \
     forms/Recipe_seach.ui \
     forms/Product_seach.ui \
     forms/Product_info.ui \
-    forms/Product_edit.ui
+    forms/Product_edit.ui \
+    forms/Activity_calculation.ui
 
 RESOURCES += \
     rec.qrc
