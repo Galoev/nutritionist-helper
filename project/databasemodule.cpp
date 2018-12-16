@@ -984,16 +984,15 @@ void DatabaseModule::initEmptyDB()
     /*
      * Recipes table
     */
-    querys << QString("CREATE TABLE `Recipes` ("
+    querys << QString("CREATE TABLE `Recipes`("
                       "`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,"
-                      "`name`	TEXT NOT NULL"
+                      "`name`	TEXT NOT NULL,"
                       "`proteins`	REAL NOT NULL,"
                       "`fats`	REAL NOT NULL,"
-                      "`carbohydrates`	BLOB NOT NULL,"
-                      "`kcal`	TEXT NOT NULL"
+                      "`carbohydrates`	REAL NOT NULL,"
+                      "`kcal`	REAL NOT NULL"
                       ");"
                       );
-
     QSqlQuery query;
     for (auto q : querys){
         if(!query.exec(q)){
