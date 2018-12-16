@@ -53,3 +53,13 @@ Examination ClientInfo::selectedExamination() const
 {
     return _selectedExm;
 }
+
+void ClientInfo::paintEvent(QPaintEvent *event)
+{
+    auto width = _ui.tableWidget_examinations->width();
+    _ui.tableWidget_examinations->horizontalHeader()->setStretchLastSection(true);
+    _ui.tableWidget_examinations->setColumnWidth(0, width * 3/4 - 10);
+    _ui.tableWidget_examinations->setColumnWidth(1, width * 1/4 - 10);
+
+    QWidget::paintEvent(event);
+}
