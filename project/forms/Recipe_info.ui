@@ -349,6 +349,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton_recipeEdit</tabstop>
+  <tabstop>pushButton_delete</tabstop>
+  <tabstop>tableWidget_ingredientList</tabstop>
+  <tabstop>tableWidget_recipeDescription</tabstop>
+ </tabstops>
  <resources>
   <include location="../rec.qrc"/>
  </resources>
