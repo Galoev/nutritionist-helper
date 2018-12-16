@@ -252,6 +252,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton_productEdit</tabstop>
+  <tabstop>pushButton_delete</tabstop>
+  <tabstop>textBrowser_description</tabstop>
+ </tabstops>
  <resources>
   <include location="../rec.qrc"/>
  </resources>

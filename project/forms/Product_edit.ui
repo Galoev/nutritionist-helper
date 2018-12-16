@@ -350,6 +350,17 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_productName</tabstop>
+  <tabstop>lineEdit_numProtein</tabstop>
+  <tabstop>lineEdit_numFats</tabstop>
+  <tabstop>lineEdit_numCarbohydrates</tabstop>
+  <tabstop>lineEdit_numKcal</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>textEdit_description</tabstop>
+  <tabstop>pushButton_save</tabstop>
+  <tabstop>pushButton_cancel</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
