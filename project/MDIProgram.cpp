@@ -447,12 +447,13 @@ void MainWindow::setProductEditConnect(ProductEdit *p)
     connect(p, &ProductEdit::formNewProductReady, [this, p](){
         auto newProduct = m_formProductEdit->product();
 
-        _database.addProduct(newProduct);
+        auto id = _database.addProduct(newProduct);
         if(!_database.hasUnwatchedWorkError()){
             auto ret = QMessageBox::question(this, "Добавление продукта"
                                              ,"Продукт успешно добавлен\nЖелаете открыть окно Информация о продукте?"
                                              , QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::Yes){
+                newProduct.setId(id);
                 m_formProductInfo = new ProductInfo;
                 this->setProductInfoConnect(m_formProductInfo);
                 m_formProductInfo->setInformation(newProduct);
@@ -589,7 +590,7 @@ void MainWindow::setActivityEditConnect(ActivityEdit *p)
 
     connect(p, &ActivityEdit::formNewActivityReady, [this, p](){
         auto newActivity = p->activity();
-        _database.addActivity(newActivity);
+        auto id = _database.addActivity(newActivity);
         if(!_database.hasUnwatchedWorkError()){
 //            if(m_formActivitySeach){
 //                m_formActivitySeach->updateInformationIfExist(newActivity);
@@ -598,6 +599,7 @@ void MainWindow::setActivityEditConnect(ActivityEdit *p)
                                              ,"Вид двигательной активности был успешно добавлен\nЖелаете открыть окно Информация об активности?"
                                              , QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::Yes){
+                newActivity.setId(id);
                 m_formActivityInfo = new ActivityInfo;
                 this->setActivityInfoConnect(m_formActivityInfo);
                 m_formActivityInfo->setInformation(newActivity);
