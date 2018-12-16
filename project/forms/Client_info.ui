@@ -233,6 +233,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton_delete</tabstop>
+  <tabstop>pushButton_clientEdit</tabstop>
+  <tabstop>pushButton_addExaminationHalf</tabstop>
+  <tabstop>pushButton_addExaminationFull</tabstop>
+  <tabstop>tableWidget_examinations</tabstop>
+ </tabstops>
  <resources>
   <include location="../rec.qrc"/>
  </resources>
