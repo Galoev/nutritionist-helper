@@ -16,6 +16,7 @@ private slots:
     void onNextPage();
     void onPrevPage();
     void onSaveForm();
+    void foo();
 
     void onPushButtonCalculate_65();
     void onPushButtonCalculate_69_77();

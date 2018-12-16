@@ -12,7 +12,8 @@ ExaminationEdit::ExaminationEdit(QWidget *wgt)
 
     setupValidators();
 
-    connect(_ui.pushButton_nextPage, SIGNAL(pressed()), SLOT(onNextPage()));
+    //connect(_ui.pushButton_nextPage, SIGNAL(pressed()), SLOT(onNextPage()));
+    connect(_ui.pushButton_nextPage, SIGNAL(pressed()), SLOT(foo()));
     connect(_ui.pushButton_previousPage, SIGNAL(pressed()), SLOT(onPrevPage()));
     connect(_ui.pushButton_saveForm, SIGNAL(pressed()), SLOT(onSaveForm()));
     connect(_ui.pushButton_calculate_formfield_62, SIGNAL(pressed()), SLOT(onPushButtonCalculate_65()));
@@ -63,6 +64,75 @@ void ExaminationEdit::onNextPage()
 void ExaminationEdit::onPrevPage()
 {
     setPage(_ui.stackedWidget->currentIndex() - 1);
+}
+
+void ExaminationEdit::foo()
+{
+    QWidget *page = _ui.stackedWidget->currentWidget();
+    QObjectList lst = page->children();
+    QObject *scrollArea = lst.at(1);
+    QObjectList lst2 = scrollArea->children();
+    QObject *scrollarea_viewport = lst2.at(0);
+    QObjectList lst3 = scrollarea_viewport->children();
+    QObject *scrollAreaWidgetContents = lst3.at(0);
+
+
+    QString errStyle = "QWidget { background: rgb(255, 179, 179); }";
+    bool isOpenErrDialog = false;
+
+
+    foreach (FormField field, _examination.fields()) {
+        bool isBlankField = false;
+
+       QWidget* widgetField = scrollAreaWidgetContents->findChild<QWidget*>(field.name());
+       if (!widgetField) {
+           qDebug()<<field.name()<<"--"<<endl;
+           continue;
+       }
+       qDebug()<<field.name()<<"++"<<endl;
+       switch (field.type()) {
+       case FormField::String : {
+           QTextEdit* textField = (QTextEdit*)widgetField;
+           if (textField->toPlainText().isEmpty()) {
+               isBlankField = true;
+           }
+       } break;
+       case FormField::Date : {
+           QDateEdit* dateField = (QDateEdit*)widgetField;
+           if (dateField->date() == QDate(1800, 1, 1)) {
+               isBlankField = true;
+           }
+       } break;
+       case FormField::Float :
+       case FormField::UShort : {
+           QLineEdit* lineField = (QLineEdit*)widgetField;
+           if (!lineField->hasAcceptableInput()) {
+               isBlankField = true;
+           }
+       } break;
+       case FormField::ComboB : {
+           QComboBox* comboField = (QComboBox*)widgetField;
+           if (comboField->currentIndex() == -1) {
+               isBlankField = true;
+           }
+       } break;
+       }
+
+       if (isBlankField && widgetField->isEnabled()) {
+           widgetField->setStyleSheet(errStyle);
+           isOpenErrDialog = true;
+       } else {
+           widgetField->setStyleSheet("");
+       }
+    }
+    this->repaint();
+
+    if(isOpenErrDialog) {
+        qDebug()<<"Ошибка заполнения"<<"Данные заполнены некорректно"<<endl;
+        return;
+    }
+
+    setPage(_ui.stackedWidget->currentIndex() + 1);
 }
 
 void ExaminationEdit::onSaveForm()
@@ -120,7 +190,7 @@ void ExaminationEdit::onSaveForm()
     this->repaint();
 
     if(isOpenErrDialog) {
-        QMessageBox::warning(this, tr("Ошибка заполнения"), tr("Данные заполнены некорректно"));
+        qDebug()<<"Ошибка заполнения"<<"Данные заполнены некорректно"<<endl;
 
         return;
     }
@@ -223,7 +293,7 @@ void ExaminationEdit::setupValidators()
     _ui.formfield_2->setValidator(new QIntValidator(40, 300));
     _ui.formfield_3->setValidator(new QIntValidator(40, 300));
     _ui.formfield_4->setValidator(new QIntValidator(40, 300));
-    _ui.formfield_27->setValidator(new QIntValidator(1, 10));
+    _ui.formfield_27->setValidator(new QIntValidator(0, 100));
     _ui.formfield_30->setValidator(new QIntValidator(20, 40));
     _ui.formfield_31->setValidator(new QIntValidator(20, 40));
     _ui.formfield_33->setValidator(new QIntValidator(1000, 2999));
