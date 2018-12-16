@@ -86,10 +86,8 @@ void ExaminationEdit::foo()
 
        QWidget* widgetField = scrollAreaWidgetContents->findChild<QWidget*>(field.name());
        if (!widgetField) {
-           qDebug()<<field.name()<<"--"<<endl;
            continue;
        }
-       qDebug()<<field.name()<<"++"<<endl;
        switch (field.type()) {
        case FormField::String : {
            QTextEdit* textField = (QTextEdit*)widgetField;

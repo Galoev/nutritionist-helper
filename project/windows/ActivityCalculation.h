@@ -38,7 +38,7 @@ signals:
 
 
 private slots:
-    void calculateActivity(int row, int column);
+    void calculateActivity(int row=0, int column=0);
     void onPushButtonAddProduct();
     void onPushButtonAddActivity();
     void onPushButtonDeleteProduct();

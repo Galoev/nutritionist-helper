@@ -5,6 +5,7 @@
 #include <QPalette>
 #include <QTableWidget>
 #include <QDebug>
+#include <QString>
 
 ActivityCalculation::ActivityCalculation(QWidget *parent) :
     QWidget(parent),
@@ -17,6 +18,8 @@ ActivityCalculation::ActivityCalculation(QWidget *parent) :
 
     connect(ui->activitiesTable, SIGNAL(cellChanged(int, int)), SLOT(calculateActivity(int, int)));
     connect(ui->productsTable, SIGNAL(cellChanged(int, int)), SLOT(calculateActivity(int, int)));
+
+    connect(ui->pushButton_setWeight, SIGNAL(pressed()), SLOT(calculateActivity()));
 
     connect(ui->addSelectedActivity, SIGNAL(clicked(bool)), SLOT(onPushButtonAddActivity()));
     connect(ui->addSelectedProduct, SIGNAL(clicked(bool)), SLOT(onPushButtonAddProduct()));
@@ -84,7 +87,7 @@ void ActivityCalculation::calculateActivity(int row, int column)
 {
     if (column == 3) return;
 
-    auto getSumKcalColumnOfTable = [](QTableWidget* table) {
+    auto getSumKcalColumnOfTable = [](QTableWidget* table, float coef=1) {
         const auto kcalColumn(1), minColumn(2), totalColumn(3);
         const auto rowCount = table->rowCount();
         float sum(0);
@@ -92,7 +95,7 @@ void ActivityCalculation::calculateActivity(int row, int column)
             auto kcalItem = table->item(i, kcalColumn);
             auto minItem = table->item(i, minColumn);
             if (kcalItem != nullptr && minItem != nullptr) {
-                auto totalKcal = kcalItem->text().toFloat() * minItem->text().toFloat();
+                auto totalKcal = kcalItem->text().toFloat() * minItem->text().toFloat() * coef;
                 qDebug() << table->item(i, totalColumn) << totalColumn;
                 table->setItem(i, totalColumn, new QTableWidgetItem(QString::number(totalKcal)));
                 sum += totalKcal;
@@ -102,9 +105,10 @@ void ActivityCalculation::calculateActivity(int row, int column)
         return sum;
     };
 
-    auto sumActivitiesKcal = getSumKcalColumnOfTable(ui->activitiesTable);
-    auto sumProductsKcal = getSumKcalColumnOfTable(ui->productsTable);
-    auto resCcal = sumActivitiesKcal - sumProductsKcal;
+    auto weight = ui->lineEdit_weight->text().toFloat();
+    auto sumActivitiesKcal = getSumKcalColumnOfTable(ui->activitiesTable, weight);
+    auto sumProductsKcal = getSumKcalColumnOfTable(ui->productsTable, 0.01);
+    auto resCcal = sumProductsKcal - sumActivitiesKcal;
 
     QString kcalSign;
     QColor kcalColor;

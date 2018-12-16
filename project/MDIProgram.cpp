@@ -20,7 +20,6 @@ MainWindow::MainWindow(QMainWindow* wgt)
     connect(_ui.action_activitySearch,      SIGNAL(triggered()), SLOT(slotActivitySearch()));
     connect(_ui.action_recipeAdd,           SIGNAL(triggered()), SLOT(slotRecipeAdd()));
     connect(_ui.action_recipeSearch,        SIGNAL(triggered()), SLOT(slotRecipeSearch()));
-    connect(_ui.action_fastProtocol,        SIGNAL(triggered()), SLOT(slotFastProtocol()));
     connect(_ui.action_activityCalc,        SIGNAL(triggered()), SLOT(slotActivityCalc()));
     connect(_ui.action_windowsSort,         SIGNAL(triggered()), SLOT(slotWindowsSort()));
     connect(_ui.action_issueReport,         SIGNAL(triggered()), SLOT(slotIssueReport()));
@@ -181,11 +180,6 @@ void MainWindow::slotActivityCalc()
     m_formActivityCalculation->setSearcingProducts(allProducts);
     setActivityCalculationConnect(m_formActivityCalculation);
     addSubWindowAndShow(m_formActivityCalculation);
-}
-
-void MainWindow::slotFastProtocol()
-{
-    QMessageBox::warning(this, "slotFastProtocol", "slotFastProtocol");
 }
 
 void MainWindow::slotWindowsSort()

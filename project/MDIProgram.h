@@ -22,7 +22,6 @@ private slots:
     void slotRecipeAdd();
     void slotRecipeSearch();
     void slotActivityCalc();
-    void slotFastProtocol();
     void slotWindowsSort();
     void slotIssueReport();
     void slotAboutProgram();
