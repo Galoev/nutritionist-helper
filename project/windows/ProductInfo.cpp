@@ -32,6 +32,7 @@ ProductEntity ProductInfo::product() const
     return _product;
 }
 
+
 ProductInfo::~ProductInfo()
 {
     delete ui;

@@ -249,6 +249,18 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_recipeName</tabstop>
+  <tabstop>pushButton_searchAll</tabstop>
+  <tabstop>pushButton_search</tabstop>
+  <tabstop>radioButton_productSearch</tabstop>
+  <tabstop>radioButton_proteinSearch</tabstop>
+  <tabstop>radioButton_fatsSearch</tabstop>
+  <tabstop>radioButton_carbohydratesSearch</tabstop>
+  <tabstop>tableWidget_recipe</tabstop>
+  <tabstop>spinBox_To</tabstop>
+  <tabstop>spinBox_From</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

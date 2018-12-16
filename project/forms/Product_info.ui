@@ -201,6 +201,11 @@
       <layout class="QHBoxLayout" name="horizontalLayout_9">
        <item>
         <widget class="QLabel" name="label_unitsName">
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Ед. измерения:</string>
          </property>
@@ -208,6 +213,11 @@
        </item>
        <item>
         <widget class="QLabel" name="label_unitsType">
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>NONE</string>
          </property>
@@ -242,6 +252,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton_productEdit</tabstop>
+  <tabstop>pushButton_delete</tabstop>
+  <tabstop>textBrowser_description</tabstop>
+ </tabstops>
  <resources>
   <include location="../rec.qrc"/>
  </resources>

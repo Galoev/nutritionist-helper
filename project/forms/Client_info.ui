@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Информация о клиенте</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,1">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="spacing">
@@ -233,6 +233,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton_delete</tabstop>
+  <tabstop>pushButton_clientEdit</tabstop>
+  <tabstop>pushButton_addExaminationHalf</tabstop>
+  <tabstop>pushButton_addExaminationFull</tabstop>
+  <tabstop>tableWidget_examinations</tabstop>
+ </tabstops>
  <resources>
   <include location="../rec.qrc"/>
  </resources>

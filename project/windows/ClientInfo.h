@@ -10,6 +10,8 @@ public:
     Client client() const;
     Examination selectedExamination() const;
 
+    void paintEvent(QPaintEvent *event) override;
+
 signals:
     void newExaminationHalfButtonPressed();
     void newExaminationFullButtonPressed();
