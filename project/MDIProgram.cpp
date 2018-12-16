@@ -709,6 +709,7 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
             if (ret == QMessageBox::Yes){
                 newRecipe.setId(id);
                 m_formRecipeInfo = new RecipeInfo;
+                newRecipe.setId(id);
                 this->setRecipeInfoConnect(m_formRecipeInfo);
                 m_formRecipeInfo->setInformation(newRecipe);
                 this->addSubWindowAndShow(m_formRecipeInfo);

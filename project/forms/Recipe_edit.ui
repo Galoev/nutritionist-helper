@@ -16,6 +16,11 @@
   <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <widget class="QLineEdit" name="lineEdit_recipeName">
+     <property name="font">
+      <font>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="placeholderText">
       <string>Название рецепта</string>
      </property>
