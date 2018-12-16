@@ -141,6 +141,12 @@ void MainWindow::slotActivitySearch()
 void MainWindow::slotRecipeAdd()
 {
     m_formRecipeEdit = new RecipeEdit;
+    auto allProducts = _database.products();
+    if(_database.hasUnwatchedWorkError()){
+        QMessageBox::warning(this, "Получение списка Продуктов", "Список всех Продуктов для обрласти поиска не был получен");
+        qDebug() << _database.unwatchedWorkError();
+    }
+    m_formRecipeEdit->setSearchedProducts(allProducts);
     setRecipeEditConnect(m_formRecipeEdit);
     addSubWindowAndShow(m_formRecipeEdit);
 }
@@ -695,12 +701,13 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
 
     connect(p, &RecipeEdit::formNewRecipeReady, [this, p](){
         auto newRecipe = p->recipe();
-        _database.addRecipe(newRecipe);
+        auto id = _database.addRecipe(newRecipe);
         if(!_database.hasUnwatchedWorkError()){
             auto ret = QMessageBox::question(this, "Добавление рецепта"
                                              ,"Новый рецепт был успешно добавлен\nЖелаете открыть окно Информация о рецепте?"
                                              , QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::Yes){
+                newRecipe.setId(id);
                 m_formRecipeInfo = new RecipeInfo;
                 this->setRecipeInfoConnect(m_formRecipeInfo);
                 m_formRecipeInfo->setInformation(newRecipe);
@@ -783,7 +790,14 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
 //        this->setProductInfoConnect(m_formProductInfo);
 //        this->addSubWindowAndShow(m_formProductInfo);
     });
-
+    connect(p, &RecipeEdit::productRequireUpdateAllInform, [this, p](){
+        auto allProducts = _database.products();
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Получение списка Продуктов", "Список всех Продуктов не был получен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->setSearchedProducts(allProducts);
+    });
 }
 
 void MainWindow::setRecipeInfoConnect(RecipeInfo *p)

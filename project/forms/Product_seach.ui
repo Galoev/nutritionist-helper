@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>ProductSeach</class>
  <widget class="QWidget" name="ProductSeach">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>550</width>
+    <height>272</height>
+   </rect>
+  </property>
   <property name="minimumSize">
    <size>
     <width>550</width>

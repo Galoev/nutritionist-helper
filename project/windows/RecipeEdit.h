@@ -21,6 +21,8 @@ public:
     RecipeEntity recipe() const;
     void setSearchedProducts(const QVector<ProductEntity>& );
 
+    void paintEvent(QPaintEvent *event) override;
+
 signals:
     void formNewRecipeReady();
     void formEditedRecipeReady();
@@ -29,6 +31,7 @@ signals:
     void productSearchFatsReady(const int from, const int to);
     void productSearchCarbohydratesReady(const int from, const int to);
     void productSelectedForShow();
+    void productRequireUpdateAllInform();
 
 private slots:
     void onPushButtonSave();
@@ -42,6 +45,4 @@ private:
     Ui::RecipeEdit *ui;
     RecipeEntity _recipe;
     bool _isEditingMod = false;
-
-    ProductSeach* _productSeach;
 };
