@@ -161,6 +161,18 @@ void MainWindow::slotRecipeSearch()
 void MainWindow::slotActivityCalc()
 {
     m_formActivityCalculation = new ActivityCalculation;
+    auto allProducts = _database.products();
+    if(_database.hasUnwatchedWorkError()){
+        QMessageBox::warning(this, "Получение списка Продуктов", "Список всех Продуктов не был получен");
+        qDebug() << _database.unwatchedWorkError();
+    }
+    auto allActivities = _database.activities();
+    if(_database.hasUnwatchedWorkError()){
+        QMessageBox::warning(this, "Получение списка Активностей", "Список всех Активностей не был получен");
+        qDebug() << _database.unwatchedWorkError();
+    }
+    m_formActivityCalculation->setSearcingActivities(allActivities);
+    m_formActivityCalculation->setSearcingProducts(allProducts);
     setActivityCalculationConnect(m_formActivityCalculation);
     addSubWindowAndShow(m_formActivityCalculation);
 }
@@ -886,9 +898,85 @@ void MainWindow::setRecipeSeachConnect(RecipeSeach *p)
     });
 }
 
-void MainWindow::setActivityCalculationConnect(ActivityCalculation *)
+void MainWindow::setActivityCalculationConnect(ActivityCalculation *p)
 {
+    connect(p, &ActivityCalculation::productSearchLineReady, [this, p](const QString& s){
+        auto products = _database.products(s.split(' '));
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты с указанным названием не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты с указанным названием не были найдены");
+        }
+        p->setSearcingProducts(products);
+    });
+    connect(p, &ActivityCalculation::productSearchProteinReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'p');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона белков не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона белков не были найдены");
+        }
+        p->setSearcingProducts(products);
+    });
+    connect(p, &ActivityCalculation::productSearchFatsReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'f');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона жиров не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона жиров не были найдены");
+        }
+        p->setSearcingProducts(products);
+    });
+    connect(p, &ActivityCalculation::productSearchCarbohydratesReady, [this, p](const int from, const int to){
+        auto products = _database.products(QPair<float,float>(from, to),'c');
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск продуктов", "Продукты для заданного диапазона углеводов не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (products.isEmpty()){
+            QMessageBox::information(this, "Поиск продуктов", "Продукты для заданного диапазона углеводов не были найдены");
+        }
+        p->setSearcingProducts(products);
+    });
+    connect(p, &ActivityCalculation::productRequireUpdateAllInform, [this, p](){
+        auto allProducts = _database.products();
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Получение списка Продуктов", "Список всех Продуктов не был получен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->setSearcingProducts(allProducts);
+    });
 
+    connect(p, &ActivityCalculation::activitySeachLineActivityReady, [this, p](const QString& s){
+        auto activities = _database.activities(s.split(' '));
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск информации об активности", "Виды двигательной активности по указанному запросу не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (activities.isEmpty()){
+            QMessageBox::information(this, "Поиск информации об активности", "Виды двигательной активности по указанному запросу не были найдены");
+        }
+        p->setSearcingActivities(activities);
+    });
+    connect(p, &ActivityCalculation::activitySeachLineKcalReady, [this, p](const int from, const int to){
+        auto activities = _database.activities(QPair<float, float>(from, to));
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Поиск информации об активности", "Виды двигательной активности для заданного интервала не были получены из базы данных");
+            qDebug() << _database.unwatchedWorkError();
+        } else if (activities.isEmpty()){
+            QMessageBox::information(this, "Поиск информации об активности", "Виды двигательной активности для заданного интервала не были найдены");
+        }
+        p->setSearcingActivities(activities);
+    });
+    connect(p, &ActivityCalculation::activityRequireUpdateAllInform, [this, p](){
+        auto allActivities = _database.activities();
+        if(_database.hasUnwatchedWorkError()){
+            QMessageBox::warning(this, "Получение списка Активностей", "Список всех Активностей не был получен");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        p->setSearcingActivities(allActivities);
+    });
 }
 
 void MainWindow::addSubWindowAndShow(QWidget *widget)
