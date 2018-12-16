@@ -217,6 +217,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_activityName</tabstop>
+  <tabstop>pushButton_searchAll</tabstop>
+  <tabstop>pushButton_search</tabstop>
+  <tabstop>radioButton_activitySearch</tabstop>
+  <tabstop>radioButton_kcalSearch</tabstop>
+  <tabstop>tableWidget_activitys</tabstop>
+  <tabstop>spinBox_calorieTo</tabstop>
+  <tabstop>spinBox_calorieFrom</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
