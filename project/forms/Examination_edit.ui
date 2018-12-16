@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>540</width>
+    <width>638</width>
     <height>588</height>
    </rect>
   </property>
@@ -142,8 +142,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>488</width>
-            <height>613</height>
+            <width>588</width>
+            <height>656</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_45">
@@ -459,6 +459,9 @@
                    <property name="sizeAdjustPolicy">
                     <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                    </property>
+                   <property name="tabChangesFocus">
+                    <bool>true</bool>
+                   </property>
                    <property name="placeholderText">
                     <string>...</string>
                    </property>
@@ -759,6 +762,9 @@
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="placeholderText">
                  <string>...</string>
                 </property>
@@ -768,6 +774,9 @@
                <widget class="QTextEdit" name="formfield_9">
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+                </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -899,8 +908,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>488</width>
-            <height>518</height>
+            <width>588</width>
+            <height>578</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_46">
@@ -930,6 +939,9 @@
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="placeholderText">
                  <string>...</string>
                 </property>
@@ -948,6 +960,9 @@
                <widget class="QTextEdit" name="formfield_14">
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+                </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -970,6 +985,9 @@
                   <property name="sizeAdjustPolicy">
                    <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                   </property>
+                  <property name="tabChangesFocus">
+                   <bool>true</bool>
+                  </property>
                   <property name="placeholderText">
                    <string>...</string>
                   </property>
@@ -988,6 +1006,9 @@
                  <widget class="QTextEdit" name="formfield_16">
                   <property name="sizeAdjustPolicy">
                    <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+                  </property>
+                  <property name="tabChangesFocus">
+                   <bool>true</bool>
                   </property>
                   <property name="placeholderText">
                    <string>...</string>
@@ -1115,8 +1136,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>488</width>
-            <height>526</height>
+            <width>588</width>
+            <height>564</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_8">
@@ -1131,12 +1152,15 @@
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -1157,12 +1181,15 @@ p, li { white-space: pre-wrap; }
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -1183,12 +1210,15 @@ p, li { white-space: pre-wrap; }
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -1209,12 +1239,15 @@ p, li { white-space: pre-wrap; }
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -1261,12 +1294,15 @@ p, li { white-space: pre-wrap; }
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -1287,12 +1323,15 @@ p, li { white-space: pre-wrap; }
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -1436,12 +1475,15 @@ p, li { white-space: pre-wrap; }
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -1484,8 +1526,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>653</width>
-            <height>462</height>
+            <width>659</width>
+            <height>497</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_7">
@@ -1955,6 +1997,9 @@ p, li { white-space: pre-wrap; }
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="placeholderText">
                  <string>...</string>
                 </property>
@@ -2246,8 +2291,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>634</width>
-            <height>623</height>
+            <width>278</width>
+            <height>679</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_47">
@@ -2277,6 +2322,9 @@ p, li { white-space: pre-wrap; }
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="placeholderText">
                  <string>...</string>
                 </property>
@@ -2295,6 +2343,9 @@ p, li { white-space: pre-wrap; }
                <widget class="QTextEdit" name="formfield_38">
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+                </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -2315,6 +2366,9 @@ p, li { white-space: pre-wrap; }
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="placeholderText">
                  <string>...</string>
                 </property>
@@ -2334,6 +2388,9 @@ p, li { white-space: pre-wrap; }
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="placeholderText">
                  <string>...</string>
                 </property>
@@ -2352,6 +2409,9 @@ p, li { white-space: pre-wrap; }
                <widget class="QTextEdit" name="formfield_41">
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+                </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -2379,8 +2439,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>551</width>
-            <height>428</height>
+            <width>316</width>
+            <height>619</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_48">
@@ -4202,8 +4262,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>551</width>
-            <height>440</height>
+            <width>412</width>
+            <height>536</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_49">
@@ -5804,8 +5864,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>551</width>
-            <height>538</height>
+            <width>437</width>
+            <height>747</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_50">
@@ -6895,6 +6955,9 @@ p, li { white-space: pre-wrap; }
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                 </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
+                </property>
                 <property name="placeholderText">
                  <string>...</string>
                 </property>
@@ -6921,8 +6984,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>502</width>
-            <height>447</height>
+            <width>588</width>
+            <height>413</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_9">
@@ -6977,6 +7040,9 @@ p, li { white-space: pre-wrap; }
                <widget class="QTextEdit" name="formfield_90">
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+                </property>
+                <property name="tabChangesFocus">
+                 <bool>true</bool>
                 </property>
                 <property name="placeholderText">
                  <string>...</string>
@@ -7174,6 +7240,112 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>formfield_1</tabstop>
+  <tabstop>formfield_2</tabstop>
+  <tabstop>formfield_3</tabstop>
+  <tabstop>formfield_4</tabstop>
+  <tabstop>formfield_5</tabstop>
+  <tabstop>formfield_6</tabstop>
+  <tabstop>formfield_7</tabstop>
+  <tabstop>formfield_8</tabstop>
+  <tabstop>formfield_9</tabstop>
+  <tabstop>formfield_10</tabstop>
+  <tabstop>formfield_11</tabstop>
+  <tabstop>formfield_12</tabstop>
+  <tabstop>scrollArea_3</tabstop>
+  <tabstop>formfield_13</tabstop>
+  <tabstop>formfield_14</tabstop>
+  <tabstop>formfield_15</tabstop>
+  <tabstop>formfield_16</tabstop>
+  <tabstop>formfield_17</tabstop>
+  <tabstop>formfield_18</tabstop>
+  <tabstop>formfield_19</tabstop>
+  <tabstop>scrollArea_4</tabstop>
+  <tabstop>formfield_20</tabstop>
+  <tabstop>formfield_21</tabstop>
+  <tabstop>formfield_22</tabstop>
+  <tabstop>formfield_23</tabstop>
+  <tabstop>formfield_24</tabstop>
+  <tabstop>formfield_28</tabstop>
+  <tabstop>formfield_25</tabstop>
+  <tabstop>formfield_26</tabstop>
+  <tabstop>formfield_27</tabstop>
+  <tabstop>scrollArea_2</tabstop>
+  <tabstop>formfield_29</tabstop>
+  <tabstop>formfield_30</tabstop>
+  <tabstop>formfield_31</tabstop>
+  <tabstop>formfield_32</tabstop>
+  <tabstop>formfield_33</tabstop>
+  <tabstop>formfield_34</tabstop>
+  <tabstop>formfield_35</tabstop>
+  <tabstop>formfield_36</tabstop>
+  <tabstop>scrollArea_5</tabstop>
+  <tabstop>formfield_37</tabstop>
+  <tabstop>formfield_38</tabstop>
+  <tabstop>formfield_39</tabstop>
+  <tabstop>formfield_40</tabstop>
+  <tabstop>formfield_41</tabstop>
+  <tabstop>scrollArea_6</tabstop>
+  <tabstop>formfield_42</tabstop>
+  <tabstop>formfield_43</tabstop>
+  <tabstop>formfield_44</tabstop>
+  <tabstop>formfield_45</tabstop>
+  <tabstop>formfield_46</tabstop>
+  <tabstop>formfield_47</tabstop>
+  <tabstop>formfield_48</tabstop>
+  <tabstop>formfield_49</tabstop>
+  <tabstop>formfield_52</tabstop>
+  <tabstop>formfield_53</tabstop>
+  <tabstop>formfield_50</tabstop>
+  <tabstop>formfield_51</tabstop>
+  <tabstop>formfield_54</tabstop>
+  <tabstop>formfield_55</tabstop>
+  <tabstop>scrollArea_7</tabstop>
+  <tabstop>formfield_56</tabstop>
+  <tabstop>formfield_58</tabstop>
+  <tabstop>formfield_60</tabstop>
+  <tabstop>formfield_62</tabstop>
+  <tabstop>formfield_57</tabstop>
+  <tabstop>formfield_59</tabstop>
+  <tabstop>formfield_61</tabstop>
+  <tabstop>formfield_63</tabstop>
+  <tabstop>formfield_64</tabstop>
+  <tabstop>pushButton_calculate_formfield_62</tabstop>
+  <tabstop>formfield_66</tabstop>
+  <tabstop>formfield_67</tabstop>
+  <tabstop>formfield_68</tabstop>
+  <tabstop>formfield_65</tabstop>
+  <tabstop>scrollArea_8</tabstop>
+  <tabstop>pushButton_calculate_formfield_66_74</tabstop>
+  <tabstop>formfield_78</tabstop>
+  <tabstop>formfield_79</tabstop>
+  <tabstop>formfield_80</tabstop>
+  <tabstop>formfield_81</tabstop>
+  <tabstop>formfield_82</tabstop>
+  <tabstop>formfield_83</tabstop>
+  <tabstop>formfield_84</tabstop>
+  <tabstop>formfield_69</tabstop>
+  <tabstop>formfield_70</tabstop>
+  <tabstop>formfield_71</tabstop>
+  <tabstop>formfield_72</tabstop>
+  <tabstop>formfield_73</tabstop>
+  <tabstop>formfield_74</tabstop>
+  <tabstop>formfield_75</tabstop>
+  <tabstop>formfield_76</tabstop>
+  <tabstop>formfield_77</tabstop>
+  <tabstop>scrollArea_9</tabstop>
+  <tabstop>formfield_85</tabstop>
+  <tabstop>formfield_86</tabstop>
+  <tabstop>formfield_87</tabstop>
+  <tabstop>formfield_88</tabstop>
+  <tabstop>formfield_89</tabstop>
+  <tabstop>formfield_90</tabstop>
+  <tabstop>pushButton_previousPage</tabstop>
+  <tabstop>pushButton_nextPage</tabstop>
+  <tabstop>pushButton_saveForm</tabstop>
+ </tabstops>
  <resources>
   <include location="../rec.qrc"/>
  </resources>
