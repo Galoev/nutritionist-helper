@@ -49,6 +49,7 @@ void ExaminationEdit::setInformation(const Client &client, bool isFullExaminatio
                 widgetField->setEnabled(false);
             }
         }
+        _ui.pushButton_calculate_formfield_62->setEnabled(false);
     }
 
     this->repaint();
