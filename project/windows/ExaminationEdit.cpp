@@ -9,6 +9,7 @@ ExaminationEdit::ExaminationEdit(QWidget *wgt)
 
     _ui.pushButton_saveForm->setEnabled(false);
     _ui.pushButton_previousPage->setEnabled(false);
+    m_isEditingMod = false;
 
     setupValidators();
 
@@ -22,6 +23,7 @@ ExaminationEdit::ExaminationEdit(QWidget *wgt)
 
 void ExaminationEdit::setInformation(const Client &client, bool isFullExamination)
 {
+    m_isEditingMod = false;
     _examination.setIsFullExamination(isFullExamination);
     _examination.setClient(client);
 
@@ -32,8 +34,8 @@ void ExaminationEdit::setInformation(const Client &client, bool isFullExaminatio
             .arg(client.age())
             .arg(client.birthDate().year());
     _ui.label_client_info->setText(clientInfo);
-
-    if (client.gender() == 'm') {
+    m_gender = client.gender();
+    if (m_gender == 'm') {
         _ui.page_3->setEnabled(false);
     }
 
@@ -47,21 +49,156 @@ void ExaminationEdit::setInformation(const Client &client, bool isFullExaminatio
             QWidget* widgetField = this->findChild<QWidget*>(field.name());
             if (field.isMayBeEmpty()) {
                 widgetField->setEnabled(false);
+                QLineEdit *tmpLine =  dynamic_cast<QLineEdit*>(widgetField);
+                if (tmpLine != nullptr){
+                    tmpLine->setText("--пусто--");
+                }
             }
+        }
+        _ui.pushButton_calculate_formfield_62->setEnabled(false);
+    }
+
+    this->repaint();
+}
+
+void ExaminationEdit::setInformation(const Examination& examination)
+{
+    m_isEditingMod = true;
+    _examination = examination;
+    Client client = _examination.client();
+    bool isFullExamination = _examination.isFullExamination();
+
+    QString clientInfo = QString("%1 %2 %3 / %4 (%5)")
+            .arg(client.surname())
+            .arg(client.name())
+            .arg(client.patronymic())
+            .arg(client.age())
+            .arg(client.birthDate().year());
+    _ui.label_client_info->setText(clientInfo);
+    m_gender = client.gender();
+    if (m_gender == 'm') {
+        _ui.page_3->setEnabled(false);
+    }
+
+    QString examinationType = isFullExamination
+            ? tr("Прием")
+            : tr("Консультация");
+    _ui.label_examination_type->setText(examinationType);
+
+    if (!isFullExamination) {
+        _ui.pushButton_calculate_formfield_62->setEnabled(false);
+    }
+
+    foreach (FormField field, _examination.fields()) {
+        QWidget* widgetField = this->findChild<QWidget*>(field.name());
+
+        if (field.isMayBeEmpty()) {
+            widgetField->setEnabled(false);
+            QLineEdit *tmpLine =  dynamic_cast<QLineEdit*>(widgetField);
+            if (tmpLine != nullptr){
+                tmpLine->setText("--пусто--");
+            }
+            continue;
+        }
+
+        switch (field.type()) {
+        case FormField::String : {
+            ((QTextEdit*)widgetField)->setText(field.value());
+        } break;
+        case FormField::Date : {
+            ((QDateEdit*)widgetField)->setDate(QDate::fromString(field.value(), "ddMMyyyy"));
+        } break;
+        case FormField::Float :
+        case FormField::UShort : {
+            ((QLineEdit*)widgetField)->setText(field.value());
+        } break;
+        case FormField::ComboB : {
+            ((QComboBox*)widgetField)->setCurrentText(field.value());
+        } break;
         }
     }
 
     this->repaint();
 }
 
-void ExaminationEdit::onNextPage()
-{
-    setPage(_ui.stackedWidget->currentIndex() + 1);
-}
-
 void ExaminationEdit::onPrevPage()
 {
-    setPage(_ui.stackedWidget->currentIndex() - 1);
+    int index = _ui.stackedWidget->currentIndex() - 1;
+    if (((index == 3 || index == 6) && !_examination.isFullExamination()) || (_examination.isFullExamination() && m_gender == 'm' && index == 3)){
+        index--;
+    }
+    setPage(index);
+}
+
+void ExaminationEdit::onNextPage()
+{
+    QWidget *page = _ui.stackedWidget->currentWidget();
+    QObjectList lst = page->children();
+    QObject *scrollArea = lst.at(1);
+    QObjectList lst2 = scrollArea->children();
+    QObject *scrollarea_viewport = lst2.at(0);
+    QObjectList lst3 = scrollarea_viewport->children();
+    QObject *scrollAreaWidgetContents = lst3.at(0);
+
+
+    QString errStyle = "QWidget { background: rgb(255, 179, 179); }";
+    bool isOpenErrDialog = false;
+
+
+    foreach (FormField field, _examination.fields()) {
+        bool isBlankField = false;
+
+       QWidget* widgetField = scrollAreaWidgetContents->findChild<QWidget*>(field.name());
+       if (!widgetField) {
+           continue;
+       }
+
+       switch (field.type()) {
+       case FormField::String : {
+           QTextEdit* textField = (QTextEdit*)widgetField;
+           if (textField->toPlainText().isEmpty() && textField != _ui.formfield_90 && textField != _ui.formfield_84) {
+               isBlankField = true;
+           }
+       } break;
+       case FormField::Date : {
+           QDateEdit* dateField = (QDateEdit*)widgetField;
+           if (dateField->date() == QDate(1800, 1, 1)) {
+               isBlankField = true;
+           }
+       } break;
+       case FormField::Float :
+       case FormField::UShort : {
+           QLineEdit* lineField = (QLineEdit*)widgetField;
+           if (!lineField->hasAcceptableInput()) {
+               isBlankField = true;
+           }
+       } break;
+       case FormField::ComboB : {
+           QComboBox* comboField = (QComboBox*)widgetField;
+           if (comboField->currentIndex() == -1) {
+               isBlankField = true;
+           }
+       } break;
+       }
+
+       if (isBlankField && widgetField->isEnabled()) {
+           widgetField->setStyleSheet(errStyle);
+           isOpenErrDialog = true;
+       } else {
+           widgetField->setStyleSheet("");
+       }
+    }
+    this->repaint();
+
+    if(isOpenErrDialog) {
+        qDebug()<<"Ошибка заполнения"<<"Данные заполнены некорректно"<<endl;
+        return;
+    }
+    int index = _ui.stackedWidget->currentIndex() + 1;
+    if (((index == 3 || index == 6) && !_examination.isFullExamination()) || (_examination.isFullExamination() && m_gender == 'm' && index == 3)){
+        index++;
+    }
+    setPage(index);
 }
 
 void ExaminationEdit::onSaveForm()
@@ -84,7 +221,7 @@ void ExaminationEdit::onSaveForm()
         switch (field.type()) {
         case FormField::String : {
             QTextEdit* textField = (QTextEdit*)widgetField;
-            if (textField->toPlainText().isEmpty()) {
+            if (textField->toPlainText().isEmpty() && textField != _ui.formfield_90 && textField != _ui.formfield_84) {
                 isBlankField = true;
             }
         } break;
@@ -119,7 +256,7 @@ void ExaminationEdit::onSaveForm()
     this->repaint();
 
     if(isOpenErrDialog) {
-        QMessageBox::warning(this, tr("Ошибка заполнения"), tr("Данные заполнены некорректно"));
+        qDebug()<<"Ошибка заполнения"<<"Данные заполнены некорректно"<<endl;
 
         return;
     }
@@ -152,6 +289,12 @@ void ExaminationEdit::onSaveForm()
     _examination.setDate(QDateTime::currentDateTime());
 
     //this->close();
+
+    if (m_isEditingMod) {
+        emit formEditedExaminationReady();
+    } else {
+        emit formNewExaminationReady();
+    }
 
     emit formReady();
 }
@@ -222,7 +365,7 @@ void ExaminationEdit::setupValidators()
     _ui.formfield_2->setValidator(new QIntValidator(40, 300));
     _ui.formfield_3->setValidator(new QIntValidator(40, 300));
     _ui.formfield_4->setValidator(new QIntValidator(40, 300));
-    _ui.formfield_27->setValidator(new QIntValidator(1, 10));
+    _ui.formfield_27->setValidator(new QIntValidator(0, 100));
     _ui.formfield_30->setValidator(new QIntValidator(20, 40));
     _ui.formfield_31->setValidator(new QIntValidator(20, 40));
     _ui.formfield_33->setValidator(new QIntValidator(1000, 2999));
