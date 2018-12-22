@@ -6,6 +6,7 @@ ExaminationInfo::ExaminationInfo(QWidget *wgt)
     _ui.setupUi(this);
 
     connect(_ui.pushButton_examinationDelete, SIGNAL(pressed()), SLOT(onDeleteExamination()));
+    connect(_ui.pushButton_examinationEdit, SIGNAL(pressed()), SLOT(onEditExamination()));
     connect(_ui.pushButton_examinationFullExport, SIGNAL(pressed()), SLOT(onPrintFullExamination()));
     connect(_ui.pushButton_examinationHalfExport, SIGNAL(pressed()), SLOT(onPrintHalfExamination()));
 }
