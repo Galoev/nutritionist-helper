@@ -238,7 +238,7 @@ void MainWindow::setClientEditConnect(ClientEdit *ce)
                 m_formClientInfo->setInformation(client, _database.examinations(client));
                 _ui.mdiArea->addSubWindow(m_formClientInfo);
                 m_formClientInfo->show();
-            } 
+            }
         } else {
             QMessageBox::warning(this, tr("Редактирование клиента"), tr("Клиент не был обновлен"));
         }
@@ -252,7 +252,25 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
 
     connect(ci, &ClientInfo::newExaminationHalfButtonPressed, [this, ci](){
         m_formExaminationEdit = new ExaminationEdit;             //NOTE: Сan we use the local version?
-        m_formExaminationEdit->setInformation(ci->client(), false);
+        QVector<Examination> examinations = _database.examinations(ci->client());
+        if (examinations.size() == 0){
+            m_formExaminationEdit->setInformation(ci->client(), false);
+        } else{
+            Examination ex;
+            bool thereIsEx = false;
+            for (int i = examinations.size()-1; i>=0; i--){
+                if (!examinations[i].isFullExamination()) {
+                    ex = examinations[i];
+                    break;
+                }
+            }
+            m_formExaminationEdit->setInformation(ex);
+            if (thereIsEx) {
+                m_formExaminationEdit->setInformation(ex);
+            } else {
+                m_formExaminationEdit->setInformation(ci->client(), false);
+            }
+        }
         setExaminationEditConnect(m_formExaminationEdit);
         _ui.mdiArea->addSubWindow(m_formExaminationEdit);
         m_formExaminationEdit->show();
@@ -261,7 +279,25 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
 
     connect(ci, &ClientInfo::newExaminationFullButtonPressed, [this, ci](){
         m_formExaminationEdit = new ExaminationEdit;             //NOTE: Сan we use the local version?
-        m_formExaminationEdit->setInformation(ci->client(), true);
+        QVector<Examination> examinations = _database.examinations(ci->client());
+        if (examinations.size() == 0){
+            m_formExaminationEdit->setInformation(ci->client(), true);
+        } else{
+            Examination ex;
+            bool thereIsEx = false;
+            for (int i = examinations.size()-1; i>=0; i--){
+                if (examinations[i].isFullExamination()) {
+                    ex = examinations[i];
+                    thereIsEx = true;
+                    break;
+                }
+            }
+            if (thereIsEx) {
+                m_formExaminationEdit->setInformation(ex);
+            } else {
+                m_formExaminationEdit->setInformation(ci->client(), true);
+            }
+        }
         setExaminationEditConnect(m_formExaminationEdit);
         _ui.mdiArea->addSubWindow(m_formExaminationEdit);
         m_formExaminationEdit->show();
