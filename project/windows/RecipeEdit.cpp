@@ -10,8 +10,6 @@ RecipeEdit::RecipeEdit(QWidget *parent) :
     ui(new Ui::RecipeEdit)
 {
     ui->setupUi(this);
-    _productSeach = new ProductSeach(ui->widget_product_search);
-    _productSeach->resize(457,200);
     ui->lineEdit_recipeName->setValidator(new QRegExpValidator(QRegExp("[A-Z/a-z/а-я/A-Я]{1,}\[A-Z/a-z/а-я/A-Я\\s]{1,}")));
     //ui->tableWidget_ingredientList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -22,11 +20,12 @@ RecipeEdit::RecipeEdit(QWidget *parent) :
     connect(ui->pushButton_addDescription, SIGNAL(pressed()), SLOT(onPushButtonAddDescription()));
     connect(ui->pushButton_deleteDescription, SIGNAL(pressed()), SLOT(onPushButtonDeleteDescription()));
 
-    connect(_productSeach, SIGNAL(seachLineProductReady(QString)),          SIGNAL(productSearchLineReady(QString)));
-    connect(_productSeach, SIGNAL(seachLineProteinReady(int,int)),          SIGNAL(productSearchProteinReady(int,int)));
-    connect(_productSeach, SIGNAL(seachLineFatsReady(int,int)),             SIGNAL(productSearchFatsReady(int,int)));
-    connect(_productSeach, SIGNAL(seachLineCarbohydratesReady(int,int)),    SIGNAL(productSearchCarbohydratesReady(int,int)));
-    connect(_productSeach, SIGNAL(selectedForShow()),                       SIGNAL(productSelectedForShow()));
+    connect(ui->frame_product_search, SIGNAL(seachLineProductReady(QString)),          SIGNAL(productSearchLineReady(QString)));
+    connect(ui->frame_product_search, SIGNAL(seachLineProteinReady(int,int)),          SIGNAL(productSearchProteinReady(int,int)));
+    connect(ui->frame_product_search, SIGNAL(seachLineFatsReady(int,int)),             SIGNAL(productSearchFatsReady(int,int)));
+    connect(ui->frame_product_search, SIGNAL(seachLineCarbohydratesReady(int,int)),    SIGNAL(productSearchCarbohydratesReady(int,int)));
+    connect(ui->frame_product_search, SIGNAL(selectedForShow()),                       SIGNAL(productSelectedForShow()));
+    connect(ui->frame_product_search, SIGNAL(requireUpdateAllInform()),                SIGNAL(productRequireUpdateAllInform()));
  }
 
 void RecipeEdit::setInformation(const RecipeEntity &r)
@@ -60,7 +59,21 @@ void RecipeEdit::setInformation(const RecipeEntity &r)
 
 void RecipeEdit::setSearchedProducts(const QVector<ProductEntity> &products)
 {
-    _productSeach->setInformation(products);
+    ui->frame_product_search->setInformation(products);
+}
+
+void RecipeEdit::paintEvent(QPaintEvent *event)
+{
+    auto width = ui->tableWidget_ingredientList->width();
+    ui->tableWidget_ingredientList->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_ingredientList->setColumnWidth(0, width * 8/12-10);
+    ui->tableWidget_ingredientList->setColumnWidth(1, width * 3/12-10);
+    ui->tableWidget_ingredientList->setColumnWidth(2, width * 1/12-10);
+
+    ui->tableWidget_recipeDescription->resizeRowsToContents();
+    auto width2 = ui->tableWidget_recipeDescription->width();
+    ui->tableWidget_recipeDescription->setColumnWidth(0, width2 * 8/12-10);
+    QWidget::paintEvent(event);
 }
 
 void RecipeEdit::onPushButtonSave()
@@ -109,10 +122,10 @@ void RecipeEdit::onPushButtonSave()
 
 void RecipeEdit::onPushButtonAddIngredient()
 {
-    _productSeach->selectedProduct();
-    if (!(_productSeach->getCurrentRow() < 0))
+    ui->frame_product_search->selectedProduct();
+    if (ui->frame_product_search->getCurrentRow() >= 0)
     {
-        ProductEntity product = _productSeach->selectedProduct();
+        ProductEntity product = ui->frame_product_search->selectedProduct();
         int productRow = ui->tableWidget_ingredientList->currentRow();
         if (productRow < 0) {
             productRow = ui->tableWidget_ingredientList->rowCount();
@@ -125,9 +138,13 @@ void RecipeEdit::onPushButtonAddIngredient()
         ui->tableWidget_ingredientList->setItem(productRow, 2, new QTableWidgetItem(product.units() == ProductEntity::GRAMM ? "гр"
                                                                                                                             : product.units() == ProductEntity::MILLILITER ? "мл"
                                                                                                                             : "???"));
-
         _recipe.addProduct(WeightedProduct(product, 0), productRow);
 
+        ui->tableWidget_ingredientList->item(productRow, 0)->setFlags(Qt::ItemIsEnabled);
+        ui->tableWidget_ingredientList->item(productRow, 2)->setFlags(Qt::ItemIsEnabled);
+
+        QModelIndex index = ui->tableWidget_ingredientList->model()->index(productRow, 1);
+        ui->tableWidget_ingredientList->edit(index);
     } else {
         qDebug()<<"Error: RecipeEdit::onPushButtonAddIngredient()"
                <<"Nothing selected";
@@ -162,6 +179,10 @@ void RecipeEdit::onPushButtonAddDescription()
     ui->tableWidget_recipeDescription->insertRow(descriptionRow);
     ui->tableWidget_recipeDescription->setItem(descriptionRow, 0, new QTableWidgetItem("<Описание>"));
     _recipe.addDescription("<Описание>", descriptionRow);
+
+    QModelIndex index = ui->tableWidget_recipeDescription->model()->index(descriptionRow, 0);
+    ui->tableWidget_recipeDescription->edit(index);
+
 }
 
 void RecipeEdit::onPushButtonDeleteDescription()

@@ -152,7 +152,6 @@ void ExaminationEdit::onNextPage()
        if (!widgetField) {
            continue;
        }
-
        switch (field.type()) {
        case FormField::String : {
            QTextEdit* textField = (QTextEdit*)widgetField;

@@ -1,8 +1,11 @@
 #include "ActivityCalculation.h"
 #include "ui_Activity_calculation.h"
+
+
 #include <QPalette>
 #include <QTableWidget>
 #include <QDebug>
+#include <QString>
 
 ActivityCalculation::ActivityCalculation(QWidget *parent) :
     QWidget(parent),
@@ -10,11 +13,28 @@ ActivityCalculation::ActivityCalculation(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //connect(ui->activitiesTable, SIGNAL(itemChanged(QTableWidgetItem*)), SLOT(calculateActivity()));
+    //connect(ui->productsTable, SIGNAL(itemChanged(QTableWidgetItem*)), SLOT(calculateActivity()));
 
-    connect(ui->activitiesTable, SIGNAL(itemChanged(QTableWidgetItem*)), SLOT(calculateActivity()));
+    connect(ui->activitiesTable, SIGNAL(cellChanged(int, int)), SLOT(calculateActivity(int, int)));
+    connect(ui->productsTable, SIGNAL(cellChanged(int, int)), SLOT(calculateActivity(int, int)));
+
+    connect(ui->pushButton_setWeight, SIGNAL(pressed()), SLOT(calculateActivity()));
+
+    connect(ui->addSelectedActivity, SIGNAL(clicked(bool)), SLOT(onPushButtonAddActivity()));
+    connect(ui->addSelectedProduct, SIGNAL(clicked(bool)), SLOT(onPushButtonAddProduct()));
     connect(ui->deleteActivity, SIGNAL(pressed()), SLOT(onPushButtonDeleteActivity()));
-    connect(ui->productsTable, SIGNAL(itemChanged(QTableWidgetItem*)), SLOT(calculateActivity()));
     connect(ui->deleteProduct, SIGNAL(pressed()), SLOT(onPushButtonDeleteProduct()));
+
+    connect(ui->productSearch, SIGNAL(seachLineProductReady(QString)),          SIGNAL(productSearchLineReady(QString)));
+    connect(ui->productSearch, SIGNAL(seachLineProteinReady(int,int)),          SIGNAL(productSearchProteinReady(int,int)));
+    connect(ui->productSearch, SIGNAL(seachLineFatsReady(int,int)),             SIGNAL(productSearchFatsReady(int,int)));
+    connect(ui->productSearch, SIGNAL(seachLineCarbohydratesReady(int,int)),    SIGNAL(productSearchCarbohydratesReady(int,int)));
+    connect(ui->productSearch, SIGNAL(requireUpdateAllInform()),                SIGNAL(productRequireUpdateAllInform()));
+
+    connect(ui->ativitySearch, SIGNAL(seachLineActivityReady(QString)),         SIGNAL(activitySeachLineActivityReady(QString)));
+    connect(ui->ativitySearch, SIGNAL(seachLineKcalReady(int,int)),             SIGNAL(activitySeachLineKcalReady(int,int)));
+    connect(ui->ativitySearch, SIGNAL(requireUpdateAllInform()),                SIGNAL(activityRequireUpdateAllInform()));
 }
 
 ActivityCalculation::~ActivityCalculation()
@@ -25,18 +45,33 @@ ActivityCalculation::~ActivityCalculation()
 void ActivityCalculation::paintEvent(QPaintEvent *event)
 {
     auto activitiesWidth = ui->activitiesTable->width();
-    ui->activitiesTable->setColumnWidth(0, activitiesWidth * 3/4 - 1);
-    ui->activitiesTable->setColumnWidth(1, activitiesWidth * 1/4 - 1);
+    ui->activitiesTable->setColumnWidth(0, activitiesWidth * 3/7 - 1);
+    ui->activitiesTable->setColumnWidth(1, activitiesWidth * 1/7 - 1);
+    ui->activitiesTable->setColumnWidth(2, activitiesWidth * 1/7 - 1);
+    ui->activitiesTable->setColumnWidth(3, activitiesWidth * 1/7 - 1);
     auto productsWidth = ui->activitiesTable->width();
-    ui->productsTable->setColumnWidth(0, productsWidth * 3/4 - 1);
-    ui->productsTable->setColumnWidth(1, productsWidth * 1/4 - 1);
+    ui->productsTable->setColumnWidth(0, productsWidth * 3/7 - 1);
+    ui->productsTable->setColumnWidth(1, productsWidth * 1/7 - 1);
+    ui->productsTable->setColumnWidth(2, productsWidth * 1/7 - 1);
+    ui->productsTable->setColumnWidth(3, productsWidth * 1/7 - 1);
 
-    auto deleteActivityEnabled = !ui->activitiesTable->selectionModel()->selectedRows().isEmpty();
-    ui->deleteActivity->setEnabled(deleteActivityEnabled);
-    auto deleteProductEnabled = !ui->productsTable->selectionModel()->selectedRows().isEmpty();
-    ui->deleteProduct->setEnabled(deleteProductEnabled);
+    auto addActivityEnabled = ui->ativitySearch->selectedActivity().id() != -1;
+    auto addProductEnabled = ui->productSearch->selectedProduct().id() != -1;
+
+    ui->addSelectedActivity->setEnabled(addActivityEnabled);
+    ui->addSelectedProduct->setEnabled(addProductEnabled);
 
     QWidget::paintEvent(event);
+}
+
+void ActivityCalculation::setSearcingProducts(const QVector<ProductEntity> &products)
+{
+    ui->productSearch->setInformation(products);
+}
+
+void ActivityCalculation::setSearcingActivities(const QVector<ActivityEntity> &activities)
+{
+    ui->ativitySearch->setInformation(activities);
 }
 
 void ActivityCalculation::removeSelectedRow(QTableWidget *table)
@@ -45,24 +80,35 @@ void ActivityCalculation::removeSelectedRow(QTableWidget *table)
     auto selectedRow = selectedIndexes.first().row();
     table->removeRow(selectedRow);
     table->clearSelection();
+    calculateActivity(0,0);
 }
 
-void ActivityCalculation::calculateActivity()
+void ActivityCalculation::calculateActivity(int row, int column)
 {
-    auto getSumKcalColumnOfTable = [](QTableWidget* table) {
-        const auto selectedColumn = 1;
+    if (column == 3) return;
+
+    auto getSumKcalColumnOfTable = [](QTableWidget* table, float coef=1) {
+        const auto kcalColumn(1), minColumn(2), totalColumn(3);
         const auto rowCount = table->rowCount();
         float sum(0);
         for (int i = 0; i < rowCount; ++i) {
-            auto item = table->item(i, selectedColumn);
-            if (item) { sum += item->text().toFloat(); }
+            auto kcalItem = table->item(i, kcalColumn);
+            auto minItem = table->item(i, minColumn);
+            if (kcalItem != nullptr && minItem != nullptr) {
+                auto totalKcal = kcalItem->text().toFloat() * minItem->text().toFloat() * coef;
+                qDebug() << table->item(i, totalColumn) << totalColumn;
+                table->setItem(i, totalColumn, new QTableWidgetItem(QString::number(totalKcal)));
+                sum += totalKcal;
+            }
+
         }
         return sum;
     };
 
-    auto sumActivitiesKcal = getSumKcalColumnOfTable(ui->activitiesTable);
-    auto sumProductsKcal = getSumKcalColumnOfTable(ui->productsTable);
-    auto resCcal = sumActivitiesKcal - sumProductsKcal;
+    auto weight = ui->lineEdit_weight->text().toFloat();
+    auto sumActivitiesKcal = getSumKcalColumnOfTable(ui->activitiesTable, weight);
+    auto sumProductsKcal = getSumKcalColumnOfTable(ui->productsTable, 0.01);
+    auto resCcal = sumProductsKcal - sumActivitiesKcal;
 
     QString kcalSign;
     QColor kcalColor;
@@ -86,12 +132,20 @@ void ActivityCalculation::calculateActivity()
 
 void ActivityCalculation::onPushButtonAddProduct()
 {
-
+    auto product = ui->productSearch->selectedProduct();
+    pushRowFormStringList(ui->productsTable, {
+                              product.name(),
+                              QString::number(product.kilocalories())
+                          });
 }
 
 void ActivityCalculation::onPushButtonAddActivity()
 {
-
+    auto activity = ui->ativitySearch->selectedActivity();
+    pushRowFormStringList(ui->activitiesTable, {
+                              activity.type(),
+                              QString::number(activity.kkm())
+                          });
 }
 
 void ActivityCalculation::onPushButtonDeleteProduct()
@@ -102,4 +156,22 @@ void ActivityCalculation::onPushButtonDeleteProduct()
 void ActivityCalculation::onPushButtonDeleteActivity()
 {
     removeSelectedRow(ui->activitiesTable);
+}
+
+void ActivityCalculation::pushRowFormStringList(QTableWidget *table, const QStringList &list)
+{
+    qDebug() << "test";
+    auto rowN = table->rowCount();
+    table->insertRow(rowN);
+
+    for (auto column = 0; column < list.size(); ++column) {
+        table->setItem(rowN, column, new QTableWidgetItem(list.at(column)));
+        //table->item(rowN, column)->setFlags(Qt::ItemIsEnabled);
+
+    }
+    table->setItem(rowN, table->columnCount()-1, new QTableWidgetItem(""));
+
+    QModelIndex index = table->model()->index(rowN, list.size());
+    table->edit(index);
+    //table->item(rowN, list.size())->setFlags(Qt::ItemIsEnabled);
 }

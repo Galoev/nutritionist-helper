@@ -20,6 +20,8 @@ public:
     void setInformation(const RecipeEntity& );
     RecipeEntity recipe() const;
 
+   void paintEvent(QPaintEvent *event) override;
+
 signals:
     void editRecipeButtonPressed();
     void deleteRecipeButtonPressed();
