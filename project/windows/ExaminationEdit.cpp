@@ -92,6 +92,15 @@ void ExaminationEdit::setInformation(const Examination& examination)
     foreach (FormField field, _examination.fields()) {
         QWidget* widgetField = this->findChild<QWidget*>(field.name());
 
+        if (field.isMayBeEmpty()) {
+            widgetField->setEnabled(false);
+            QLineEdit *tmpLine =  dynamic_cast<QLineEdit*>(widgetField);
+            if (tmpLine != nullptr){
+                tmpLine->setText("--пусто--");
+            }
+            continue;
+        }
+
         switch (field.type()) {
         case FormField::String : {
             ((QTextEdit*)widgetField)->setText(field.value());

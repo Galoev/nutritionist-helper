@@ -12,6 +12,8 @@ public:
 
 signals:
     void formReady();
+    void formNewExaminationReady();
+    void formEditedExaminationReady();
 
 private slots:
     void onNextPage();
@@ -29,4 +31,5 @@ private:
     Ui::form_examinationEdit _ui;
     Examination _examination;
     QChar m_gender;
+    bool m_isEditingMod;
 };
