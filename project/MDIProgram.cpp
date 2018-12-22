@@ -354,6 +354,14 @@ void MainWindow::setExaminationInfoConnect(ExaminationInfo *ei)
 {
     ei->setAttribute(Qt::WA_DeleteOnClose);
 
+    connect(ei, &ExaminationInfo::editExaminationButtonPressed, [this, ei](){
+        m_formExaminationEdit= new ExaminationEdit;
+        m_formExaminationEdit->setInformation(ei->examination());
+        this->setExaminationEditConnect(m_formExaminationEdit);
+        this->addSubWindowAndShow(m_formExaminationEdit);
+        ei->parent()->deleteLater();
+    });
+
     connect(ei, &ExaminationInfo::deleteExamination, [this, ei](){
         if ( QMessageBox::question(this, "Удаление Иследования"
                                    , "Вы уверены, что хотите удалить Исследование?"

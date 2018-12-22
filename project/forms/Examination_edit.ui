@@ -1515,6 +1515,9 @@ p, li { white-space: pre-wrap; }
       </layout>
      </widget>
      <widget class="QWidget" name="page_3">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <layout class="QGridLayout" name="gridLayout_5" rowstretch="0" columnstretch="9">
        <item row="0" column="0">
         <widget class="QScrollArea" name="scrollArea_2">
@@ -1679,7 +1682,7 @@ p, li { white-space: pre-wrap; }
                     <bool>false</bool>
                    </property>
                    <property name="placeholderText">
-                    <string>00</string>
+                    <string>20-40</string>
                    </property>
                   </widget>
                  </item>
@@ -1817,7 +1820,7 @@ p, li { white-space: pre-wrap; }
                     <bool>false</bool>
                    </property>
                    <property name="placeholderText">
-                    <string>00</string>
+                    <string>20-40</string>
                    </property>
                   </widget>
                  </item>
@@ -2114,7 +2117,7 @@ p, li { white-space: pre-wrap; }
                     <bool>false</bool>
                    </property>
                    <property name="placeholderText">
-                    <string>00</string>
+                    <string>1-10</string>
                    </property>
                   </widget>
                  </item>
@@ -2237,7 +2240,7 @@ p, li { white-space: pre-wrap; }
                     <bool>false</bool>
                    </property>
                    <property name="placeholderText">
-                    <string>00</string>
+                    <string>1-10</string>
                    </property>
                   </widget>
                  </item>
@@ -2291,7 +2294,7 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>278</width>
+            <width>588</width>
             <height>679</height>
            </rect>
           </property>
@@ -2439,8 +2442,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>316</width>
-            <height>619</height>
+            <width>588</width>
+            <height>491</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_48">
@@ -2574,7 +2577,7 @@ p, li { white-space: pre-wrap; }
                       <bool>false</bool>
                      </property>
                      <property name="placeholderText">
-                      <string>000.0</string>
+                      <string>60.0-200.0</string>
                      </property>
                     </widget>
                    </item>
@@ -2695,7 +2698,7 @@ p, li { white-space: pre-wrap; }
                       <bool>false</bool>
                      </property>
                      <property name="placeholderText">
-                      <string>000.0</string>
+                      <string>60.0-200.0</string>
                      </property>
                     </widget>
                    </item>
@@ -2816,7 +2819,7 @@ p, li { white-space: pre-wrap; }
                       <bool>false</bool>
                      </property>
                      <property name="placeholderText">
-                      <string>000.0</string>
+                      <string>60.0-200.0</string>
                      </property>
                     </widget>
                    </item>
@@ -2937,7 +2940,7 @@ p, li { white-space: pre-wrap; }
                       <bool>false</bool>
                      </property>
                      <property name="placeholderText">
-                      <string>000.0</string>
+                      <string>60.0-200.0</string>
                      </property>
                     </widget>
                    </item>
@@ -3062,7 +3065,7 @@ p, li { white-space: pre-wrap; }
                         <bool>false</bool>
                        </property>
                        <property name="placeholderText">
-                        <string>000</string>
+                        <string>100.0-200.0</string>
                        </property>
                       </widget>
                      </item>
@@ -3185,7 +3188,7 @@ p, li { white-space: pre-wrap; }
                         <bool>false</bool>
                        </property>
                        <property name="placeholderText">
-                        <string>000.00</string>
+                        <string>30.0-300.0</string>
                        </property>
                       </widget>
                      </item>
@@ -3348,7 +3351,7 @@ p, li { white-space: pre-wrap; }
                        <bool>false</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>000.0</string>
+                       <string>20.0-50.0</string>
                       </property>
                      </widget>
                     </item>
@@ -3462,7 +3465,7 @@ p, li { white-space: pre-wrap; }
                        <bool>false</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>000.0</string>
+                       <string>20.0-50.0</string>
                       </property>
                      </widget>
                     </item>
@@ -3602,7 +3605,7 @@ p, li { white-space: pre-wrap; }
                        <bool>false</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>000.0</string>
+                       <string>20.0-100.0</string>
                       </property>
                      </widget>
                     </item>
@@ -3716,7 +3719,7 @@ p, li { white-space: pre-wrap; }
                        <bool>false</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>000.0</string>
+                       <string>20.0-100.0</string>
                       </property>
                      </widget>
                     </item>
@@ -3856,7 +3859,7 @@ p, li { white-space: pre-wrap; }
                        <bool>false</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>000.0</string>
+                       <string>30.0-100.0</string>
                       </property>
                      </widget>
                     </item>
@@ -3970,7 +3973,7 @@ p, li { white-space: pre-wrap; }
                        <bool>false</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>000.0</string>
+                       <string>30.0-100.0</string>
                       </property>
                      </widget>
                     </item>
@@ -4110,7 +4113,7 @@ p, li { white-space: pre-wrap; }
                        <bool>false</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>000.0</string>
+                       <string>10.0-60.0</string>
                       </property>
                      </widget>
                     </item>
@@ -4224,7 +4227,7 @@ p, li { white-space: pre-wrap; }
                        <bool>false</bool>
                       </property>
                       <property name="placeholderText">
-                       <string>000.0</string>
+                       <string>10.0-60.0</string>
                       </property>
                      </widget>
                     </item>
@@ -4262,7 +4265,7 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>412</width>
+            <width>588</width>
             <height>536</height>
            </rect>
           </property>
@@ -4408,7 +4411,7 @@ p, li { white-space: pre-wrap; }
                          <bool>false</bool>
                         </property>
                         <property name="placeholderText">
-                         <string>000</string>
+                         <string>40-150</string>
                         </property>
                        </widget>
                       </item>
@@ -4522,7 +4525,7 @@ p, li { white-space: pre-wrap; }
                          <bool>false</bool>
                         </property>
                         <property name="placeholderText">
-                         <string>000</string>
+                         <string>30-100</string>
                         </property>
                        </widget>
                       </item>
@@ -4636,7 +4639,7 @@ p, li { white-space: pre-wrap; }
                          <bool>false</bool>
                         </property>
                         <property name="placeholderText">
-                         <string>000</string>
+                         <string>40-150</string>
                         </property>
                        </widget>
                       </item>
@@ -4757,7 +4760,7 @@ p, li { white-space: pre-wrap; }
                          <bool>false</bool>
                         </property>
                         <property name="placeholderText">
-                         <string>000</string>
+                         <string>30-150</string>
                         </property>
                        </widget>
                       </item>
@@ -4871,7 +4874,7 @@ p, li { white-space: pre-wrap; }
                          <bool>false</bool>
                         </property>
                         <property name="placeholderText">
-                         <string>000</string>
+                         <string>30-150</string>
                         </property>
                        </widget>
                       </item>
@@ -4985,7 +4988,7 @@ p, li { white-space: pre-wrap; }
                          <bool>false</bool>
                         </property>
                         <property name="placeholderText">
-                         <string>000</string>
+                         <string>60-220</string>
                         </property>
                        </widget>
                       </item>
@@ -5099,7 +5102,7 @@ p, li { white-space: pre-wrap; }
                          <bool>false</bool>
                         </property>
                         <property name="placeholderText">
-                         <string>000</string>
+                         <string>60-220</string>
                         </property>
                        </widget>
                       </item>
@@ -5234,7 +5237,7 @@ p, li { white-space: pre-wrap; }
                          <bool>false</bool>
                         </property>
                         <property name="placeholderText">
-                         <string>000</string>
+                         <string>30-150</string>
                         </property>
                        </widget>
                       </item>
@@ -5378,7 +5381,7 @@ p, li { white-space: pre-wrap; }
                          <bool>false</bool>
                         </property>
                         <property name="placeholderText">
-                         <string>000</string>
+                         <string>30-360</string>
                         </property>
                        </widget>
                       </item>
@@ -5563,7 +5566,7 @@ p, li { white-space: pre-wrap; }
                       <bool>false</bool>
                      </property>
                      <property name="placeholderText">
-                      <string>000</string>
+                      <string>2.0-100.0</string>
                      </property>
                     </widget>
                    </item>
@@ -5677,7 +5680,7 @@ p, li { white-space: pre-wrap; }
                       <bool>false</bool>
                      </property>
                      <property name="placeholderText">
-                      <string>000</string>
+                      <string>2.0-100.0</string>
                      </property>
                     </widget>
                    </item>
@@ -5814,7 +5817,7 @@ p, li { white-space: pre-wrap; }
                       <bool>false</bool>
                      </property>
                      <property name="placeholderText">
-                      <string>0000</string>
+                      <string>100.0-5000.0</string>
                      </property>
                     </widget>
                    </item>
@@ -5864,8 +5867,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>437</width>
-            <height>747</height>
+            <width>588</width>
+            <height>601</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_50">
@@ -6316,7 +6319,7 @@ p, li { white-space: pre-wrap; }
                         <bool>false</bool>
                        </property>
                        <property name="placeholderText">
-                        <string>0.00</string>
+                        <string>3.33-5.55</string>
                        </property>
                       </widget>
                      </item>
@@ -6437,7 +6440,7 @@ p, li { white-space: pre-wrap; }
                         <bool>false</bool>
                        </property>
                        <property name="placeholderText">
-                        <string>0.0</string>
+                        <string>3.6-7.8</string>
                        </property>
                       </widget>
                      </item>
@@ -6558,7 +6561,7 @@ p, li { white-space: pre-wrap; }
                         <bool>false</bool>
                        </property>
                        <property name="placeholderText">
-                        <string>0.0</string>
+                        <string>65.0-85.0</string>
                        </property>
                       </widget>
                      </item>
@@ -6683,7 +6686,7 @@ p, li { white-space: pre-wrap; }
                         <bool>false</bool>
                        </property>
                        <property name="placeholderText">
-                        <string>0.00</string>
+                        <string>15.25-76.25</string>
                        </property>
                       </widget>
                      </item>
@@ -6804,7 +6807,7 @@ p, li { white-space: pre-wrap; }
                         <bool>false</bool>
                        </property>
                        <property name="placeholderText">
-                        <string>0.0</string>
+                        <string>200.0-400.0</string>
                        </property>
                       </widget>
                      </item>
@@ -6925,7 +6928,7 @@ p, li { white-space: pre-wrap; }
                         <bool>false</bool>
                        </property>
                        <property name="placeholderText">
-                        <string>0.0</string>
+                        <string>2.0-11.1</string>
                        </property>
                       </widget>
                      </item>

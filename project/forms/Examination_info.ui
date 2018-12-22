@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>389</width>
+    <width>391</width>
     <height>384</height>
    </rect>
   </property>
@@ -233,7 +233,7 @@
         <item>
          <widget class="QPushButton" name="pushButton_examinationEdit">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>Редактировать</string>

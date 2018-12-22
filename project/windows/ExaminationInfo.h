@@ -11,7 +11,8 @@ public:
 
 signals:
     void deleteExamination();
-    void printExamination(bool ifFull);
+    void editExaminationButtonPressed();
+    void printExamination(bool ifFull);    
 
 private slots:
     void onDeleteExamination();
