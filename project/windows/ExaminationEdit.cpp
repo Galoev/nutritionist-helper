@@ -294,8 +294,6 @@ void ExaminationEdit::onSaveForm()
     } else {
         emit formNewExaminationReady();
     }
-
-    emit formReady();
 }
 
 void ExaminationEdit::onPushButtonCalculate_65()

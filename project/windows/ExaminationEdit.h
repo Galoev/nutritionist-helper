@@ -11,7 +11,6 @@ public:
     Examination examination() const;
 
 signals:
-    void formReady();
     void formNewExaminationReady();
     void formEditedExaminationReady();
 

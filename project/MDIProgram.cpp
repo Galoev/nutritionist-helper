@@ -378,7 +378,7 @@ void MainWindow::setExaminationEditConnect(ExaminationEdit *ee)
 {
     //ee->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(ee, &ExaminationEdit::formReady, [this, ee](){
+    connect(ee, &ExaminationEdit::formNewExaminationReady, [this, ee](){
         Examination examination = ee->examination();
         //_ui.mdiArea->removeSubWindow(ee);
         if(_database.addExaminationAndSetID(examination)){
@@ -393,6 +393,25 @@ void MainWindow::setExaminationEditConnect(ExaminationEdit *ee)
             }
         } else {
             QMessageBox::warning(this, tr("Создание исследования"), tr("Исследование не было сохранено"));
+        }
+        ee->parent()->deleteLater();
+    });
+
+    connect(ee, &ExaminationEdit::formEditedExaminationReady, [this, ee](){
+        Examination examination = ee->examination();
+        if (_database.changeExaminationInformation(examination)){
+            if (QMessageBox::question(this, "Редактирование исследования"
+                                       , "Информация об исследование успешно обнавлена\nЖелаете открыть окно Информация об исследовании?"
+                                       , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
+                m_formExaminationInfo = new ExaminationInfo();
+                setExaminationInfoConnect(m_formExaminationInfo);
+                m_formExaminationInfo->setInformation(examination);
+                _ui.mdiArea->addSubWindow(m_formExaminationInfo);
+                m_formExaminationInfo->show();
+            }
+        } else {
+            QMessageBox::warning(this, "Редактирование исследования", "Информация по исследованию не была обновлена");
+            qDebug() << _database.unwatchedWorkError();
         }
         ee->parent()->deleteLater();
     });
