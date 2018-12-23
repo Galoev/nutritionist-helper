@@ -56,6 +56,7 @@ public:
     Examination             examination(int id, bool &isOk, Client client = Client()) const;
     QVector<Examination>    examinations(Client client = Client()) const;
     QVector<Examination>    examinations(QDate from, QDate to) const;
+    bool                    changeExaminationInformation(Examination & ); //without id, client_id, is_full_examination, date
 
     /* Specific database functions */
     bool importDB(const QString& fileName);
