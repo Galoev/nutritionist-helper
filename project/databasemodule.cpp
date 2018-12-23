@@ -821,6 +821,35 @@ QVector<Examination> DatabaseModule::examinations(QDate from, QDate to) const
     return examinations;
 }
 
+bool DatabaseModule::changeExaminationInformation(Examination &examination)
+{
+    bool isFounExaination = false;
+    this->examination(examination.id(), isFounExaination, examination.client());
+    if (!isFounExaination){
+        return false;
+    }
+
+    QStringList queryFields; //without id, client_id, is_full_examination, date
+
+    for (FormField field : examination.fields()) {
+        queryFields << QString("%1 = '%2'")
+                .arg(field.name())
+                .arg(field.value());
+    }
+    QSqlQuery q;
+    q.prepare("UPDATE Examinations "
+              "SET " + queryFields.join(", ") +
+              "WHERE id = ?");
+    q.addBindValue(examination.id());
+    if(!q.exec()) {
+        qDebug() << q.lastQuery();
+        qDebug() << "Error:" << Q_FUNC_INFO << q.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
 bool DatabaseModule::importDB(const QString &fileName)
 {
     if (fileName.isEmpty()){
