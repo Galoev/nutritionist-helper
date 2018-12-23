@@ -36,7 +36,8 @@ SOURCES += main.cpp \
     entities/examination.cpp \
     entities/activity.cpp \
     entities/recipe.cpp \
-    entities/product.cpp
+    entities/product.cpp \
+    widgets/AttachPhotoWidget.cpp
 
 HEADERS += \
     windows/ClientEdit.h \
@@ -63,7 +64,8 @@ HEADERS += \
     entities/examination.h \
     entities/activity.h \
     entities/recipe.h \
-    entities/product.h
+    entities/product.h \
+    widgets/AttachPhotoWidget.h
 
 FORMS += \
     forms/Client_edit.ui \
@@ -82,7 +84,8 @@ FORMS += \
     forms/Product_seach.ui \
     forms/Product_info.ui \
     forms/Product_edit.ui \
-    forms/Activity_calculation.ui
+    forms/Activity_calculation.ui \
+    widgets/Attach_photo_widget.ui
 
 RESOURCES += \
     rec.qrc
