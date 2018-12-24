@@ -8,5 +8,6 @@
         <file>resources/add_photo_back.png</file>
         <file>resources/add.png</file>
         <file>resources/add_hover.png</file>
+        <file>resources/printer.png</file>
     </qresource>
 </RCC>

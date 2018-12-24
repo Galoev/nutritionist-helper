@@ -9,10 +9,11 @@
 #include <QStandardPaths>
 #include <QDebug>
 #include <QImageWriter>
-
-AttachPhotoWidget::AttachPhotoWidget(QWidget *parent)
+#include <QImageReader>
+AttachPhotoWidget::AttachPhotoWidget(bool isEnable, QWidget *parent)
     : QWidget(parent)
     , m_ui(new Ui::AttachPhotoWidget)
+    , m_isEnable(isEnable)
 {
     m_ui->setupUi(this);
 
@@ -34,6 +35,14 @@ bool AttachPhotoWidget::saveImage(const QString subFolderName, const QString &fi
     return true;
 }
 
+bool AttachPhotoWidget::loadImage(const QString subFolderName, const QString &fileName)
+{
+    QString allPath = imgDir + "/" + subFolderName + "/" + fileName;
+    setImage(allPath);
+
+    return true;
+}
+
 void AttachPhotoWidget::enterEvent(QEvent *)
 {
     m_ui->addImage->setPixmap(QPixmap(":/resources/add_hover.png"));
@@ -46,8 +55,10 @@ void AttachPhotoWidget::leaveEvent(QEvent *)
 
 void AttachPhotoWidget::mousePressEvent(QMouseEvent *)
 {
-    if (m_ui->stackedWidget->currentIndex() != 0)
-        return;
+    //if (m_ui->stackedWidget->currentIndex() != 0)
+    //    return;
+
+    if (!m_isEnable) return;
 
     QString fileName = QFileDialog::getOpenFileName(this,
         "Добавить изображение",
@@ -63,7 +74,17 @@ void AttachPhotoWidget::setImage(const QString &fileName)
 {
     m_ui->image->setPixmap(QPixmap(fileName));
     m_ui->stackedWidget->setCurrentIndex(1);
-    resizeEvent(nullptr);
+    //resizeEvent(nullptr);
+}
+
+void AttachPhotoWidget::setEnable(bool isEnable)
+{
+    m_isEnable = isEnable;
+}
+
+QImage AttachPhotoWidget::image() const
+{
+    return m_ui->image->pixmap()->toImage();
 }
 
 void AttachPhotoWidget::resizeEvent(QResizeEvent *)

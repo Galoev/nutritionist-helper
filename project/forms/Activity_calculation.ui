@@ -50,6 +50,9 @@
           <layout class="QGridLayout" name="gridLayout">
            <item row="1" column="1">
             <widget class="QPushButton" name="addSelectedActivity">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Добавить</string>
              </property>
@@ -80,6 +83,9 @@
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="1" column="1">
             <widget class="QPushButton" name="addSelectedProduct">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Добавить</string>
              </property>
@@ -163,6 +169,9 @@
           <layout class="QGridLayout" name="gridLayout_3">
            <item row="1" column="1">
             <widget class="QPushButton" name="deleteActivity">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Удалить</string>
              </property>
@@ -315,6 +324,9 @@
           <layout class="QGridLayout" name="gridLayout_4">
            <item row="1" column="1">
             <widget class="QPushButton" name="deleteProduct">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Удалить</string>
              </property>
@@ -387,15 +399,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ActivitySeach</class>
+   <class>ProductSeach</class>
    <extends>QFrame</extends>
-   <header>windows/ActivitySeach.h</header>
+   <header location="global">windows/ProductSeach.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ProductSeach</class>
+   <class>ActivitySeach</class>
    <extends>QFrame</extends>
-   <header>windows/ProductSeach.h</header>
+   <header>windows/ActivitySeach.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -711,6 +711,8 @@ void MainWindow::setRecipeEditConnect(RecipeEdit *p)
         auto newRecipe = p->recipe();
         auto id = _database.addRecipe(newRecipe);
         if(!_database.hasUnwatchedWorkError()){
+            p->saveImage(QString::number(id));
+
             auto ret = QMessageBox::question(this, "Добавление рецепта"
                                              ,"Новый рецепт был успешно добавлен\nЖелаете открыть окно Информация о рецепте?"
                                              , QMessageBox::Yes, QMessageBox::No);

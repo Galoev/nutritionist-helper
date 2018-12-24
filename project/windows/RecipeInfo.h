@@ -5,6 +5,8 @@
 #include "entities/recipe.h"
 #include "entities/product.h"
 
+class QPrinter;
+
 namespace Ui {
 class RecipeInfo;
 }
@@ -25,6 +27,10 @@ public:
 signals:
     void editRecipeButtonPressed();
     void deleteRecipeButtonPressed();
+
+private slots:
+    void onPrintButtonPressed();
+    void printRequest(QPrinter* printer);
 
 private:
     Ui::RecipeInfo *ui;

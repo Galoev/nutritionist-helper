@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include "../widgets/AttachPhotoWidget.h"
+
 RecipeEdit::RecipeEdit(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::RecipeEdit)
@@ -52,6 +54,8 @@ void RecipeEdit::setInformation(const RecipeEntity &r)
         ui->tableWidget_recipeDescription->insertRow(rowCount);
         ui->tableWidget_recipeDescription->setItem(rowCount, 0, new QTableWidgetItem(cookingPoint));
     }
+    qDebug() << _recipe.id();
+    ui->widget_image->loadImage("recipes",QString::number(_recipe.id()) + ".png");
 
     this->repaint();
 }
@@ -60,6 +64,11 @@ void RecipeEdit::setInformation(const RecipeEntity &r)
 void RecipeEdit::setSearchedProducts(const QVector<ProductEntity> &products)
 {
     ui->frame_product_search->setInformation(products);
+}
+
+void RecipeEdit::saveImage(QString imageName)
+{
+    ui->widget_image->saveImage("recipes",imageName + "png");
 }
 
 void RecipeEdit::paintEvent(QPaintEvent *event)
@@ -117,6 +126,8 @@ void RecipeEdit::onPushButtonSave()
     } else {
         emit formNewRecipeReady();
     }
+
+
 }
 
 

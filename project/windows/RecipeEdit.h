@@ -7,6 +7,7 @@
 
 namespace Ui {
 class RecipeEdit;
+class AttachPhotoWidget;
 }
 
 class RecipeEdit : public QWidget
@@ -20,6 +21,8 @@ public:
     void setInformation(const RecipeEntity& );
     RecipeEntity recipe() const;
     void setSearchedProducts(const QVector<ProductEntity>& );
+
+    void saveImage(QString imageName);
 
     void paintEvent(QPaintEvent *event) override;
 
