@@ -16,6 +16,8 @@ ActivityCalculation::ActivityCalculation(QWidget *parent) :
     //connect(ui->activitiesTable, SIGNAL(itemChanged(QTableWidgetItem*)), SLOT(calculateActivity()));
     //connect(ui->productsTable, SIGNAL(itemChanged(QTableWidgetItem*)), SLOT(calculateActivity()));
 
+    ui->lineEdit_weight->setValidator(new QIntValidator(1,999));
+
     connect(ui->activitiesTable, SIGNAL(cellChanged(int, int)), SLOT(calculateActivity(int, int)));
     connect(ui->productsTable, SIGNAL(cellChanged(int, int)), SLOT(calculateActivity(int, int)));
 
@@ -31,10 +33,18 @@ ActivityCalculation::ActivityCalculation(QWidget *parent) :
     connect(ui->productSearch, SIGNAL(seachLineFatsReady(int,int)),             SIGNAL(productSearchFatsReady(int,int)));
     connect(ui->productSearch, SIGNAL(seachLineCarbohydratesReady(int,int)),    SIGNAL(productSearchCarbohydratesReady(int,int)));
     connect(ui->productSearch, SIGNAL(requireUpdateAllInform()),                SIGNAL(productRequireUpdateAllInform()));
+    connect(ui->productSearch, &ProductSeach::selectedForShow, [this](){
+        this->ui->addSelectedProduct->setEnabled(true);
+        this->ui->deleteProduct->setEnabled(true);
+    });
 
     connect(ui->ativitySearch, SIGNAL(seachLineActivityReady(QString)),         SIGNAL(activitySeachLineActivityReady(QString)));
     connect(ui->ativitySearch, SIGNAL(seachLineKcalReady(int,int)),             SIGNAL(activitySeachLineKcalReady(int,int)));
     connect(ui->ativitySearch, SIGNAL(requireUpdateAllInform()),                SIGNAL(activityRequireUpdateAllInform()));
+    connect(ui->ativitySearch, &ActivitySeach::selectedForShow, [this](){
+        this->ui->addSelectedActivity->setEnabled(true);
+        this->ui->deleteActivity->setEnabled(true);
+    });
 }
 
 ActivityCalculation::~ActivityCalculation()
@@ -76,8 +86,10 @@ void ActivityCalculation::setSearcingActivities(const QVector<ActivityEntity> &a
 
 void ActivityCalculation::removeSelectedRow(QTableWidget *table)
 {
-    auto selectedIndexes = table->selectionModel()->selectedRows();
-    auto selectedRow = selectedIndexes.first().row();
+    if (table->selectedItems().isEmpty()) return ;
+
+    auto selectionModel = table->selectionModel();
+    auto selectedRow = selectionModel->selectedRows().first().row();
     table->removeRow(selectedRow);
     table->clearSelection();
     calculateActivity(0,0);
@@ -150,6 +162,7 @@ void ActivityCalculation::onPushButtonAddActivity()
 
 void ActivityCalculation::onPushButtonDeleteProduct()
 {
+
     removeSelectedRow(ui->productsTable);
 }
 

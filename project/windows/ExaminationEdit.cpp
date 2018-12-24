@@ -228,12 +228,31 @@ void ExaminationEdit::onSaveForm()
 void ExaminationEdit::onPushButtonCalculate_65()
 {
     if (_ui.formfield_65->isEnabled()){
-        _ui.formfield_65->setText(QLocale::system().toString(qrand()%50));   //TODO:Calculate
+        int res =( _ui.formfield_63->text().toFloat()
+                     - _ui.formfield_63->text().toFloat()) / 0.0001 * 100;
+        _ui.formfield_65->setText(QString::number(res));
     }
 }
 
 void ExaminationEdit::onPushButtonCalculate_69_77()
 {
+    QVector<float> values = {
+        _ui.formfield_47->text().toFloat() / powf(_ui.formfield_46->text().toFloat(), 2) * 10000,
+        0.45,//TODO:Calculate
+        _ui.formfield_44->text().toFloat() / _ui.formfield_45->text().toFloat(),
+        (_ui.formfield_66->text().toFloat() + _ui.formfield_67->text().toFloat()) / 2.f / _ui.formfield_47->text().toFloat(),
+        _ui.formfield_68->text().toFloat() / _ui.formfield_47->text().toFloat(),
+        _ui.formfield_63->text().toFloat() * _ui.formfield_57->text().toFloat() / 100.f,
+        0.56,//TODO:Calculate
+        0.64,//TODO:Calculate
+        0.011*_ui.formfield_62->text().toFloat()
+            + 0.014*_ui.formfield_56->text().toFloat()
+            + 0.008*_ui.formfield_58->text().toFloat()
+            + 0.009*_ui.formfield_47->text().toFloat()
+            - 0.009*_ui.formfield_46->text().toFloat()
+            + 0.014*_examination.client().age() - 0.27
+    };
+
     for (int i = 69; i <= 77; ++i) {
         QTextEdit* field = this->findChild<QTextEdit*>(QString("formfield_%1").arg(i));
         if (!field) {
@@ -242,7 +261,7 @@ void ExaminationEdit::onPushButtonCalculate_69_77()
             return;
         }
         if(field->isEnabled()){
-            field->setText(QLocale::system().toString(qrand()%50));      //TODO:Calculate
+            field->setText(QString::number(values[i-69]));      //TODO:Calculate
         }
     }
 }

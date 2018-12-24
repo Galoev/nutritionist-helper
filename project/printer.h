@@ -1,6 +1,7 @@
-#ifndef PRINTMODULE_H
-#define PRINTMODULE_H
+#pragma once
 #include "entities/examination.h"
+#include "entities/recipe.h"
+
 #include <QWidget>
 #include <QPrinter>
 #include <QPaintDevice>
@@ -32,5 +33,3 @@ private:
 
     QTextCursor _cursor;
 };
-
-#endif // PRINTMODULE_H

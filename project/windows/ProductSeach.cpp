@@ -26,11 +26,11 @@ void ProductSeach::paintEvent(QPaintEvent *event)
 {
     auto width = ui->tableWidget_products->width();
     ui->tableWidget_products->horizontalHeader()->setStretchLastSection(true);
-    ui->tableWidget_products->setColumnWidth(0, width * 8/12-10);
-    ui->tableWidget_products->setColumnWidth(1, width * 1/12-10);
-    ui->tableWidget_products->setColumnWidth(2, width * 1/12-10);
-    ui->tableWidget_products->setColumnWidth(3, width * 1/12-10);
-    ui->tableWidget_products->setColumnWidth(4, width * 1/12-10);
+    ui->tableWidget_products->setColumnWidth(0, width * 5/9-10);
+    ui->tableWidget_products->setColumnWidth(1, width * 1/9-10);
+    ui->tableWidget_products->setColumnWidth(2, width * 1/9-10);
+    ui->tableWidget_products->setColumnWidth(3, width * 1/9-10);
+    ui->tableWidget_products->setColumnWidth(4, width * 1/9-10);
 
     QWidget::paintEvent(event);
 }

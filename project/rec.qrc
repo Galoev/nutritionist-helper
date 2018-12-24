@@ -5,5 +5,9 @@
         <file>resources/user_img.png</file>
         <file>resources/icon.ico</file>
         <file>resources/mdi_back.png</file>
+        <file>resources/add_photo_back.png</file>
+        <file>resources/add.png</file>
+        <file>resources/add_hover.png</file>
+        <file>resources/printer.png</file>
     </qresource>
 </RCC>
