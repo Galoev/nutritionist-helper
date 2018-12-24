@@ -238,7 +238,7 @@ void MainWindow::setClientEditConnect(ClientEdit *ce)
                 m_formClientInfo->setInformation(client, _database.examinations(client));
                 _ui.mdiArea->addSubWindow(m_formClientInfo);
                 m_formClientInfo->show();
-            } 
+            }
         } else {
             QMessageBox::warning(this, tr("Редактирование клиента"), tr("Клиент не был обновлен"));
         }
@@ -252,7 +252,25 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
 
     connect(ci, &ClientInfo::newExaminationHalfButtonPressed, [this, ci](){
         m_formExaminationEdit = new ExaminationEdit;             //NOTE: Сan we use the local version?
-        m_formExaminationEdit->setInformation(ci->client(), false);
+        QVector<Examination> examinations = _database.examinations(ci->client());
+        if (examinations.size() == 0){
+            m_formExaminationEdit->setInformation(ci->client(), false);
+        } else{
+            Examination ex;
+            bool thereIsEx = false;
+            for (int i = examinations.size()-1; i>=0; i--){
+                if (!examinations[i].isFullExamination()) {
+                    ex = examinations[i];
+                    break;
+                }
+            }
+            m_formExaminationEdit->setInformation(ex);
+            if (thereIsEx) {
+                m_formExaminationEdit->setInformation(ex);
+            } else {
+                m_formExaminationEdit->setInformation(ci->client(), false);
+            }
+        }
         setExaminationEditConnect(m_formExaminationEdit);
         _ui.mdiArea->addSubWindow(m_formExaminationEdit);
         m_formExaminationEdit->show();
@@ -261,7 +279,25 @@ void MainWindow::setClientInfoConnect(ClientInfo *ci)
 
     connect(ci, &ClientInfo::newExaminationFullButtonPressed, [this, ci](){
         m_formExaminationEdit = new ExaminationEdit;             //NOTE: Сan we use the local version?
-        m_formExaminationEdit->setInformation(ci->client(), true);
+        QVector<Examination> examinations = _database.examinations(ci->client());
+        if (examinations.size() == 0){
+            m_formExaminationEdit->setInformation(ci->client(), true);
+        } else{
+            Examination ex;
+            bool thereIsEx = false;
+            for (int i = examinations.size()-1; i>=0; i--){
+                if (examinations[i].isFullExamination()) {
+                    ex = examinations[i];
+                    thereIsEx = true;
+                    break;
+                }
+            }
+            if (thereIsEx) {
+                m_formExaminationEdit->setInformation(ex);
+            } else {
+                m_formExaminationEdit->setInformation(ci->client(), true);
+            }
+        }
         setExaminationEditConnect(m_formExaminationEdit);
         _ui.mdiArea->addSubWindow(m_formExaminationEdit);
         m_formExaminationEdit->show();
@@ -342,7 +378,7 @@ void MainWindow::setExaminationEditConnect(ExaminationEdit *ee)
 {
     //ee->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(ee, &ExaminationEdit::formReady, [this, ee](){
+    connect(ee, &ExaminationEdit::formNewExaminationReady, [this, ee](){
         Examination examination = ee->examination();
         //_ui.mdiArea->removeSubWindow(ee);
         if(_database.addExaminationAndSetID(examination)){
@@ -360,11 +396,38 @@ void MainWindow::setExaminationEditConnect(ExaminationEdit *ee)
         }
         ee->parent()->deleteLater();
     });
+
+    connect(ee, &ExaminationEdit::formEditedExaminationReady, [this, ee](){
+        Examination examination = ee->examination();
+        if (_database.changeExaminationInformation(examination)){
+            if (QMessageBox::question(this, "Редактирование исследования"
+                                       , "Информация об исследование успешно обнавлена\nЖелаете открыть окно Информация об исследовании?"
+                                       , QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
+                m_formExaminationInfo = new ExaminationInfo();
+                setExaminationInfoConnect(m_formExaminationInfo);
+                m_formExaminationInfo->setInformation(examination);
+                _ui.mdiArea->addSubWindow(m_formExaminationInfo);
+                m_formExaminationInfo->show();
+            }
+        } else {
+            QMessageBox::warning(this, "Редактирование исследования", "Информация по исследованию не была обновлена");
+            qDebug() << _database.unwatchedWorkError();
+        }
+        ee->parent()->deleteLater();
+    });
 }
 
 void MainWindow::setExaminationInfoConnect(ExaminationInfo *ei)
 {
     ei->setAttribute(Qt::WA_DeleteOnClose);
+
+    connect(ei, &ExaminationInfo::editExaminationButtonPressed, [this, ei](){
+        m_formExaminationEdit= new ExaminationEdit;
+        m_formExaminationEdit->setInformation(ei->examination());
+        this->setExaminationEditConnect(m_formExaminationEdit);
+        this->addSubWindowAndShow(m_formExaminationEdit);
+        ei->parent()->deleteLater();
+    });
 
     connect(ei, &ExaminationInfo::deleteExamination, [this, ei](){
         if ( QMessageBox::question(this, "Удаление Иследования"

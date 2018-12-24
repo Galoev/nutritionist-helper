@@ -7,16 +7,17 @@ public:
     ExaminationEdit(QWidget* wgt = 0);
 
     void setInformation(const Client& , bool isFullExamination);
+    void setInformation(const Examination& );
     Examination examination() const;
 
 signals:
-    void formReady();
+    void formNewExaminationReady();
+    void formEditedExaminationReady();
 
 private slots:
     void onNextPage();
     void onPrevPage();
     void onSaveForm();
-    void foo();
 
     void onPushButtonCalculate_65();
     void onPushButtonCalculate_69_77();
@@ -28,4 +29,6 @@ private:
 
     Ui::form_examinationEdit _ui;
     Examination _examination;
+    QChar m_gender;
+    bool m_isEditingMod;
 };

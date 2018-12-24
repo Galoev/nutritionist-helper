@@ -6,6 +6,7 @@ ExaminationInfo::ExaminationInfo(QWidget *wgt)
     _ui.setupUi(this);
 
     connect(_ui.pushButton_examinationDelete, SIGNAL(pressed()), SLOT(onDeleteExamination()));
+    connect(_ui.pushButton_examinationEdit, SIGNAL(pressed()), SLOT(onEditExamination()));
     connect(_ui.pushButton_examinationFullExport, SIGNAL(pressed()), SLOT(onPrintFullExamination()));
     connect(_ui.pushButton_examinationHalfExport, SIGNAL(pressed()), SLOT(onPrintHalfExamination()));
 }
@@ -16,7 +17,11 @@ void ExaminationInfo::setInformation(const Examination &e)
 
     /// Activates or deactivates the output of a full report,
     /// depending on the type (full/half) of examination
-    _ui.pushButton_examinationFullExport->setEnabled(_examination.isFullExamination());
+    if (_examination.isFullExamination()){
+        _ui.pushButton_examinationFullExport->setEnabled(_examination.isFullExamination());
+    } else {
+        _ui.pushButton_examinationFullExport->deleteLater();
+    }
 
     Client client = _examination.client();
     _ui.label_clientSurname->setText(client.surname());
@@ -46,7 +51,8 @@ void ExaminationInfo::onDeleteExamination()
 
 void ExaminationInfo::onEditExamination()
 {
-    // TODO: Add functionality
+    emit editExaminationButtonPressed();
+    this->parent()->deleteLater();
 }
 
 void ExaminationInfo::onPrintFullExamination()

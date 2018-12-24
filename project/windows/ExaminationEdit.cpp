@@ -9,11 +9,11 @@ ExaminationEdit::ExaminationEdit(QWidget *wgt)
 
     _ui.pushButton_saveForm->setEnabled(false);
     _ui.pushButton_previousPage->setEnabled(false);
+    m_isEditingMod = false;
 
     setupValidators();
 
-    //connect(_ui.pushButton_nextPage, SIGNAL(pressed()), SLOT(onNextPage()));
-    connect(_ui.pushButton_nextPage, SIGNAL(pressed()), SLOT(foo()));
+    connect(_ui.pushButton_nextPage, SIGNAL(pressed()), SLOT(onNextPage()));
     connect(_ui.pushButton_previousPage, SIGNAL(pressed()), SLOT(onPrevPage()));
     connect(_ui.pushButton_saveForm, SIGNAL(pressed()), SLOT(onSaveForm()));
     connect(_ui.pushButton_calculate_formfield_62, SIGNAL(pressed()), SLOT(onPushButtonCalculate_65()));
@@ -23,6 +23,7 @@ ExaminationEdit::ExaminationEdit(QWidget *wgt)
 
 void ExaminationEdit::setInformation(const Client &client, bool isFullExamination)
 {
+    m_isEditingMod = false;
     _examination.setIsFullExamination(isFullExamination);
     _examination.setClient(client);
 
@@ -33,8 +34,8 @@ void ExaminationEdit::setInformation(const Client &client, bool isFullExaminatio
             .arg(client.age())
             .arg(client.birthDate().year());
     _ui.label_client_info->setText(clientInfo);
-
-    if (client.gender() == 'm') {
+    m_gender = client.gender();
+    if (m_gender == 'm') {
         _ui.page_3->setEnabled(false);
     }
 
@@ -48,6 +49,10 @@ void ExaminationEdit::setInformation(const Client &client, bool isFullExaminatio
             QWidget* widgetField = this->findChild<QWidget*>(field.name());
             if (field.isMayBeEmpty()) {
                 widgetField->setEnabled(false);
+                QLineEdit *tmpLine =  dynamic_cast<QLineEdit*>(widgetField);
+                if (tmpLine != nullptr){
+                    tmpLine->setText("--пусто--");
+                }
             }
         }
         _ui.pushButton_calculate_formfield_62->setEnabled(false);
@@ -56,17 +61,76 @@ void ExaminationEdit::setInformation(const Client &client, bool isFullExaminatio
     this->repaint();
 }
 
-void ExaminationEdit::onNextPage()
+void ExaminationEdit::setInformation(const Examination& examination)
 {
-    setPage(_ui.stackedWidget->currentIndex() + 1);
+    m_isEditingMod = true;
+    _examination = examination;
+    Client client = _examination.client();
+    bool isFullExamination = _examination.isFullExamination();
+
+    QString clientInfo = QString("%1 %2 %3 / %4 (%5)")
+            .arg(client.surname())
+            .arg(client.name())
+            .arg(client.patronymic())
+            .arg(client.age())
+            .arg(client.birthDate().year());
+    _ui.label_client_info->setText(clientInfo);
+    m_gender = client.gender();
+    if (m_gender == 'm') {
+        _ui.page_3->setEnabled(false);
+    }
+
+    QString examinationType = isFullExamination
+            ? tr("Прием")
+            : tr("Консультация");
+    _ui.label_examination_type->setText(examinationType);
+
+    if (!isFullExamination) {
+        _ui.pushButton_calculate_formfield_62->setEnabled(false);
+    }
+
+    foreach (FormField field, _examination.fields()) {
+        QWidget* widgetField = this->findChild<QWidget*>(field.name());
+
+        if (field.isMayBeEmpty() && !isFullExamination) {
+            widgetField->setEnabled(false);
+            QLineEdit *tmpLine =  dynamic_cast<QLineEdit*>(widgetField);
+            if (tmpLine != nullptr){
+                tmpLine->setText("--пусто--");
+            }
+            continue;
+        }
+
+        switch (field.type()) {
+        case FormField::String : {
+            ((QTextEdit*)widgetField)->setText(field.value());
+        } break;
+        case FormField::Date : {
+            ((QDateEdit*)widgetField)->setDate(QDate::fromString(field.value(), "ddMMyyyy"));
+        } break;
+        case FormField::Float :
+        case FormField::UShort : {
+            ((QLineEdit*)widgetField)->setText(field.value());
+        } break;
+        case FormField::ComboB : {
+            ((QComboBox*)widgetField)->setCurrentText(field.value());
+        } break;
+        }
+    }
+
+    this->repaint();
 }
 
 void ExaminationEdit::onPrevPage()
 {
-    setPage(_ui.stackedWidget->currentIndex() - 1);
+    int index = _ui.stackedWidget->currentIndex() - 1;
+    if (((index == 3 || index == 6) && !_examination.isFullExamination()) || (_examination.isFullExamination() && m_gender == 'm' && index == 3)){
+        index--;
+    }
+    setPage(index);
 }
 
-void ExaminationEdit::foo()
+void ExaminationEdit::onNextPage()
 {
     QWidget *page = _ui.stackedWidget->currentWidget();
     QObjectList lst = page->children();
@@ -91,7 +155,7 @@ void ExaminationEdit::foo()
        switch (field.type()) {
        case FormField::String : {
            QTextEdit* textField = (QTextEdit*)widgetField;
-           if (textField->toPlainText().isEmpty()) {
+           if (textField->toPlainText().isEmpty() && textField != _ui.formfield_90 && textField != _ui.formfield_84) {
                isBlankField = true;
            }
        } break;
@@ -129,8 +193,11 @@ void ExaminationEdit::foo()
         qDebug()<<"Ошибка заполнения"<<"Данные заполнены некорректно"<<endl;
         return;
     }
-
-    setPage(_ui.stackedWidget->currentIndex() + 1);
+    int index = _ui.stackedWidget->currentIndex() + 1;
+    if (((index == 3 || index == 6) && !_examination.isFullExamination()) || (_examination.isFullExamination() && m_gender == 'm' && index == 3)){
+        index++;
+    }
+    setPage(index);
 }
 
 void ExaminationEdit::onSaveForm()
@@ -153,7 +220,7 @@ void ExaminationEdit::onSaveForm()
         switch (field.type()) {
         case FormField::String : {
             QTextEdit* textField = (QTextEdit*)widgetField;
-            if (textField->toPlainText().isEmpty()) {
+            if (textField->toPlainText().isEmpty() && textField != _ui.formfield_90 && textField != _ui.formfield_84) {
                 isBlankField = true;
             }
         } break;
@@ -222,7 +289,11 @@ void ExaminationEdit::onSaveForm()
 
     //this->close();
 
-    emit formReady();
+    if (m_isEditingMod) {
+        emit formEditedExaminationReady();
+    } else {
+        emit formNewExaminationReady();
+    }
 }
 
 void ExaminationEdit::onPushButtonCalculate_65()
