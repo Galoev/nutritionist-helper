@@ -68,9 +68,9 @@ void RecipeInfo::paintEvent(QPaintEvent *event)
 {
     auto width = ui->tableWidget_ingredientList->width();
     ui->tableWidget_ingredientList->horizontalHeader()->setStretchLastSection(true);
-    ui->tableWidget_ingredientList->setColumnWidth(0, width * 8/12-10);
-    ui->tableWidget_ingredientList->setColumnWidth(1, width * 3/12-10);
-    ui->tableWidget_ingredientList->setColumnWidth(2, width * 1/12-10);
+    ui->tableWidget_ingredientList->setColumnWidth(0, width * 10/15-10);
+    ui->tableWidget_ingredientList->setColumnWidth(1, width * 4/15-10);
+    ui->tableWidget_ingredientList->setColumnWidth(2, width * 1/15-10);
 
     ui->tableWidget_recipeDescription->resizeRowsToContents();
     auto width2 = ui->tableWidget_recipeDescription->width();

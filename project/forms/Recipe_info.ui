@@ -45,7 +45,7 @@
      <item>
       <widget class="QPushButton" name="pushButton_print">
        <property name="icon">
-        <iconset resource="../rec.qrc">
+        <iconset>
          <normaloff>:/resources/printer.png</normaloff>:/resources/printer.png</iconset>
        </property>
       </widget>
@@ -91,7 +91,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
-          <string>Инградиенты</string>
+          <string>Ингредиенты</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0">
           <item>
@@ -101,6 +101,9 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustToContents</enum>
             </property>
             <property name="editTriggers">
              <set>QAbstractItemView::NoEditTriggers</set>
